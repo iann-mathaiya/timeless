@@ -15,9 +15,10 @@ enabled = true
 BETTER_AUTH_SECRET= ""
 CLOUDFLARE_ACCOUNT_ID = ""
 CLOUDFLARE_API_TOKEN = ""
+ARS_DB= "e7edd58c-059b-4c32-bd3e-14732a992eff"
 
 [[d1_databases]]
-binding = "DB"
+binding = "ARS_DB"
 database_name = "ars"
 database_id = "e7edd58c-059b-4c32-bd3e-14732a992eff"
 
@@ -26,6 +27,6 @@ binding = "ars"
 id = "460c76c5c82d4f8cbcd52e46342ab37c"
 
 [[r2_buckets]]
+binding = "ARS_R2"
 bucket_name = "ars"
-binding = "ars"
 

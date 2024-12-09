@@ -6,6 +6,9 @@ declare namespace App {
     interface Locals {
         user: import("better-auth").User | null
         session: import("better-auth").Session | null
+        db: ReturnType<typeof import('./src/db').createD1Connection>
+        auth: ReturnType<typeof import('./src/lib/auth').createAuthWithD1>
+        DB: D1Database
     }
 }
 

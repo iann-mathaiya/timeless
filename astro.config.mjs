@@ -19,6 +19,7 @@ export default defineConfig({
 	},
 	env: {
 		schema: {
+			DB: envField.string({ context: "server", access: "secret" }),
 			BETTER_AUTH_SECRET: envField.string({ context: "server", access: "secret" }),
 		},
 	},
