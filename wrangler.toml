@@ -15,7 +15,7 @@ enabled = true
 BETTER_AUTH_SECRET= ""
 CLOUDFLARE_ACCOUNT_ID = ""
 CLOUDFLARE_API_TOKEN = ""
-ARS_DB= "e7edd58c-059b-4c32-bd3e-14732a992eff"
+DB= "e7edd58c-059b-4c32-bd3e-14732a992eff"
 
 [[d1_databases]]
 binding = "ARS_DB"
