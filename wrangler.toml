@@ -15,6 +15,8 @@ enabled = true
 BETTER_AUTH_SECRET= ""
 CLOUDFLARE_ACCOUNT_ID = ""
 CLOUDFLARE_API_TOKEN = ""
+GOOGLE_CLIENT_ID = ""
+GOOGLE_CLIENT_SECRET = ""
 DB= "e7edd58c-059b-4c32-bd3e-14732a992eff"
 
 [[d1_databases]]

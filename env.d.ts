@@ -1,7 +1,7 @@
 
 /// <reference path="../.astro/types.d.ts" />
 
-type Runtime = import('@astrojs/cloudflare').Runtime<Env>;
+type Runtime = import('@astrojs/cloudflare').Runtime<Env>
 
 declare namespace App {
     // Note: 'import {} from ""' syntax does not work in .d.ts files.
@@ -16,6 +16,8 @@ declare namespace App {
 
 interface ImportMetaEnv {
     readonly BETTER_AUTH_SECRET: string
+    readonly CLOUDFLARE_API_TOKEN: string
+    readonly CLOUDFLARE_ACCOUNT_ID: string
 }
 
 interface ImportMeta {

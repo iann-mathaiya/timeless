@@ -2,10 +2,12 @@
 
 interface Env {
 	ars: KVNamespace;
-	DB: "e7edd58c-059b-4c32-bd3e-14732a992eff";
 	BETTER_AUTH_SECRET: string;
 	CLOUDFLARE_ACCOUNT_ID: string;
 	CLOUDFLARE_API_TOKEN: string;
+	DB: string;
+	GOOGLE_CLIENT_ID: string;
+	GOOGLE_CLIENT_SECRET: string;
 	ARS_R2: R2Bucket;
 	ARS_DB: D1Database;
 	ASSETS: Fetcher;
