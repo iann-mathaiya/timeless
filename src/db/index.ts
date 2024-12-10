@@ -4,7 +4,7 @@ import { Kysely, SqliteDialect } from "kysely"
 
 export async function initDbConnectionDev() {
   return new SqliteDialect({
-    database: new Database('db.sqlite')
+    database: new Database('.wrangler/state/v3/d1/timeless_db.sqlite')
   })
 }
 

@@ -7,7 +7,11 @@
     "start": "wrangler types && astro dev",
     "build": "wrangler types && astro check && astro build",
     "preview": "wrangler types && astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "migrate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:pull": "drizzle-kit pull",
+    "studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
