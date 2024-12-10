@@ -1,14 +1,10 @@
-import { createD1Connection } from "./src/db"
-import { createAuthWithD1 } from "./src/lib/auth"
 import { defineMiddleware } from "astro:middleware"
+import { initDbConnectionDev } from "./src/db"
 
 export const onRequest = defineMiddleware(async (context, next) => {
 
     // Inject D1 database connection first
-    context.locals.db = createD1Connection({ DB: context.locals.DB })
-
-    // Create auth instance
-    context.locals.auth = createAuthWithD1(context.locals)
+    // context.locals.db = initDbConnectionDev({ DB: context.locals.DB })
 
     try {
         const isAuthed = await context.locals.auth.api

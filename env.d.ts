@@ -15,6 +15,7 @@ declare namespace App {
 }
 
 interface ImportMetaEnv {
+    readonly DB: D1Database
     readonly BETTER_AUTH_SECRET: string
     readonly CLOUDFLARE_API_TOKEN: string
     readonly CLOUDFLARE_ACCOUNT_ID: string
