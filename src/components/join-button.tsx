@@ -8,7 +8,7 @@ export default function JoinButton() {
             onClick={async () => {
                 await signIn.social({
                     provider: "google",
-                    callbackURL: "/",
+                    callbackURL: "/home",
                 })
             }}
             className="mt-4 w-full h-8 flex items-center justify-center gap-2 text-white bg-gray-950 hover:bg-orange-600 rounded-lg transition-all duration-300 ease-in-out">
