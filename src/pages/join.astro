@@ -1,7 +1,16 @@
 ---
+import { auth } from "../lib/auth"
 import Logo from "../assets/logo.svg";
 import JoinButton from "../components/join-button";
 import RootLayout from "../layouts/RootLayout.astro";
+
+const authDetails = await auth.api.getSession({
+	headers: Astro.request.headers,
+});
+
+if (authDetails) {
+	return Astro.redirect("/home");
+}
 ---
 
 <RootLayout title="Join">
