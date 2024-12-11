@@ -1,6 +1,6 @@
 import type { Config } from "drizzle-kit"
 import { defineConfig } from "drizzle-kit"
-import { getLocalD1DB } from "./src/lib/utlis"
+import { getLocalD1DB } from "./src/lib/utils"
 
 export default defineConfig({
     schema: "./src/db/schema.ts",

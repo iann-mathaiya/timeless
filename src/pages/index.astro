@@ -1,9 +1,20 @@
 ---
+import SignOutButton from "../components/sign-out"
 import RootLayout from "../layouts/RootLayout.astro";
+import { auth } from "../lib/auth"
 
-return Astro.redirect("/join");
+// return Astro.redirect("/join");
+
+const session = await auth.api.getSession({
+  headers: Astro.request.headers,
+});
+
+if (!session) {
+	return Astro.redirect('/join')
+}
 ---
 
 <RootLayout>
 	<a href="/join" class="text-sm text-gray-600 hover:text-gray-950">Join</a>
+	<SignOutButton client:load />
 </RootLayout>

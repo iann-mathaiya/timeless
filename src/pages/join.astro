@@ -1,8 +1,8 @@
 ---
 import Logo from "../assets/logo.svg";
 import GoogleLogo from "../assets/google.svg";
+import JoinButton from "../components/join-button";
 import RootLayout from "../layouts/RootLayout.astro";
-
 ---
 
 <RootLayout title="Join">
@@ -17,18 +17,8 @@ import RootLayout from "../layouts/RootLayout.astro";
                 <p class="text-sm text-gray-600">Adventure awaits, sign up and be timeless</p>
             </div>
 
-            <form action="" class="mt-4 w-full">
-                <button class="w-full h-8 flex items-center justify-center gap-2 text-white bg-gray-950 hover:bg-orange-600 rounded-lg transition-all duration-300 ease-in-out">
-                    <GoogleLogo width={16} height={16} fill="currentColor" />
-                    <span class="text-sm font-medium">
-                        Sign up with Google
-                    </span>
-                </button>
-            </form>
-            
+            <JoinButton client:load />
         </div>
-
-
     </section>
     
 </RootLayout>

@@ -1,8 +1,7 @@
-import { createAuthClient } from "better-auth/client"
+import { createAuthClient } from "better-auth/react"
 
-export const authClient =  createAuthClient({
+export const { signIn, signUp, signOut, useSession } =  createAuthClient({
     // TODO: update baseURL true state after deploying
-    baseURL: import.meta.env.PROD ? '/' : 'http://localhost:3000'
+    baseURL: import.meta.env.PROD ? '/' : 'http://localhost:4321',
+    provider: "google"
 })
-
-export const { signIn, signUp, useSession } = createAuthClient()
