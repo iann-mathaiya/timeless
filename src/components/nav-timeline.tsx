@@ -1,6 +1,6 @@
 import {
+  Link as LinkIcon,
   ArrowUpRight,
-  Link,
   MoreHorizontal,
   StarOff,
   Trash2,
@@ -22,6 +22,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import Link from "./link";
 
 export function NavTimeline({
   timeline,
@@ -41,10 +42,10 @@ export function NavTimeline({
         {timeline.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <a href={item.url} title={item.name}>
-                <span>{item.emoji}</span>
-                <span>{item.name}</span>
-              </a>
+              <Link href={item.url} title={item.name}>
+               <span>{item.emoji}</span>
+               <span>{item.name}</span>
+              </Link>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -64,7 +65,7 @@ export function NavTimeline({
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Link className="text-muted-foreground" />
+                  <LinkIcon className="text-muted-foreground" />
                   <span>Copy Link</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>

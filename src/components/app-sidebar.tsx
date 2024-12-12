@@ -189,7 +189,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavTimeline timeline={data.timeline} />
-        <NavCollections collections={data.collections} />
+        {/* <NavCollections collections={data.collections} /> */}
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
