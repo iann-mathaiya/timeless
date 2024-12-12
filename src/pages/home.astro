@@ -1,8 +1,8 @@
 ---
 import { auth } from "../lib/auth";
 import SignOutButton from "../components/sign-out";
-import RootLayout from "../layouts/RootLayout.astro";
 import Link from "../components/link"
+import AppLayout from "@/layouts/AppLayout.astro"
 
 const authDetails = await auth.api.getSession({
 	headers: Astro.request.headers,
@@ -15,7 +15,7 @@ if (!authDetails) {
 const { user } = authDetails;
 ---
 
-<RootLayout title="Home">
+<AppLayout title="Home">
 
     <section class="mt-4 mx-auto w-full max-w-sm min-h-screen">
 
@@ -32,4 +32,4 @@ const { user } = authDetails;
 
     </section>
     
-</RootLayout>
+</AppLayout>
