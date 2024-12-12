@@ -1,8 +1,8 @@
 // @ts-check
-import react from "@astrojs/react";
-import tailwind from "@astrojs/tailwind";
-import cloudflare from '@astrojs/cloudflare';
-import { defineConfig, envField } from "astro/config";
+import react from "@astrojs/react"
+import tailwind from "@astrojs/tailwind"
+import cloudflare from '@astrojs/cloudflare'
+import { defineConfig, envField } from "astro/config"
 
 // https://astro.build/config
 export default defineConfig({
@@ -10,10 +10,14 @@ export default defineConfig({
 	adapter: cloudflare({
 		imageService: 'cloudflare',
 		platformProxy: {
-		  enabled: true
+			enabled: true
 		}
-	  }),
-	integrations: [tailwind(), react()],
+	}),
+	integrations: [
+		react(),
+		tailwind({
+			applyBaseStyles: false,
+		})],
 	experimental: {
 		svg: true,
 	},
@@ -27,4 +31,4 @@ export default defineConfig({
 			CLOUDFLARE_ACCOUNT_ID: envField.string({ context: "server", access: "secret" }),
 		},
 	},
-});
+})
