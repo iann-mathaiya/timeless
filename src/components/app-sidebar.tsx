@@ -1,25 +1,11 @@
-import {
-  AudioWaveform,
-  CalendarClock,
-  Command,
-  Home,
-  Images,
-  Inbox,
-  Search,
-  Sparkles,
-} from "lucide-react"
-
-import { NavTimeline } from "@/components/nav-timeline"
-import { NavMain } from "@/components/nav-main"
-import { NavCollections } from "@/components/nav-collections"
-import { Profile } from "@/components/profile"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar"
 import type { User } from "better-auth";
+import { NavMain } from "@/components/nav-main";
+import { Profile } from "@/components/profile";
+import { NavSecondary } from "./nav-secondary";
+import { NavTimeline } from "@/components/nav-timeline";
+import { NavCollections } from "@/components/nav-collections";
+import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
+import { AudioWaveform, CalendarClock, CircleHelp, Command, Home, Images, LightbulbIcon, Search, Zap } from "lucide-react";
 
 // This is sample data.
 const data = {
@@ -64,7 +50,20 @@ const data = {
       badge: "10",
     },
   ],
-
+  navSecondary: [
+    {
+      title: "Support",
+      url: "#",
+      icon: CircleHelp,
+      isAdminOnly: false,
+    },
+    {
+      title: "Feedback",
+      url: "#",
+      icon: LightbulbIcon,
+      isAdminOnly: false,
+    },
+  ],
   timeline: [
     {
       name: "Project Management & Task Tracking",
@@ -135,55 +134,12 @@ const data = {
         },
       ],
     },
-    {
-      name: "Creative Projects",
-      emoji: "🎨",
-      pages: [
-        {
-          name: "Writing Ideas & Story Outlines",
-          url: "#",
-          emoji: "✍️",
-        },
-        {
-          name: "Art & Design Portfolio",
-          url: "#",
-          emoji: "🖼️",
-        },
-        {
-          name: "Music Composition & Practice Log",
-          url: "#",
-          emoji: "🎵",
-        },
-      ],
-    },
-    {
-      name: "Home Management",
-      emoji: "🏡",
-      pages: [
-        {
-          name: "Household Budget & Expense Tracking",
-          url: "#",
-          emoji: "💰",
-        },
-        {
-          name: "Home Maintenance Schedule & Tasks",
-          url: "#",
-          emoji: "🔧",
-        },
-        {
-          name: "Family Calendar & Event Planning",
-          url: "#",
-          emoji: "📅",
-        },
-      ],
-    },
-
   ],
-}
+};
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
-  user: User
-}
+  user: User;
+};
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
   return (
@@ -195,8 +151,9 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       <SidebarContent>
         <NavTimeline timeline={data.timeline} />
         {/* <NavCollections collections={data.collections} /> */}
+        <NavSecondary user={user} items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
