@@ -12,15 +12,17 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
+import type { User } from "better-auth";
 
 type SidebarProps = {
+    user: User
     children: React.ReactNode
 }
 
-export function Sidebar({ children }: SidebarProps) {
+export function Sidebar({ user, children }: SidebarProps) {
     return (
         <SidebarProvider>
-            <AppSidebar />
+            <AppSidebar user={user} />
             <SidebarInset>
                 <header className="flex h-14 shrink-0 items-center gap-2">
                     <div className="flex flex-1 items-center gap-2 px-3">

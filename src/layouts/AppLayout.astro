@@ -1,12 +1,21 @@
 ---
 import { Sidebar } from "@/components/sidebar"
 import RootLayout from "./RootLayout.astro"
+import { auth } from "@/lib/auth";
 
 const { title, description } = Astro.props;
+
+const authDetails = await auth.api.getSession({
+	headers: Astro.request.headers,
+});
+
+if (!authDetails) {
+	return Astro.redirect("/join");
+}
 ---
 
 <RootLayout title={title} description={description}>
-    <Sidebar client:load>
+    <Sidebar client:load user={authDetails.user}>
         <slot />
     </Sidebar>
 </RootLayout>

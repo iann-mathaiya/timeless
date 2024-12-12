@@ -12,13 +12,14 @@ import {
 import { NavTimeline } from "@/components/nav-timeline"
 import { NavMain } from "@/components/nav-main"
 import { NavCollections } from "@/components/nav-collections"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { Profile } from "@/components/profile"
 import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import type { User } from "better-auth";
 
 // This is sample data.
 const data = {
@@ -180,11 +181,15 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+  user: User
+}
+
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
   return (
     <Sidebar className="border-r-0" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <Profile name={user.name} imageSrc={user.image} />
         <NavMain items={data.navMain} />
       </SidebarHeader>
       <SidebarContent>
