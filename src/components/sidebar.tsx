@@ -33,7 +33,7 @@ export function Sidebar({ user, currentPath, pageTitle, children }: SidebarProps
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage className="line-clamp-1 capitalize">
+                                    <BreadcrumbPage className="line-clamp-1 capitalize transition-all duration-300 ease-in-out">
                                         {pageTitle}
                                     </BreadcrumbPage>
                                 </BreadcrumbItem>
