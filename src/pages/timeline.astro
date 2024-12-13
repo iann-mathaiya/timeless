@@ -1,6 +1,5 @@
 ---
 import { auth } from "../lib/auth";
-import SignOutButton from "../components/sign-out";
 import AppLayout from "../layouts/AppLayout.astro";
 import Link from "../components/link"
 
@@ -18,17 +17,6 @@ const { user } = authDetails;
 <AppLayout title="Home">
 
     <section class="mt-4 mx-auto w-full max-w-sm min-h-screen">
-
-        <div>
-            <div class="mt-1 flex items-center gap-2">
-                <img class="size-5 sm:size-7 rounded-full" src={user.image} alt={`${user.name} photo`}>
-                <h1 class="text-2xl text-gray-950 font-serif font-medium">Hello, {user.name}.</h1>
-            </div>
-    
-            <SignOutButton client:load />
-
-            <Link href="/home">Go Home</Link>
-        </div>
 
     </section>
     

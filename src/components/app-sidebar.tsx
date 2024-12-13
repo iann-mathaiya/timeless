@@ -139,19 +139,20 @@ const data = {
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   user: User;
+  currentPath: string
 };
 
-export function AppSidebar({ user, ...props }: AppSidebarProps) {
+export function AppSidebar({ user, currentPath, ...props }: AppSidebarProps) {
   return (
     <Sidebar className="border-r-0" {...props}>
       <SidebarHeader>
         <Profile name={user.name} imageSrc={user.image} />
-        <NavMain items={data.navMain} />
+        <NavMain items={data.navMain} currentPath={currentPath} />
       </SidebarHeader>
       <SidebarContent>
         <NavTimeline timeline={data.timeline} />
         {/* <NavCollections collections={data.collections} /> */}
-        <NavSecondary user={user} items={data.navSecondary} className="mt-auto" />
+        <NavSecondary user={user} items={data.navSecondary} currentPath={currentPath} className="mt-auto" />
       </SidebarContent>
       <SidebarRail />
     </Sidebar>

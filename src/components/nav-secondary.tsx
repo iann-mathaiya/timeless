@@ -1,5 +1,5 @@
-import type React from "react"
-import type { LucideIcon } from "lucide-react"
+import type React from "react";
+import type { LucideIcon } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -8,31 +8,30 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 import type { User } from "better-auth";
 
-type NavSecondaryProps = React.ComponentPropsWithoutRef<typeof SidebarGroup> &
-{
-  user: User
-} &
-{
+type NavSecondaryProps = React.ComponentPropsWithoutRef<typeof SidebarGroup> & {
+  user: User;
+  currentPath: string,
+} & {
   items: {
-    title: string
-    url: string
-    icon: LucideIcon
-    isAdminOnly: boolean
-    badge?: React.ReactNode
-  }[]
-}
+    title: string;
+    url: string;
+    icon: LucideIcon;
+    isAdminOnly: boolean;
+    badge?: React.ReactNode;
+  }[];
+};
 
-export function NavSecondary({ items, user, ...props }: NavSecondaryProps) {
+export function NavSecondary({ items, user, currentPath, ...props }: NavSecondaryProps) {
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild isActive={currentPath === item.url}>
                 <a href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
@@ -44,5 +43,5 @@ export function NavSecondary({ items, user, ...props }: NavSecondaryProps) {
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
-  )
+  );
 }

@@ -9,21 +9,21 @@ import {
 } from "@/components/ui/sidebar"
 import Link from "./link";
 
-export function NavMain({
-  items,
-}: {
+type NavMainProps = {
+  currentPath: string,
   items: {
     title: string
     url: string
     icon: LucideIcon
-    isActive?: boolean
   }[]
-}) {
+}
+
+export function NavMain({ items, currentPath}: NavMainProps) {
   return (
     <SidebarMenu>
       {items.map((item) => (
         <SidebarMenuItem key={item.title}>
-          <SidebarMenuButton asChild isActive={item.isActive}>
+          <SidebarMenuButton asChild isActive={currentPath === item.url}>
             <Link href={item.url}>
               <item.icon />
               <span>{item.title}</span>

@@ -12,10 +12,12 @@ const authDetails = await auth.api.getSession({
 if (!authDetails) {
 	return Astro.redirect("/join");
 }
+
+const currentPath = Astro.url.pathname;
 ---
 
 <RootLayout title={title} description={description}>
-    <Sidebar client:load user={authDetails.user}>
+    <Sidebar client:load user={authDetails.user} currentPath={currentPath}>
         <slot />
     </Sidebar>
 </RootLayout>
