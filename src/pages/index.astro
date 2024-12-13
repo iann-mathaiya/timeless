@@ -1,5 +1,4 @@
 ---
-import SignOutButton from "../components/sign-out"
 import RootLayout from "../layouts/RootLayout.astro";
 import { auth } from "../lib/auth"
 
@@ -14,5 +13,4 @@ if (authDetails) {
 
 <RootLayout>
 	<a href="/join" class="text-sm text-gray-600 hover:text-gray-950">Join</a>
-	<SignOutButton client:load />
 </RootLayout>

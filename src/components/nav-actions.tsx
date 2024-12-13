@@ -9,8 +9,9 @@ import {
   FileText,
   GalleryVerticalEnd,
   LineChart,
-  Link,
+  Link as LinkIcon,
   MoreHorizontal,
+  Plus,
   Settings2,
   Star,
   Trash,
@@ -20,6 +21,7 @@ import { format } from 'date-fns';
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import Link from "./link";
 
 const data = [
   [
@@ -35,7 +37,7 @@ const data = [
   [
     {
       label: "Copy Link",
-      icon: Link,
+      icon: LinkIcon,
     },
     {
       label: "Duplicate",
@@ -84,7 +86,11 @@ const data = [
   ],
 ];
 
-export function NavActions() {
+type NavActionsProps = {
+  currentPath: string;
+};
+
+export function NavActions({ currentPath }: NavActionsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
@@ -100,13 +106,16 @@ export function NavActions() {
 
   return (
     <div className="flex items-center gap-2 text-sm">
-      <div className="hidden font-medium text-muted-foreground md:inline-block">
-        {format(currentDateTime, 'EEE d LLL p')}
-      </div>
-      <Button variant="ghost" size="icon" className="h-7 w-7">
-        <Star />
-      </Button>
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <p className="hidden font-medium text-muted-foreground md:inline-block transition-all duration-300 ease-in-out">
+        {format(currentDateTime, 'EEE d LLL pp')}
+      </p>
+      {currentPath !== '/create-post' &&
+        <Link href="/create-post" className="pl-2 pr-3 py-1 h-7 w-fit flex items-center gap-2 text-gray-900 bg-transparent hover:bg-gray-200 rounded-lg transition-all duration-300 ease-in-out">
+          <Plus className="size-4" />
+          <span>Add Post</span>
+        </Link>
+      }
+      {/* <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="ghost"
@@ -140,7 +149,7 @@ export function NavActions() {
             </SidebarContent>
           </Sidebar>
         </PopoverContent>
-      </Popover>
+      </Popover> */}
     </div>
   );
 }
