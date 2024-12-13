@@ -16,11 +16,12 @@ import type { User } from "better-auth";
 
 type SidebarProps = {
     user: User
+    pageTitle: string
     currentPath: string
     children: React.ReactNode
 }
 
-export function Sidebar({ user, currentPath, children }: SidebarProps) {
+export function Sidebar({ user, currentPath, pageTitle, children }: SidebarProps) {
     return (
         <SidebarProvider>
             <AppSidebar user={user} currentPath={currentPath} />
@@ -32,8 +33,8 @@ export function Sidebar({ user, currentPath, children }: SidebarProps) {
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage className="line-clamp-1">
-                                        Project Management & Task Tracking
+                                    <BreadcrumbPage className="line-clamp-1 capitalize">
+                                        {pageTitle}
                                     </BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>

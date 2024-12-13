@@ -17,7 +17,7 @@ const currentPath = Astro.url.pathname;
 ---
 
 <RootLayout title={title} description={description}>
-    <Sidebar client:load user={authDetails.user} currentPath={currentPath}>
+    <Sidebar client:load user={authDetails.user} pageTitle={title} currentPath={currentPath}>
         <slot />
     </Sidebar>
 </RootLayout>
