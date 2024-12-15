@@ -10,6 +10,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import Image from '@tiptap/extension-image';
 import { cx } from 'class-variance-authority';
 import { ImagePlus, ListTodo, MapPinned } from 'lucide-react';
+import { sanitizeContent } from '@/lib/sanitize-content';
 
 export default function CreatePostForm() {
     const [saveStatus, setSaveStatus] = useState("Unsaved");
@@ -21,6 +22,7 @@ export default function CreatePostForm() {
     const debouncedUpdates = useDebouncedCallback(async (editor) => {
         const text = editor.getText();
         // setContent(editor.getText({ blockSeparator: '\n' }));
+        setContent(editor.getHTML());
         console.log(text);
         setSaveStatus("Saved");
     }, 500);
@@ -87,12 +89,6 @@ export default function CreatePostForm() {
         e.preventDefault();
         if (!inputRef || !inputRef.current) return;
 
-        if (!editor) {
-            return null;
-        }
-
-        editor.chain().focus().setParagraph().run()
-
         inputRef.current.click();
     }
 
@@ -126,6 +122,7 @@ export default function CreatePostForm() {
                 </button>
             </div>
 
+            <div className='mt-4' dangerouslySetInnerHTML={{ __html: sanitizeContent(content) }} />
 
         </div>
     );
