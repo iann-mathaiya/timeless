@@ -1,5 +1,13 @@
 import { sqliteTable, text, integer, } from "drizzle-orm/sqlite-core"
 
+export const posts = sqliteTable("posts", {
+	id: text("id").primaryKey(),
+	title: text("title").notNull(),
+	description: text("description").notNull(),
+	imageIds: text('image-ids', { mode: 'json' }).default('[]'),
+	userId: text('user-id').notNull().references(() => users.id)
+})
+
 export const users = sqliteTable("users", {
 	id: text("id").primaryKey(),
 	name: text('name').notNull(),
