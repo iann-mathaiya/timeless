@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "025590fa-0915-4485-b758-11aa9bc7e14c",
+  "id": "27a2d15b-1971-42f2-8cec-df2efe7447a0",
   "prevId": "21283c24-dce2-4c61-b1e2-142a87b9dd53",
   "tables": {
     "accounts": {
@@ -140,7 +140,7 @@
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "image-ids": {
