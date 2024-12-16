@@ -103,6 +103,7 @@
     &.ProseMirror-selectednode {
       outline: 3px solid var(--purple);
     }
+    
   }
 
 ul[data-type="taskList"] {
@@ -111,7 +112,7 @@ ul[data-type="taskList"] {
   padding: 0;
 
   li {
-    align-items: flex-start;
+    align-items: center;
     display: flex;
 
     > label {
@@ -123,14 +124,6 @@ ul[data-type="taskList"] {
     > div {
       flex: 1 1 auto;
     }
-  }
-
-  input[type="checkbox"] {
-    cursor: pointer;
-  }
-
-  ul[data-type="taskList"] {
-    margin: 0;
   }
 }
 }
