@@ -4,7 +4,7 @@ import { MAX_FILE_SIZE } from "@/lib/constants";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 
-export const files = {
+export const media = {
     uploadFile: defineAction({
         input: z.object({
             file: z.instanceof(File),

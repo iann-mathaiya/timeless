@@ -1,6 +1,6 @@
 import { posts } from "./posts";
-import { files } from "./file-uploads";
+import { media } from "./media";
 
 export const server = {
-    posts, files
+    posts, media
 }
