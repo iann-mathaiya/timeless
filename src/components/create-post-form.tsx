@@ -24,14 +24,20 @@ export default function CreatePostForm() {
 
         const file = files[0];
 
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const hello = formData.get('file')
+
+
         const selectedFiles = Array.from(files);
         setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
 
-        const result = await actions.files.uploadFile({ file });
-        console.log(result)
+        const result = await actions.media.uploadFile(formData);
+        console.log(hello)
+        console.log(result);
 
         // setImages(prevImages => [...prevImages, url]);
-
     }
 
 

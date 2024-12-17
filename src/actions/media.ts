@@ -6,11 +6,15 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 export const media = {
     uploadFile: defineAction({
+        accept: 'form',
         input: z.object({
             file: z.instanceof(File),
         }),
         handler: async ({ file }, context) => {
-            if (!file.type.startsWith('image/webp') || !file.type.startsWith('image/jpeg') || !file.type.startsWith('image/png')) {
+
+            console.log('file-type', file.type)
+
+            if (!file.type.startsWith("image/webp") && !file.type.startsWith("image/jpeg") && !file.type.startsWith("image/png")) {
                 throw new Error('File should either be a webp, jpeg or png');
             }
 
