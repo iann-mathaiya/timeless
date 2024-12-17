@@ -4,8 +4,8 @@ export const posts = sqliteTable("posts", {
 	id: text("id").primaryKey(),
 	title: text("title").notNull(),
 	description: text("description"),
-	imageIds: text('image-ids', { mode: 'json' }).default('[]'),
-	userId: text('user-id').notNull().references(() => users.id)
+	userId: text('user-id').notNull().references(() => users.id),
+	imageIds: text('image-ids', { mode: 'json' }).default('[]').notNull(),
 })
 
 export const users = sqliteTable("users", {

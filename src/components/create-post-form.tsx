@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react';
 import { ImagePlus } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import { twMerge } from 'tailwind-merge';
+import { useRef, useState, type FormEvent } from 'react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { actions } from 'astro:actions';
 
 export default function CreatePostForm() {
     const [images, setImages] = useState<string[]>([]);
@@ -16,11 +17,11 @@ export default function CreatePostForm() {
         const file = files[0];
 
         // use the file
-        console.log(file);
+        // console.log(file);
 
         setImages(prevImages => [...prevImages, url]);
 
-        console.log(images);
+        // console.log(images);
 
     }
 
@@ -31,11 +32,25 @@ export default function CreatePostForm() {
         inputRef.current.click();
     }
 
-    return (
-        <form className='mt-4 mx-auto w-full max-w-xl'>
-            <input placeholder='Add title' className='w-full text-xl font-medium bg-transparent outline-none placeholder:text-gray-400' />
+    async function handleSumbit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        const formData = new FormData(e.target as HTMLFormElement);
+        console.log(formData);
 
-            <textarea placeholder='Write something...' 
+        const title = formData.get('title') as string
+        const images = formData.get('imageIds') as string
+
+        console.log(images)
+
+        // const { error } = await actions.posts.createPost(formData);
+
+    }
+
+    return (
+        <form onSubmit={handleSumbit} className='mt-4 mx-auto w-full max-w-xl'>
+            <input placeholder='Add title' name='title' className='w-full text-xl font-medium bg-transparent outline-none placeholder:text-gray-400' />
+
+            <textarea placeholder='Write something...' name='description'
                 className={twMerge('mt-2 min-h-20 w-full text-sm outline-none', images.length > 0 && 'min-h-fit')} />
 
             {images.length > 0 &&
@@ -45,11 +60,11 @@ export default function CreatePostForm() {
                     )}
                 </div>
             }
-            <div className='mt-4 w-full flex items-center gap-2'>
 
+            <div className='mt-4 w-full flex items-center gap-2'>
                 <div className='w-full flex items-center justify-between'>
                     <div className='flex items-center justify-center'>
-                        <input ref={inputRef} type='file' accept='image/webp, image/jpeg, image/png' onChange={handleFileUpload} className='hidden' />
+                        <input ref={inputRef} type='file' name='imageIds' multiple accept='image/webp, image/jpeg, image/png' onChange={handleFileUpload} className='hidden' />
                         <TooltipProvider delayDuration={400} skipDelayDuration={150}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
