@@ -11,7 +11,14 @@ export default function CreatePostForm() {
 
     const url = 'https://d2wx6rahy8yxgr.cloudfront.net/fit-in/2560x0/filters:format(webp)/filters:quality(100)/8a946048-8015-4fc3-8173-31961d6f78b4-send-us-a-message.png';
 
-    function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleAddImage(e: React.MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
+        if (!inputRef || !inputRef.current) return;
+
+        inputRef.current.click();
+    }
+
+    async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
         const files = e.target.files;
         if (!files) return;
 
@@ -20,21 +27,13 @@ export default function CreatePostForm() {
         const selectedFiles = Array.from(files);
         setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
 
-        // use the file
-        // console.log(file);
+        const result = await actions.files.uploadFile({ file });
+        console.log(result)
 
-        setImages(prevImages => [...prevImages, url]);
-
-        // console.log(images);
+        // setImages(prevImages => [...prevImages, url]);
 
     }
 
-    function handleAddImage(e: React.MouseEvent<HTMLButtonElement>) {
-        e.preventDefault();
-        if (!inputRef || !inputRef.current) return;
-
-        inputRef.current.click();
-    }
 
     async function handleSumbit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -44,7 +43,7 @@ export default function CreatePostForm() {
             formData.append(`file${index + 1}`, file);
         });
 
-        const file1 = formData.get('file1')
+        const file1 = formData.get('file1');
 
         console.log('file1', file1);
 
@@ -70,20 +69,20 @@ export default function CreatePostForm() {
             <div className='mt-4 w-full flex items-center gap-2'>
                 <div className='w-full flex items-center justify-between'>
                     <div className='flex items-center justify-center'>
-                        <input 
-                            disabled={files.length  === 3}
-                            ref={inputRef} type='file' multiple 
-                            accept='image/webp, image/jpeg, image/png' 
+                        <input
+                            disabled={files.length === 3}
+                            ref={inputRef} type='file' multiple
+                            accept='image/webp, image/jpeg, image/png'
                             onChange={handleFileUpload} className='hidden' />
                         <TooltipProvider delayDuration={400} skipDelayDuration={150}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <button type="button" disabled={files.length  === 3} onClick={handleAddImage} className='p-1 text-gray-600 hover:text-gray-900 bg-transparent hover:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-100 rounded-md'>
+                                    <button type="button" disabled={files.length === 3} onClick={handleAddImage} className='p-1 text-gray-600 hover:text-gray-900 bg-transparent hover:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-100 rounded-md'>
                                         <ImagePlus className='size-5' />
                                     </button>
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                    <p>{files.length  === 3 ? 'You can only add 3 images/videos' : 'Add an image'}</p>
+                                    <p>{files.length === 3 ? 'You can only add 3 images/videos' : 'Add an image'}</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
