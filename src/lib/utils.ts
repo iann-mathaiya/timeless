@@ -2,6 +2,7 @@ import fs from "node:fs"
 import path from "node:path"
 import { twMerge } from "tailwind-merge"
 import { clsx, type ClassValue } from "clsx"
+import { z } from "astro:schema";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

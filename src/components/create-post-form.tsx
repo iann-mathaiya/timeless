@@ -39,19 +39,16 @@ export default function CreatePostForm() {
     async function handleSumbit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
-        console.log(formData);
-
-        const images = formData.get('imageIds') as string;
 
         files.forEach((file, index) => {
-            formData.append(`file${index + 1}`, file); // Append files to FormData
+            formData.append(`file${index + 1}`, file);
         });
 
-        console.log('files:', files);
-        console.log('images:', images);
-        console.log('formData:', formData);
+        const file1 = formData.get('file1')
 
-        // const { error } = await actions.posts.createPost(formData);
+        console.log('file1', file1);
+
+        const { error } = await actions.posts.createPost(formData);
 
     }
 
