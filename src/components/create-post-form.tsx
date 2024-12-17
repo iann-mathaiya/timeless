@@ -6,6 +6,7 @@ import { actions } from 'astro:actions';
 
 export default function CreatePostForm() {
     const [images, setImages] = useState<string[]>([]);
+    const [files, setFiles] = useState<File[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const url = 'https://d2wx6rahy8yxgr.cloudfront.net/fit-in/2560x0/filters:format(webp)/filters:quality(100)/8a946048-8015-4fc3-8173-31961d6f78b4-send-us-a-message.png';
@@ -15,6 +16,9 @@ export default function CreatePostForm() {
         if (!files) return;
 
         const file = files[0];
+
+        const selectedFiles = Array.from(files);
+        setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
 
         // use the file
         // console.log(file);
@@ -37,17 +41,22 @@ export default function CreatePostForm() {
         const formData = new FormData(e.target as HTMLFormElement);
         console.log(formData);
 
-        const title = formData.get('title') as string
-        const images = formData.get('imageIds') as string
+        const images = formData.get('imageIds') as string;
 
-        console.log(images)
+        files.forEach((file, index) => {
+            formData.append(`file${index + 1}`, file); // Append files to FormData
+        });
+
+        console.log('files:', files);
+        console.log('images:', images);
+        console.log('formData:', formData);
 
         // const { error } = await actions.posts.createPost(formData);
 
     }
 
     return (
-        <form onSubmit={handleSumbit} className='mt-4 mx-auto w-full max-w-xl'>
+        <form onSubmit={handleSumbit} encType="multipart/form-data" className='mt-4 mx-auto w-full max-w-xl'>
             <input placeholder='Add title' name='title' className='w-full text-xl font-medium bg-transparent outline-none placeholder:text-gray-400' />
 
             <textarea placeholder='Write something...' name='description'
@@ -64,16 +73,20 @@ export default function CreatePostForm() {
             <div className='mt-4 w-full flex items-center gap-2'>
                 <div className='w-full flex items-center justify-between'>
                     <div className='flex items-center justify-center'>
-                        <input ref={inputRef} type='file' name='imageIds' multiple accept='image/webp, image/jpeg, image/png' onChange={handleFileUpload} className='hidden' />
+                        <input 
+                            disabled={files.length  === 3}
+                            ref={inputRef} type='file' multiple 
+                            accept='image/webp, image/jpeg, image/png' 
+                            onChange={handleFileUpload} className='hidden' />
                         <TooltipProvider delayDuration={400} skipDelayDuration={150}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <button type="button" onClick={handleAddImage} className='p-1 text-gray-600 hover:text-gray-900 bg-transparent hover:bg-gray-200 rounded-md'>
+                                    <button type="button" disabled={files.length  === 3} onClick={handleAddImage} className='p-1 text-gray-600 hover:text-gray-900 bg-transparent hover:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-100 rounded-md'>
                                         <ImagePlus className='size-5' />
                                     </button>
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                    <p>Add an image</p>
+                                    <p>{files.length  === 3 ? 'You can only add 3 images/videos' : 'Add an image'}</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
