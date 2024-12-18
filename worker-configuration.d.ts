@@ -8,11 +8,11 @@ interface Env {
 	DB: string;
 	GOOGLE_CLIENT_ID: string;
 	GOOGLE_CLIENT_SECRET: string;
-	ARS_R2: R2Bucket;
-	ARS_DB: D1Database;
-	ASSETS: Fetcher;
 	BUCKET_NAME: string;
 	R2_ACCESS_KEY_ID: string;
 	R2_SECRET_ACCESS_KEY: string;
 	CLOUDFLARE_R2_ENDPOINT: string;
+	ARS_R2: R2Bucket;
+	ARS_DB: D1Database;
+	ASSETS: Fetcher;
 }

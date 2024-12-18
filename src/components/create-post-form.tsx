@@ -33,9 +33,9 @@ export default function CreatePostForm() {
         const selectedFiles = Array.from(files);
         setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
 
-        const result = await actions.media.uploadFile(formData);
+        const { data, error } = await actions.media.uploadFile(formData);
         console.log(hello)
-        console.log(result);
+        console.log(data);
 
         // setImages(prevImages => [...prevImages, url]);
     }
@@ -53,7 +53,7 @@ export default function CreatePostForm() {
 
         console.log('file1', file1);
 
-        const { error } = await actions.posts.createPost(formData);
+        const { data, error } = await actions.posts.createPost(formData);
 
     }
 

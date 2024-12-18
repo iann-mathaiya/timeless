@@ -23,7 +23,7 @@ export const media = {
             }
 
             const fileBuffer = Buffer.from(await file.arrayBuffer());
-            const fileName = `post-images/${file.name}`;
+            const fileName = `post-images/${Date.now()}-${file.name}}`;
 
             const { env } = context.locals.runtime;
 
