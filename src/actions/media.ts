@@ -12,9 +12,6 @@ export const media = {
             file: z.instanceof(File),
         }),
         handler: async ({ file }, context) => {
-
-            console.log('file-type', file.type);
-
             if (!file.type.startsWith("image/webp") && !file.type.startsWith("image/jpeg") && !file.type.startsWith("image/png")) {
                 throw new Error('File should either be a webp, jpeg or png');
             }

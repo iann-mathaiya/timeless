@@ -5,7 +5,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/t
 import { actions } from 'astro:actions';
 
 export default function CreatePostForm() {
-    const [images, setImages] = useState<string[]>([]);
     const [uploadedMedia, setUploadedMedia] = useState<string[]>([]);
     const [files, setFiles] = useState<File[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
@@ -28,7 +27,17 @@ export default function CreatePostForm() {
 
         const { data, error } = await actions.media.uploadFile(formData);
 
-        console.log(data);
+        
+        if (data?.success) {
+            const { data: signedUrlData, error } = await actions.media.getSignedUrl({ key: data.fileName });
+            console.log(signedUrlData);
+
+            if(signedUrlData?.success) {
+                setUploadedMedia(prevMedia => [...prevMedia, signedUrlData.signedUrl])
+            }
+
+            console.log(uploadedMedia)
+        }
 
         // setImages(prevImages => [...prevImages, url]);
     }
@@ -55,9 +64,9 @@ export default function CreatePostForm() {
             <input placeholder='Add title' name='title' className='w-full text-xl font-medium bg-transparent outline-none placeholder:text-gray-400' />
 
             <textarea placeholder='Write something...' name='description'
-                className={twMerge('mt-2 min-h-20 w-full text-sm outline-none', images.length > 0 && 'min-h-fit')} />
+                className={twMerge('mt-2 min-h-20 w-full text-sm outline-none', uploadedMedia.length > 0 && 'min-h-fit')} />
 
-            {images.length > 0 &&
+            {uploadedMedia.length > 0 &&
                 <div className='flex items-center gap-2'>
                     {uploadedMedia.map((media) =>
                         <img key={`${media}`} src={media} alt='Just a placeholder' className='w-80 rounded-md' />
