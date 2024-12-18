@@ -6,10 +6,9 @@ import { actions } from 'astro:actions';
 
 export default function CreatePostForm() {
     const [images, setImages] = useState<string[]>([]);
+    const [uploadedMedia, setUploadedMedia] = useState<string[]>([]);
     const [files, setFiles] = useState<File[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
-
-    const url = 'https://d2wx6rahy8yxgr.cloudfront.net/fit-in/2560x0/filters:format(webp)/filters:quality(100)/8a946048-8015-4fc3-8173-31961d6f78b4-send-us-a-message.png';
 
     function handleAddImage(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -27,14 +26,8 @@ export default function CreatePostForm() {
         const formData = new FormData();
         formData.append("file", file);
 
-        const hello = formData.get('file')
-
-
-        const selectedFiles = Array.from(files);
-        setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
-
         const { data, error } = await actions.media.uploadFile(formData);
-        console.log(hello)
+
         console.log(data);
 
         // setImages(prevImages => [...prevImages, url]);
@@ -45,13 +38,13 @@ export default function CreatePostForm() {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
 
-        files.forEach((file, index) => {
-            formData.append(`file${index + 1}`, file);
-        });
+        // files.forEach((file, index) => {
+        //     formData.append(`file${index + 1}`, file);
+        // });
 
-        const file1 = formData.get('file1');
+        // const file1 = formData.get('file1');
 
-        console.log('file1', file1);
+        // console.log('file1', file1);
 
         const { data, error } = await actions.posts.createPost(formData);
 
@@ -66,8 +59,8 @@ export default function CreatePostForm() {
 
             {images.length > 0 &&
                 <div className='flex items-center gap-2'>
-                    {images.map((image, index) =>
-                        <img key={`${image}-${index}`} src={image} alt='Just a placeholder' className='w-80 rounded-md' />
+                    {uploadedMedia.map((media) =>
+                        <img key={`${media}`} src={media} alt='Just a placeholder' className='w-80 rounded-md' />
                     )}
                 </div>
             }
