@@ -1,8 +1,9 @@
+import { actions } from 'astro:actions';
 import { ImagePlus } from 'lucide-react';
 import { twMerge } from 'tailwind-merge';
+import { navigate } from 'astro:transitions/client';
 import { useRef, useState, type FormEvent } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
-import { actions } from 'astro:actions';
 
 export default function CreatePostForm() {
     const [uploadedMedia, setUploadedMedia] = useState<string[]>([]);
@@ -47,15 +48,14 @@ export default function CreatePostForm() {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
 
-        // files.forEach((file, index) => {
-        //     formData.append(`file${index + 1}`, file);
-        // });
+        const title = formData.get('title') as string
+        const description = formData.get('description') as string
 
-        // const file1 = formData.get('file1');
+        const { error } = await actions.posts.createPost({title: title, description, media: uploadedMedia});
 
-        // console.log('file1', file1);
+        if (error?.code === 'UNAUTHORIZED') navigate('/join')
 
-        const { data, error } = await actions.posts.createPost(formData);
+        if (!error) navigate('/home')
 
     }
 

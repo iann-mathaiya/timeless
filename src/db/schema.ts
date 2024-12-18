@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import { sqliteTable, text, integer, } from "drizzle-orm/sqlite-core"
 
 export const posts = sqliteTable("posts", {
@@ -5,7 +6,9 @@ export const posts = sqliteTable("posts", {
 	title: text("title").notNull(),
 	description: text("description"),
 	userId: text('user-id').notNull().references(() => users.id),
-	imageIds: text('image-ids', { mode: 'json' }).default('[]').notNull(),
+	media: text('media', { mode: 'json' }).default('[]').notNull(),
+	createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`).notNull(),
+	updatedAt: text('updated_at').default(sql`(CURRENT_TIMESTAMP)`).notNull(),
 })
 
 export const users = sqliteTable("users", {

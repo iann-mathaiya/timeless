@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "27a2d15b-1971-42f2-8cec-df2efe7447a0",
+  "id": "d9fe05b0-17de-47cd-800c-e874919e4ff1",
   "prevId": "21283c24-dce2-4c61-b1e2-142a87b9dd53",
   "tables": {
     "accounts": {
@@ -143,20 +143,36 @@
           "notNull": false,
           "autoincrement": false
         },
-        "image-ids": {
-          "name": "image-ids",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "'[]'"
-        },
         "user-id": {
           "name": "user-id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "media": {
+          "name": "media",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'[]'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(CURRENT_TIMESTAMP)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(CURRENT_TIMESTAMP)"
         }
       },
       "indexes": {},
