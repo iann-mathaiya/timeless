@@ -1,7 +1,7 @@
 import { z } from 'astro:schema';
 import { drizzle } from "drizzle-orm/d1";
 import { ActionError, defineAction } from "astro:actions";
-import { posts as postsSchema, postsSelectSchema, users } from '@/db/schema';
+import { posts as postsSchema, users, type Post } from '@/db/schema';
 import { auth } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 
@@ -25,7 +25,7 @@ export const posts = {
                 if (!authDetails) {
                     throw new ActionError({ code: 'UNAUTHORIZED' });
                 }
-                
+
                 const { user } = authDetails;
 
                 const postData = await db.insert(postsSchema).values({
@@ -44,7 +44,10 @@ export const posts = {
         }
     }),
     getPosts: defineAction({
-        handler: async(context) => {
+        input: z.object({
+            userId: z.string()
+        }),
+        handler: async ({ userId }, context) => {
             const { env } = context.locals.runtime;
             const db = drizzle(env.ARS_DB);
 
@@ -56,10 +59,10 @@ export const posts = {
                 if (!authDetails) {
                     throw new ActionError({ code: 'UNAUTHORIZED' });
                 }
-                
+
                 const { user } = authDetails;
 
-                const postData = await db.select().from(posts).where(eq(users.id, user.id)) as typeof postsSelectSchema
+                const postData: Post[] = await db.select().from(postsSchema).where(eq(postsSchema.userId, user.id));
 
                 return { success: true, postData };
             } catch (error) {

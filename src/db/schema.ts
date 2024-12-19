@@ -11,6 +11,9 @@ export const posts = sqliteTable("posts", {
 	updatedAt: text('updated_at').default(sql`(CURRENT_TIMESTAMP)`).notNull(),
 })
 
+export type Post = typeof posts.$inferSelect; //for select queries
+export type NewPost = typeof posts.$inferInsert; //for insert queries
+
 export const users = sqliteTable("users", {
 	id: text("id").primaryKey(),
 	name: text('name').notNull(),
