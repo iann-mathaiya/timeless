@@ -8,6 +8,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/t
 export default function CreatePostForm() {
     const [uploadedMedia, setUploadedMedia] = useState<string[]>([]);
     const [files, setFiles] = useState<File[]>([]);
+    const [fileNames, setFileNames] = useState<string[]>([])
     const inputRef = useRef<HTMLInputElement>(null);
 
     function handleAddImage(e: React.MouseEvent<HTMLButtonElement>) {
@@ -27,11 +28,11 @@ export default function CreatePostForm() {
         formData.append("file", file);
 
         const { data, error } = await actions.media.uploadFile(formData);
-
         
         if (data?.success) {
             const { data: signedUrlData, error } = await actions.media.getSignedUrl({ key: data.fileName });
             console.log(signedUrlData);
+            setFileNames(prevFiles => [...prevFiles, data.fileName])
 
             if(signedUrlData?.success) {
                 setUploadedMedia(prevMedia => [...prevMedia, signedUrlData.signedUrl])
@@ -39,8 +40,6 @@ export default function CreatePostForm() {
 
             console.log(uploadedMedia)
         }
-
-        // setImages(prevImages => [...prevImages, url]);
     }
 
 
@@ -51,7 +50,7 @@ export default function CreatePostForm() {
         const title = formData.get('title') as string
         const description = formData.get('description') as string
 
-        const { error } = await actions.posts.createPost({title: title, description, media: uploadedMedia});
+        const { error } = await actions.posts.createPost({title: title, description, media: fileNames});
 
         if (error?.code === 'UNAUTHORIZED') navigate('/join')
 
