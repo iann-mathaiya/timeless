@@ -17,7 +17,7 @@ const { data, error } = await Astro.callAction(actions.posts.getPosts, {
 });
 
 const mediaURLs: string[] = [];
-let updatedPosts: Post[] = []
+let updatedPosts: Post[]= []
 
 if (data?.success) {
     for (const post of data.postData) {
@@ -48,7 +48,16 @@ if (data?.success) {
             {JSON.stringify(updatedPosts, null, 2)}
         </pre>
 
-        {updatedPosts.map((post) => <div />)}
+        {updatedPosts.map((post) => 
+        <div>
+            <h2>{post.title}</h2>
+            {(post.media as string[]).map((media: string) => 
+                <div>
+                    <img src={media} alt={`${post.title} cover image`} />
+                </div>
+            )}
+        </div>
+        )}
 
     </section>
 </AppLayout>
