@@ -1,6 +1,6 @@
 import { z } from 'astro:schema';
 import { drizzle } from "drizzle-orm/d1";
-import { ActionError, defineAction } from "astro:actions";
+import { ActionError, actions, defineAction } from "astro:actions";
 import { posts as postsSchema, users, type Post } from '@/db/schema';
 import { auth } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
@@ -67,7 +67,7 @@ export const posts = {
                 return { success: true, postData };
             } catch (error) {
                 console.error(error);
-                return { success: false, message: "An unexpected error occurred." };
+                return { message: "An unexpected error occurred." };
             }
         }
     })
