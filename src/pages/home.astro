@@ -1,8 +1,9 @@
 ---
-import { actions } from "astro:actions";
+import { format } from "date-fns";
 import { auth } from "../lib/auth";
-import AppLayout from "@/layouts/AppLayout.astro";
+import { actions } from "astro:actions";
 import type { Post } from "@/db/schema";
+import AppLayout from "@/layouts/AppLayout.astro";
 
 const authDetails = await auth.api.getSession({
     headers: Astro.request.headers,
@@ -16,48 +17,64 @@ const { data, error } = await Astro.callAction(actions.posts.getPosts, {
     userId: authDetails.user.id,
 });
 
-const mediaURLs: string[] = [];
-let updatedPosts: Post[]= []
+const updatedPosts: Post[] = [];
 
 if (data?.success) {
     for (const post of data.postData) {
         const media = post.media as string[];
+        const postMediaURLs = await Promise.all(
+            media.map(async (fileName) => {
+                const { data: URLsData, error } = await Astro.callAction(
+                    actions.media.getSignedUrl,
+                    { key: fileName },
+                );
+                return URLsData?.success ? URLsData.signedUrl : fileName;
+            }),
+        );
 
-        for (const fileName of media) {
-            const { data: URLsData, error } = await Astro.callAction(
-                actions.media.getSignedUrl,
-                { key: fileName },
-            );
-            if (URLsData?.success) {
-                mediaURLs.push(URLsData.signedUrl);
-            }
-        }
+        updatedPosts.push({ ...post, media: postMediaURLs });
     }
-
-    updatedPosts = data?.postData.map((post, index) => ({
-      ...post,
-      media: mediaURLs[index] ? [mediaURLs[index]] : post.media,
-    }));
 }
-
 ---
 
 <AppLayout title="Home">
-    <section class="mt-4">
-        <pre>
-            {JSON.stringify(updatedPosts, null, 2)}
-        </pre>
+    <section class="pt-4 pl-4 sm:pl-0 mx-auto w-full max-w-xl">
+        {
+            updatedPosts.map((post) => (
+                <div class="mt-10 first:mt-0 sm:flex gap-3">
+                    <div class="hidden sm:block">
+                        <p class="mt-[4.019rem] w-14 text-end text-xs text-gray-600">
+                            {format(post.createdAt, "p")}
+                        </p>
+                    </div>
+                    <div>
+                        <span class="text-xs text-gray-600">
+                            {format(post.createdAt, "EEEE, do LLL yyyy")}
+                        </span>
+                        <h2 class="text-3xl text-gray-900 font-serif font-medium">
+                            {String(post.title).charAt(0).toUpperCase() +
+                                String(post.title).slice(1)}
+                        </h2>
+                        <p class="mt-0.5 text-sm text-gray-600">
+                            {post.description}
+                        </p>
 
-        {updatedPosts.map((post) => 
-        <div>
-            <h2>{post.title}</h2>
-            {(post.media as string[]).map((media: string) => 
-                <div>
-                    <img src={media} alt={`${post.title} cover image`} />
+                        <div class="mt-2 flex flex-row items-center gap-2">
+                            {(post.media as string[]).map((media: string) => (
+                                <img
+                                    src={media}
+                                    class="w-11/12 sm:w-96 rounded-xl"
+                                    alt={`${post.title} cover image`}
+                                />
+                            ))}
+                        </div>
+
+                        <p class="mt-1.5 pl-2 sm:hidden text-xs text-gray-600">
+                            {format(post.createdAt, "p")}
+                        </p>
+                    </div>
                 </div>
-            )}
-        </div>
-        )}
-
+            ))
+        }
     </section>
 </AppLayout>

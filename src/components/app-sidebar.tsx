@@ -7,7 +7,6 @@ import { NavCollections } from "@/components/nav-collections";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { AudioWaveform, CircleHelp, Command, Home, Images, LightbulbIcon, Search } from "lucide-react";
 
-// This is sample data.
 const data = {
   teams: [
     {
