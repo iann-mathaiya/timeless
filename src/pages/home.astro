@@ -75,10 +75,10 @@ const timelineEntries = Object.entries(timeline).map(([date, posts]) => ({
                                 </h2>
                                 <p class="text-sm text-gray-600">{post.description}</p>
 
-                                <div class="mt-1.5 w-full flex items-center gap-4 overflow-x-auto">
+                                <div class="mt-1.5 w-full flex items-center gap-1.5 lg:gap-2.5 overflow-x-auto">
                                     {(post.media as string[]).map((media) => (
                                         <img
-                                            class="w-96 md:w-72 xl:w-80 last:mr-4 aspect-square object-cover object-center rounded-lg"
+                                            class="w-96 md:w-72 xl:w-80 last:mr-4 aspect-square object-cover object-center rounded-lg lg:rounded-xl"
                                             src={media}
                                             alt={`${post.title} carousel images`}
                                         />
