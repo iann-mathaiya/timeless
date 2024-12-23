@@ -1,8 +1,8 @@
 import { signOut } from "@/lib/auth-client";
+import { navigate } from "astro:transitions/client";
 import { ChevronDown, LogOutIcon, Settings, User } from "lucide-react";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { navigate } from "astro:transitions/client";
 
 type ProfileProps = {
   name: string;

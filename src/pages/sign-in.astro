@@ -1,32 +1,42 @@
 ---
-import { auth } from "../lib/auth"
+import { auth } from "../lib/auth";
 import Logo from "../assets/logo.svg";
 import RootLayout from "../layouts/RootLayout.astro";
 import SignInButton from "@/components/sign-in-button";
 
 const authDetails = await auth.api.getSession({
-	headers: Astro.request.headers,
+    headers: Astro.request.headers,
 });
 
 if (authDetails) {
-	return Astro.redirect("/home");
+    return Astro.redirect("/home");
 }
 ---
 
 <RootLayout title="Sign In">
-
     <section class="mx-auto w-full max-w-sm min-h-screen">
-
-        <div class="min-h-screen flex flex-col items-center justify-center gap-1">
+        <div
+            class="min-h-screen flex flex-col items-center justify-center gap-1"
+        >
             <Logo width={40} height={40} fill="currentColor" />
 
             <div class="mt-1 text-center">
-                <h1 class="text-2xl text-gray-950 font-serif font-medium">Welcome back!</h1>
-                <p class="text-sm text-gray-600">Sign in and alter the timeline...</p>
+                <h1 class="text-2xl text-gray-950 font-serif font-medium">
+                    Welcome back!
+                </h1>
+                <p class="text-sm text-gray-600">
+                    Sign in and alter the timeline...
+                </p>
             </div>
 
             <SignInButton client:load />
+
+            <p class="mt-0.5 flex text-sm text-gray-600 gap-1">
+                <span>Don&#39;t have an account? </span>
+                <a href="/join" class="text-gray-900 hover:text-orange-600 underline underline-offset-2 decoration-gray-900 hover:decoration-orange-600">
+                    Sign up here.
+                </a>
+            </p>
         </div>
     </section>
-    
 </RootLayout>
