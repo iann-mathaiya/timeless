@@ -13,22 +13,22 @@ if (authDetails) {
 ---
 
 <RootLayout>
-	<section class="mx-auto w-full max-w-screen-xl min-h-screen bg-red-100">
-		<div class="pt-40 flex flex-col items-center justify-center">
+	<section class="mx-auto w-full max-w-screen-xl min-h-screen">
+		<div class="pt-28 flex flex-col items-center justify-center">
 			<Logo width={40} height={40} fill="currentColor" />
 			<h1 class="mt-4 font-serif text-4xl font-medium">
 				A space for your day and memories
 			</h1>
-			<p class="text-sm text-gray-600">
+			<p class="mt-1 text-sm text-gray-600">
 				Save anything you want - journal your day with a photo gallery
 				built to record your memories
 			</p>
 
-			<div class="mt-4 flex items-center justify-center gap-4">
-				<a href="/join" class="text-sm text-gray-600 hover:text-gray-950">
-					Join
+			<div class="mt-4 sm:mt-6 flex items-center justify-center gap-2">
+				<a href="/join" class="px-4 py-1.5 text-sm text-white font-medium bg-gray-900 hover:bg-orange-600 rounded-full">
+					Join Now
 				</a>
-				<a href="/sign-in" class="text-sm text-gray-600 hover:text-gray-950">
+				<a href="/sign-in" class="px-4 py-1.5 text-sm text-gray-900 font-medium hover:text-orange-600 bg-gray-200 hover:bg-orange-100 rounded-full">
 					Sign In
 				</a>
 			</div>
