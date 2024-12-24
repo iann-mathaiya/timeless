@@ -1,16 +1,37 @@
 ---
+import { auth } from "../lib/auth";
+import Logo from "../assets/logo.svg";
 import RootLayout from "../layouts/RootLayout.astro";
-import { auth } from "../lib/auth"
 
 const authDetails = await auth.api.getSession({
-  headers: Astro.request.headers,
+	headers: Astro.request.headers,
 });
 
 if (authDetails) {
-	return Astro.redirect('/home')
+	return Astro.redirect("/home");
 }
 ---
 
 <RootLayout>
-	<a href="/join" class="text-sm text-gray-600 hover:text-gray-950">Join</a>
+	<section class="mx-auto w-full max-w-screen-xl min-h-screen bg-red-100">
+		<div class="pt-40 flex flex-col items-center justify-center">
+			<Logo width={40} height={40} fill="currentColor" />
+			<h1 class="mt-4 font-serif text-4xl font-medium">
+				A space for your day and memories
+			</h1>
+			<p class="text-sm text-gray-600">
+				Save anything you want - journal your day with a photo gallery
+				built to record your memories
+			</p>
+
+			<div class="mt-4 flex items-center justify-center gap-4">
+				<a href="/join" class="text-sm text-gray-600 hover:text-gray-950">
+					Join
+				</a>
+				<a href="/sign-in" class="text-sm text-gray-600 hover:text-gray-950">
+					Sign In
+				</a>
+			</div>
+		</div>
+	</section>
 </RootLayout>
