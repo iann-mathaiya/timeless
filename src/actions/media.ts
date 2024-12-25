@@ -1,6 +1,10 @@
+import { eq } from 'drizzle-orm';
 import { z } from "astro:schema";
-import { defineAction } from "astro:actions";
+import { auth } from '@/lib/auth';
+import { posts } from "@/db/schema";
+import { drizzle } from "drizzle-orm/d1";
 import { MAX_FILE_SIZE } from "@/lib/constants";
+import { defineAction, ActionError } from "astro:actions";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 
@@ -89,6 +93,40 @@ export const media = {
             } catch (error) {
                 console.error("Failed to generate signed URL:", error);
                 throw new Error("Unable to access the file.");
+            }
+        }
+    }),
+    getUserMedia: defineAction({
+        input: z.object({
+            userId: z.string(),
+        }),
+        handler: async ({ userId }, context) => {
+            const { env } = context.locals.runtime;
+            const db = drizzle(env.ARS_DB);
+
+            try {
+                const authDetails = await auth.api.getSession({
+                    headers: context.request.headers,
+                });
+
+                if (!authDetails) {
+                    throw new ActionError({ code: 'UNAUTHORIZED' });
+                }
+
+                const { user } = authDetails;
+                
+                if(user.id !== userId){
+                    throw new ActionError({code: 'FORBIDDEN'})
+                }
+
+                type UserMedia = { [x: string]: unknown; }[]
+
+                const userMedia: UserMedia = await db.select({ mediaData: posts.media }).from(posts).where(eq(posts.userId, user.id));
+
+                return { success: true, userMedia };
+            } catch (error) {
+                console.error(error);
+                return { message: "An unexpected error occurred." };
             }
         }
     })
