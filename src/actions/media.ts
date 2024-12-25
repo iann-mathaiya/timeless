@@ -121,7 +121,10 @@ export const media = {
 
                 type UserMedia = { [x: string]: unknown; }[]
 
-                const userMedia: UserMedia = await db.select({ mediaData: posts.media }).from(posts).where(eq(posts.userId, user.id));
+                const userMedia: UserMedia = await db.select({ 
+                    mediaData: posts.media,
+                    createdAt: posts.createdAt
+                }).from(posts).where(eq(posts.userId, user.id));
 
                 return { success: true, userMedia };
             } catch (error) {

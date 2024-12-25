@@ -1,6 +1,7 @@
 ---
 import { auth } from "../lib/auth";
 import AppLayout from "../layouts/AppLayout.astro";
+import { actions } from "astro:actions";
 
 const authDetails = await auth.api.getSession({
 	headers: Astro.request.headers,
@@ -10,13 +11,36 @@ if (!authDetails) {
 	return Astro.redirect("/join");
 }
 
-const { user } = authDetails;
+const { data, error } = await Astro.callAction(actions.media.getUserMedia, {
+    userId: authDetails.user.id,
+});
+
+const updatedMedia: { [x: string]: unknown; }[] = [];
+
+if (data?.success) {
+    for (const post of data.userMedia) {
+        const media = post.mediaData as string[];
+
+        const postMediaURLs = await Promise.all(
+            media.map(async (fileName) => {
+                const { data: URLsData, error } = await Astro.callAction(
+                    actions.media.getSignedUrl,
+                    { key: fileName },
+                );
+                return URLsData?.success ? URLsData.signedUrl : fileName;
+            }),
+        );
+
+        updatedMedia.push({ ...post, mediaData: postMediaURLs });
+    }
+}
+
 ---
 
 <AppLayout title="Gallery">
 
-    <section class="mt-4 mx-auto w-full max-w-sm min-h-screen">
-
+    <section class="">
+        <pre>{JSON.stringify(updatedMedia, null, 2)}</pre>
     </section>
     
 </AppLayout>
