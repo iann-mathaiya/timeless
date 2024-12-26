@@ -3,7 +3,8 @@ import { auth } from "../lib/auth";
 import AppLayout from "../layouts/AppLayout.astro";
 import { actions } from "astro:actions";
 import { format } from "date-fns";
-import type { Post } from "@/db/schema";
+import { twMerge } from 'tailwind-merge'
+
 
 const authDetails = await auth.api.getSession({
     headers: Astro.request.headers,
@@ -54,17 +55,25 @@ const gallery = Object.values(
 ---
 
 <AppLayout title="Gallery">
-    <section class="">
-        {
-            updatedMedia.map((post) => (
-                <div>
-                    {(post.mediaData as string[]).map((mediaURL) => (
-                        <img src={mediaURL} alt="" class="w-20" />
-                    ))}
-                    <p>{format(post.createdAt, "PP")}</p>
-                </div>
-            ))
-        }
-        <pre>{JSON.stringify(gallery, null, 2)}</pre>
+    <section class="p-4 sm:p-8">
+        <ul class="flex items-center gap-6">
+            {
+                gallery.map((post) => (
+                    <li>
+                        <div class="w-40 sm:w-64 relative">
+                            {(post.mediaData as string[]).map((mediaURL, index) => (
+                                <img src={mediaURL} alt="" class={twMerge(
+                                    "w-40 sm:w-64 absolute top-0 left-0 border-2 border-white rounded-lg",
+                                    index === 0 && 'rotate-0',
+                                    index === 1 && '-rotate-6',
+                                    index === 3 && 'rotate-6',
+                                )} />
+                            ))}
+                        </div>
+                        <p class="mt-[6.5rem] sm:mt-[12.5rem] text-sm text-gray-600">{format(post.createdAt, "PP")}</p>
+                    </li>
+                ))
+            }
+        </ul>
     </section>
 </AppLayout>
