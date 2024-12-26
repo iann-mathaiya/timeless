@@ -2,24 +2,27 @@
 import { auth } from "../lib/auth";
 import AppLayout from "../layouts/AppLayout.astro";
 import { actions } from "astro:actions";
+import { format } from "date-fns";
+import type { Post } from "@/db/schema";
 
 const authDetails = await auth.api.getSession({
-	headers: Astro.request.headers,
+    headers: Astro.request.headers,
 });
 
 if (!authDetails) {
-	return Astro.redirect("/join");
+    return Astro.redirect("/join");
 }
 
 const { data, error } = await Astro.callAction(actions.media.getUserMedia, {
     userId: authDetails.user.id,
 });
 
-const updatedMedia: { [x: string]: unknown; }[] = [];
+const updatedMedia: { mediaData: string[]; createdAt: string }[] = [];
 
 if (data?.success) {
     for (const post of data.userMedia) {
-        const media = post.mediaData as string[];
+        const media = post.mediaData as unknown as string[];
+        const createdAt = post.createdAt as unknown as string;
 
         const postMediaURLs = await Promise.all(
             media.map(async (fileName) => {
@@ -31,16 +34,37 @@ if (data?.success) {
             }),
         );
 
-        updatedMedia.push({ ...post, mediaData: postMediaURLs });
+        updatedMedia.push({ ...post, createdAt, mediaData: postMediaURLs });
     }
 }
 
+const gallery = Object.values(
+    updatedMedia.reduce(
+        (acc, item) => {
+            const date = item.createdAt.split(" ")[0];
+            if (!acc[date]) {
+                acc[date] = { createdAt: date, mediaData: [] };
+            }
+            acc[date].mediaData.push(...item.mediaData);
+            return acc;
+        },
+        {} as Record<string, { createdAt: string; mediaData: string[] }>,
+    ),
+);
 ---
 
 <AppLayout title="Gallery">
-
     <section class="">
-        <pre>{JSON.stringify(updatedMedia, null, 2)}</pre>
+        {
+            updatedMedia.map((post) => (
+                <div>
+                    {(post.mediaData as string[]).map((mediaURL) => (
+                        <img src={mediaURL} alt="" class="w-20" />
+                    ))}
+                    <p>{format(post.createdAt, "PP")}</p>
+                </div>
+            ))
+        }
+        <pre>{JSON.stringify(gallery, null, 2)}</pre>
     </section>
-    
 </AppLayout>
