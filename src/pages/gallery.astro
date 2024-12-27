@@ -5,7 +5,6 @@ import { actions } from "astro:actions";
 import { format } from "date-fns";
 import { twMerge } from 'tailwind-merge'
 
-
 const authDetails = await auth.api.getSession({
     headers: Astro.request.headers,
 });

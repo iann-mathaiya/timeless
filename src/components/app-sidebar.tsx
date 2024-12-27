@@ -5,7 +5,7 @@ import { NavSecondary } from "./nav-secondary";
 import { NavTimeline } from "@/components/nav-timeline";
 import { NavCollections } from "@/components/nav-collections";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
-import { AudioWaveform, CircleHelp, Command, Home, Images, LightbulbIcon, Search } from "lucide-react";
+import { AudioWaveform, CircleHelp, Command, Home, Images, LightbulbIcon, UserRoundPlusIcon } from "lucide-react";
 
 const data = {
   teams: [
@@ -33,9 +33,9 @@ const data = {
       isActive: true,
     },
     {
-      title: "Search",
-      url: "/search",
-      icon: Search,
+      title: "Friends",
+      url: "/friends",
+      icon: UserRoundPlusIcon,
     },
     {
       title: "Gallery",
