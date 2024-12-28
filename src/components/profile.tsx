@@ -3,6 +3,7 @@ import { navigate } from "astro:transitions/client";
 import { ChevronDown, LogOutIcon, Settings, User } from "lucide-react";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import Link from "./link";
 
 type ProfileProps = {
   name: string;
@@ -36,11 +37,13 @@ export function Profile({ name, imageSrc }: ProfileProps) {
             sideOffset={4}
           >
             <DropdownMenuItem
-              onClick={() => console.log(name)}
+              asChild
               className="gap-2 rounded-md text-gray-600 hover:text-gray-900"
             >
-              <User className="size-4 shrink-0" />
-              <span>Profile</span>
+              <Link href="/profile">
+                <User className="size-4 shrink-0" />
+                <span>Profile</span>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => console.log(name)}
@@ -51,7 +54,7 @@ export function Profile({ name, imageSrc }: ProfileProps) {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={async () => {await signOut(); navigate('/sign-in') }}
+              onClick={async () => { await signOut(); navigate('/sign-in'); }}
               className="gap-2 rounded-md text-gray-600 hover:text-gray-900">
               <LogOutIcon className="size-4 rotate-180" />
               <span>Sign Out</span>
