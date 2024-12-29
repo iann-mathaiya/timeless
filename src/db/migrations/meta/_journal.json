@@ -15,6 +15,13 @@
       "when": 1734504761734,
       "tag": "0001_handy_elektra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1735503835105,
+      "tag": "0002_faithful_the_professor",
+      "breakpoints": true
     }
   ]
 }
