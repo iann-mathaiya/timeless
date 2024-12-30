@@ -91,7 +91,7 @@ export default function CreatePostForm() {
                                     </button>
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                    <p>{files.length === 3 ? 'You can only add 3 images/videos' : 'Add an image'}</p>
+                                    <p>{files.length === 3 ? 'You can only add 3 images/reels' : 'Upload an image or reel'}</p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>

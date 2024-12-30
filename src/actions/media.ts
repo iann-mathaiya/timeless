@@ -25,7 +25,8 @@ export const media = {
             }
 
             const fileBuffer = Buffer.from(await file.arrayBuffer());
-            const fileName = `post-images/${Date.now()}-${file.name}`;
+            const fileName = file.type.startsWith("video/mp4") ? `post-reels/${Date.now()}-${file.name}` : `post-images/${Date.now()}-${file.name}`;
+            const fileType = file.type
 
             const { env } = context.locals.runtime;
 
@@ -52,7 +53,7 @@ export const media = {
                 });
 
                 await s3Client.send(command);
-                return { success: true, fileName };
+                return { success: true, fileName, fileType };
             } catch (error) {
                 console.error("Error uploading to R2:", error);
                 throw new Error("Failed to upload file to R2");
