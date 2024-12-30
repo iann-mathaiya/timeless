@@ -24,6 +24,8 @@ export default function CreatePostForm() {
 
         const file = files[0];
 
+        console.log(file)
+
         const formData = new FormData();
         formData.append("file", file);
 
@@ -79,7 +81,7 @@ export default function CreatePostForm() {
                         <input
                             disabled={files.length === 3}
                             ref={inputRef} type='file' multiple
-                            accept='image/webp, image/jpeg, image/png'
+                            accept='image/webp, image/jpeg, image/png, video/mp4'
                             onChange={handleFileUpload} className='hidden' />
                         <TooltipProvider delayDuration={400} skipDelayDuration={150}>
                             <Tooltip>

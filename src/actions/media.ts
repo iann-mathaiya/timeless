@@ -16,12 +16,12 @@ export const media = {
             file: z.instanceof(File),
         }),
         handler: async ({ file }, context) => {
-            if (!file.type.startsWith("image/webp") && !file.type.startsWith("image/jpeg") && !file.type.startsWith("image/png")) {
-                throw new Error('File should either be a webp, jpeg or png');
+            if (!file.type.startsWith("image/webp") && !file.type.startsWith("image/jpeg") && !file.type.startsWith("image/png") && !file.type.startsWith("video/mp4")) {
+                throw new Error('File should either be a webp, jpeg, png or mp4 video');
             }
 
             if (file.size > MAX_FILE_SIZE) {
-                throw new Error('File size should be less than 10MB');
+                throw new Error('File size should be less than 16MB');
             }
 
             const fileBuffer = Buffer.from(await file.arrayBuffer());
