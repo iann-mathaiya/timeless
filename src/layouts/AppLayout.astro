@@ -1,23 +1,30 @@
 ---
-import { Sidebar } from "@/components/sidebar"
-import RootLayout from "./RootLayout.astro"
-import { auth } from "@/lib/auth"
+import { auth } from "@/lib/auth";
+import RootLayout from "./RootLayout.astro";
+import { Sidebar } from "@/components/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 const { title, description } = Astro.props;
 
 const authDetails = await auth.api.getSession({
-	headers: Astro.request.headers,
+    headers: Astro.request.headers,
 });
 
 if (!authDetails) {
-	return Astro.redirect("/join");
+    return Astro.redirect("/join");
 }
 
 const currentPath = Astro.url.pathname;
 ---
 
 <RootLayout title={title} description={description}>
-    <Sidebar client:load user={authDetails.user} pageTitle={title} currentPath={currentPath}>
+    <Sidebar
+        client:load
+        user={authDetails.user}
+        pageTitle={title}
+        currentPath={currentPath}
+    >
         <slot />
+        <Toaster richColors client:load />
     </Sidebar>
 </RootLayout>

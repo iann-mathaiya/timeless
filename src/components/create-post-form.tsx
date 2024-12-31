@@ -1,8 +1,9 @@
+import { toast } from 'sonner';
 import { actions } from 'astro:actions';
 import { ImagePlus } from 'lucide-react';
-import type { Media, UploadedFiles } from '@/lib/types';
 import { twMerge } from 'tailwind-merge';
 import { navigate } from 'astro:transitions/client';
+import type { Media, UploadedFiles } from '@/lib/types';
 import { useRef, useState, type FormEvent } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
@@ -31,7 +32,11 @@ export default function CreatePostForm() {
         const formData = new FormData();
         formData.append("file", file);
 
+        toast(`Uploading ${file.name}`, { duration: Number.POSITIVE_INFINITY })
         const { data, error } = await actions.media.uploadFile(formData);
+        toast.dismiss();
+
+        error && toast.error(error.message)
 
         console.log(data);
 
@@ -43,6 +48,7 @@ export default function CreatePostForm() {
             console.log(signedUrlData);
 
             if (signedUrlData?.success) {
+                toast.success(`${file.name} has been uploaded successfully`)
                 const media: Media = { mediaURL: signedUrlData.signedUrl, fileType: data.fileType };
                 setFetchedMedia(prevMedia => [...prevMedia, media]);
             }
