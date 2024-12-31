@@ -1,6 +1,6 @@
 import { actions } from 'astro:actions';
 import { ImagePlus } from 'lucide-react';
-import type { Media } from '@/lib/types';
+import type { Media, UploadedFiles } from '@/lib/types';
 import { twMerge } from 'tailwind-merge';
 import { navigate } from 'astro:transitions/client';
 import { useRef, useState, type FormEvent } from 'react';
@@ -8,9 +8,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/t
 
 
 export default function CreatePostForm() {
-    const [uploadedMedia, setUploadedMedia] = useState<Media[]>([]);
+    const [fetchedMedia, setFetchedMedia] = useState<Media[]>([]);
     const [files, setFiles] = useState<File[]>([]);
-    const [fileNames, setFileNames] = useState<string[]>([]);
+    const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
 
     function handleAddImage(e: React.MouseEvent<HTMLButtonElement>) {
@@ -36,16 +36,18 @@ export default function CreatePostForm() {
         console.log(data);
 
         if (data?.success) {
+            const justUploaded = { fileName: data.fileName, fileType: data.fileType };
+            setUploadedFiles(prevFiles => [...prevFiles, justUploaded]);
+
             const { data: signedUrlData, error } = await actions.media.getSignedUrl({ key: data.fileName });
             console.log(signedUrlData);
-            setFileNames(prevFiles => [...prevFiles, data.fileName]);
 
             if (signedUrlData?.success) {
                 const media: Media = { mediaURL: signedUrlData.signedUrl, fileType: data.fileType };
-                setUploadedMedia(prevMedia => [...prevMedia, media]);
+                setFetchedMedia(prevMedia => [...prevMedia, media]);
             }
 
-            console.log(uploadedMedia);
+            console.log(fetchedMedia);
         }
     }
 
@@ -57,7 +59,7 @@ export default function CreatePostForm() {
         const title = formData.get('title') as string;
         const description = formData.get('description') as string;
 
-        const { error } = await actions.posts.createPost({ title: title, description, media: fileNames });
+        const { error } = await actions.posts.createPost({ title: title, description, media: [JSON.stringify(uploadedFiles)] });
 
         if (error?.code === 'UNAUTHORIZED') navigate('/join');
 
@@ -70,16 +72,15 @@ export default function CreatePostForm() {
             <input placeholder='Add title' name='title' className='w-full text-xl font-medium bg-transparent outline-none placeholder:text-gray-400' />
 
             <textarea placeholder='Write something...' name='description'
-                className={twMerge('mt-2 min-h-20 w-full text-sm outline-none', uploadedMedia.length > 0 && 'min-h-fit')} />
+                className={twMerge('mt-2 min-h-20 w-full text-sm outline-none', fetchedMedia.length > 0 && 'min-h-fit')} />
 
-            {uploadedMedia.length > 0 &&
+            {fetchedMedia.length > 0 &&
                 <div className='flex items-center gap-2'>
-                    {uploadedMedia.map(({ mediaURL, fileType }) =>
+                    {fetchedMedia.map(({ mediaURL, fileType }) =>
                         fileType === 'video/mp4' ?
                             <video key={`${mediaURL}`} className='aspect-video w-80 rounded-md' controls>
                                 <source src={mediaURL} type="video/mp4" />
                                 <track src="captions_en.vtt" kind="captions" srcLang="en" label="english_captions" />
-                                Your browser does not support the video tag.
                             </video>
                             :
                             <img key={`${mediaURL}`} src={mediaURL} alt='Just a placeholder' className='w-80 rounded-md' />

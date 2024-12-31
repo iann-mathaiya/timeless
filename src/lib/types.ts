@@ -4,3 +4,5 @@ export type Media = {
     mediaURL: string
     fileType: FileType
 }
+
+export type UploadedFiles =  { fileName: string, fileType: FileType };

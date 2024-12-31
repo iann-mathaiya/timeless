@@ -28,11 +28,16 @@ export const posts = {
 
                 const { user } = authDetails;
 
+                const mediaInput = JSON.parse(media[0])
+
+                console.log('media', media)
+                console.log('mediaInput:', mediaInput)
+
                 const postData = await db.insert(postsSchema).values({
                     id: crypto.randomUUID(),
                     title: title,
-                    media: media,
                     userId: user.id,
+                    media: mediaInput,
                     description: description,
                 });
 
