@@ -1,14 +1,16 @@
 import { actions } from 'astro:actions';
 import { ImagePlus } from 'lucide-react';
+import type { Media } from '@/lib/types';
 import { twMerge } from 'tailwind-merge';
 import { navigate } from 'astro:transitions/client';
 import { useRef, useState, type FormEvent } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
+
 export default function CreatePostForm() {
-    const [uploadedMedia, setUploadedMedia] = useState<string[]>([]);
+    const [uploadedMedia, setUploadedMedia] = useState<Media[]>([]);
     const [files, setFiles] = useState<File[]>([]);
-    const [fileNames, setFileNames] = useState<string[]>([])
+    const [fileNames, setFileNames] = useState<string[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
 
     function handleAddImage(e: React.MouseEvent<HTMLButtonElement>) {
@@ -24,23 +26,26 @@ export default function CreatePostForm() {
 
         const file = files[0];
 
-        console.log(file)
+        console.log(file);
 
         const formData = new FormData();
         formData.append("file", file);
 
         const { data, error } = await actions.media.uploadFile(formData);
-        
+
+        console.log(data);
+
         if (data?.success) {
             const { data: signedUrlData, error } = await actions.media.getSignedUrl({ key: data.fileName });
             console.log(signedUrlData);
-            setFileNames(prevFiles => [...prevFiles, data.fileName])
+            setFileNames(prevFiles => [...prevFiles, data.fileName]);
 
-            if(signedUrlData?.success) {
-                setUploadedMedia(prevMedia => [...prevMedia, signedUrlData.signedUrl])
+            if (signedUrlData?.success) {
+                const media: Media = { mediaURL: signedUrlData.signedUrl, fileType: data.fileType };
+                setUploadedMedia(prevMedia => [...prevMedia, media]);
             }
 
-            console.log(uploadedMedia)
+            console.log(uploadedMedia);
         }
     }
 
@@ -49,14 +54,14 @@ export default function CreatePostForm() {
         e.preventDefault();
         const formData = new FormData(e.target as HTMLFormElement);
 
-        const title = formData.get('title') as string
-        const description = formData.get('description') as string
+        const title = formData.get('title') as string;
+        const description = formData.get('description') as string;
 
-        const { error } = await actions.posts.createPost({title: title, description, media: fileNames});
+        const { error } = await actions.posts.createPost({ title: title, description, media: fileNames });
 
-        if (error?.code === 'UNAUTHORIZED') navigate('/join')
+        if (error?.code === 'UNAUTHORIZED') navigate('/join');
 
-        if (!error) navigate('/home')
+        if (!error) navigate('/home');
 
     }
 
@@ -69,8 +74,15 @@ export default function CreatePostForm() {
 
             {uploadedMedia.length > 0 &&
                 <div className='flex items-center gap-2'>
-                    {uploadedMedia.map((media) =>
-                        <img key={`${media}`} src={media} alt='Just a placeholder' className='w-80 rounded-md' />
+                    {uploadedMedia.map(({ mediaURL, fileType }) =>
+                        fileType === 'video/mp4' ?
+                            <video key={`${mediaURL}`} className='aspect-video w-80 rounded-md' controls>
+                                <source src={mediaURL} type="video/mp4" />
+                                <track src="captions_en.vtt" kind="captions" srcLang="en" label="english_captions" />
+                                Your browser does not support the video tag.
+                            </video>
+                            :
+                            <img key={`${mediaURL}`} src={mediaURL} alt='Just a placeholder' className='w-80 rounded-md' />
                     )}
                 </div>
             }

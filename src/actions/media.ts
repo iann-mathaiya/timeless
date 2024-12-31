@@ -7,6 +7,7 @@ import { MAX_FILE_SIZE } from "@/lib/constants";
 import { defineAction, ActionError } from "astro:actions";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import type { FileType } from '@/lib/types';
 
 
 export const media = {
@@ -26,7 +27,7 @@ export const media = {
 
             const fileBuffer = Buffer.from(await file.arrayBuffer());
             const fileName = file.type.startsWith("video/mp4") ? `post-reels/${Date.now()}-${file.name}` : `post-images/${Date.now()}-${file.name}`;
-            const fileType = file.type
+            const fileType = file.type as FileType 
 
             const { env } = context.locals.runtime;
 
