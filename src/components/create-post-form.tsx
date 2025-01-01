@@ -85,12 +85,12 @@ export default function CreatePostForm() {
                 <div className='flex items-center gap-2'>
                     {fetchedMedia.map(({ mediaURL, fileType }) =>
                         fileType === 'video/mp4' ?
-                            <video key={`${mediaURL}`} className='aspect-video w-80 rounded-md' controls>
+                            <video key={`${mediaURL}`} className='aspect-square w-80 rounded-lg lg:rounded-xl' controls>
                                 <source src={mediaURL} type="video/mp4" />
                                 <track src="captions_en.vtt" kind="captions" srcLang="en" label="english_captions" />
                             </video>
                             :
-                            <img key={`${mediaURL}`} src={mediaURL} alt='Just a placeholder' className='w-80 rounded-md' />
+                            <img key={`${mediaURL}`} src={mediaURL} alt='Just a placeholder' className='w-80 rounded-lg lg:rounded-xl' />
                     )}
                 </div>
             }

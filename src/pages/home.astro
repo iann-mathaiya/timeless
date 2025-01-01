@@ -4,7 +4,7 @@ import { auth } from "../lib/auth";
 import { actions } from "astro:actions";
 import type { Post } from "@/db/schema";
 import AppLayout from "@/layouts/AppLayout.astro";
-import type { UploadedFiles } from "@/lib/types";
+import type { Media, UploadedFiles } from "@/lib/types";
 
 const authDetails = await auth.api.getSession({
     headers: Astro.request.headers,
@@ -61,13 +61,7 @@ const timelineEntries = Object.entries(timeline).map(([date, posts]) => ({
 ---
 
 <AppLayout title="Home">
-    <section
-        class="py-4 pl-4 sm:pl-0 mx-auto w-full max-w-screen-lg overflow-hidden"
-    >
-        <!-- <pre>{data && JSON.stringify(data.postData, null, 2)}</pre> -->
-        <!-- <pre>{data && JSON.stringify(timeline, null, 2)}</pre> -->
-        <pre>{data && JSON.stringify(timelineEntries, null, 2)}</pre>
-
+    <section class="py-4 pl-4 sm:pl-0 mx-auto w-full max-w-screen-lg overflow-hidden">
         {
             timelineEntries.map((entry) => (
                 <div class="first:pt-0 py-8 sm:py-12 lg:border-t first:border-t-transparent border-t-gray-200">
@@ -93,10 +87,16 @@ const timelineEntries = Object.entries(timeline).map(([date, posts]) => ({
                                 </p>
 
                                 <div class="mt-1.5 w-full flex items-center gap-1.5 lg:gap-2.5 overflow-x-auto">
-                                    {(post.media as string[]).map((media) => (
+                                    {(post.media as Media[]).map((media: Media) => (
+                                        media.fileType === 'video/mp4' ? 
+                                        <video class='aspect-square w-80 rounded-lg lg:rounded-xl' controls>
+                                            <source src={media.mediaURL} type="video/mp4" />
+                                            <track src="captions_en.vtt" kind="captions" srclang="en" label="english_captions" />
+                                        </video>
+                                        :
                                         <img
                                             class="w-96 md:w-72 xl:w-80 last:mr-4 aspect-square object-cover object-center rounded-lg lg:rounded-xl"
-                                            src={media}
+                                            src={media.mediaURL}
                                             alt={`${post.title} media`}
                                         />
                                     ))}
