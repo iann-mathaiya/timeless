@@ -4,6 +4,7 @@ import { auth } from "../lib/auth";
 import { actions } from "astro:actions";
 import type { Post } from "@/db/schema";
 import AppLayout from "@/layouts/AppLayout.astro";
+import type { UploadedFiles } from "@/lib/types";
 
 const authDetails = await auth.api.getSession({
     headers: Astro.request.headers,
@@ -21,14 +22,19 @@ const updatedPosts: Post[] = [];
 
 if (data?.success) {
     for (const post of data.postData) {
-        const media = post.media as string[];
+        const media = post.media as UploadedFiles[];
         const postMediaURLs = await Promise.all(
-            media.map(async (fileName) => {
+            media.map(async (fileData) => {
                 const { data: URLsData, error } = await Astro.callAction(
                     actions.media.getSignedUrl,
-                    { key: fileName },
+                    { key: fileData.fileName },
                 );
-                return URLsData?.success ? URLsData.signedUrl : fileName;
+                if (URLsData?.success) {
+                    return {
+                        mediaURL: URLsData.signedUrl,
+                        fileType: fileData.fileType,
+                    };
+                }
             }),
         );
 
@@ -55,7 +61,13 @@ const timelineEntries = Object.entries(timeline).map(([date, posts]) => ({
 ---
 
 <AppLayout title="Home">
-    <section class="py-4 pl-4 sm:pl-0 mx-auto w-full max-w-screen-lg overflow-hidden">
+    <section
+        class="py-4 pl-4 sm:pl-0 mx-auto w-full max-w-screen-lg overflow-hidden"
+    >
+        <!-- <pre>{data && JSON.stringify(data.postData, null, 2)}</pre> -->
+        <!-- <pre>{data && JSON.stringify(timeline, null, 2)}</pre> -->
+        <pre>{data && JSON.stringify(timelineEntries, null, 2)}</pre>
+
         {
             timelineEntries.map((entry) => (
                 <div class="first:pt-0 py-8 sm:py-12 lg:border-t first:border-t-transparent border-t-gray-200">
@@ -71,9 +83,14 @@ const timelineEntries = Object.entries(timeline).map(([date, posts]) => ({
 
                             <div>
                                 <h2 class="text-base text-gray-900 font-medium">
-                                    {String(post.title).charAt(0).toUpperCase() +String(post.title).slice(1)}
+                                    {String(post.title)
+                                        .charAt(0)
+                                        .toUpperCase() +
+                                        String(post.title).slice(1)}
                                 </h2>
-                                <p class="text-sm text-gray-600">{post.description}</p>
+                                <p class="text-sm text-gray-600">
+                                    {post.description}
+                                </p>
 
                                 <div class="mt-1.5 w-full flex items-center gap-1.5 lg:gap-2.5 overflow-x-auto">
                                     {(post.media as string[]).map((media) => (
