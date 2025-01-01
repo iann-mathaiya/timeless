@@ -32,9 +32,10 @@ export default function CreatePostForm() {
         const formData = new FormData();
         formData.append("file", file);
 
-        toast(`Uploading ${file.name}`, { duration: Number.POSITIVE_INFINITY })
+        const uploadToast = toast('')
+        toast(`Uploading ${file.name}`, { id: uploadToast, duration: Number.POSITIVE_INFINITY })
         const { data, error } = await actions.media.uploadFile(formData);
-        toast.dismiss();
+        toast.dismiss(uploadToast);
 
         error && toast.error(error.message)
 
