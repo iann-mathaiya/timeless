@@ -106,7 +106,7 @@ export function NavActions({ currentPath }: NavActionsProps) {
 
   return (
     <div className="flex items-center gap-2 text-sm">
-      <p className="hidden font-medium text-muted-foreground md:inline-block transition-all duration-300 ease-in-out">
+      <p className="hidden text-gray-600 md:inline-block transition-all duration-300 ease-in-out">
         {format(currentDateTime, 'EEE d LLL pp')}
       </p>
       {currentPath !== '/create-post' &&

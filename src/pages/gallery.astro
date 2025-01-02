@@ -68,16 +68,25 @@ const gallery = Object.values(
 
 <AppLayout title="Gallery">
     <section class="p-4 sm:p-8">
-        <pre>{JSON.stringify(updatedMedia, null, 2)}</pre>
-        <pre>{JSON.stringify(gallery, null, 2)}</pre>
 
         <ul class="flex flex-col sm:flex-row items-center gap-6">
             {
                 gallery.map((post) => (
                     <li>
-                        <div class="w-40 sm:w-64 group relative cursor-pointer">
-                            {(post.mediaData as string[]).map((mediaURL, index) => (
-                                <img src={mediaURL} alt="" class={twMerge(
+                        <div class="w-40 sm:w-64 h-40 sm:h-64 group relative cursor-pointer">
+                            {(post.mediaData as Media[]).map((media, index) => (
+                                media.fileType === 'video/mp4' ? 
+                                <video controls class={twMerge(
+                                    "w-40 sm:w-64 h-40 sm:h-64 absolute top-0 left-0 border-2 border-white rounded-lg transition-all duration-300 ease-in-out",
+                                    index === 0 && 'rotate-0 group-hover:rotate-6',
+                                    index === 1 && '-rotate-3 group-hover:-rotate-6',
+                                    index === 2 && 'rotate-3 group-hover:rotate-6',
+                                )}>
+                                    <source src={media.mediaURL} type="video/mp4" />
+                                    <track src="captions_en.vtt" kind="captions" srclang="en" label="english_captions" />
+                                </video>
+                                :
+                                <img src={media.mediaURL} alt="" class={twMerge(
                                     "w-40 sm:w-64 absolute top-0 left-0 border-2 border-white rounded-lg transition-all duration-300 ease-in-out",
                                     index === 0 && 'rotate-0 group-hover:rotate-6',
                                     index === 1 && '-rotate-3 group-hover:-rotate-6',
@@ -85,7 +94,7 @@ const gallery = Object.values(
                                 )} />
                             ))}
                         </div>
-                        <p class="mt-[6.5rem] sm:mt-[12.5rem] text-sm text-center text-gray-600">{format(post.createdAt, "PP")}</p>
+                        <p class="mt-4 text-sm text-center text-gray-600">{format(post.createdAt, "PP")}</p>
                     </li>
                 ))
             }
