@@ -23,6 +23,7 @@ const updatedPosts: Post[] = [];
 if (data?.success) {
     for (const post of data.postData) {
         const media = post.media as UploadedFiles[];
+        
         const postMediaURLs = await Promise.all(
             media.map(async (fileData) => {
                 const { data: URLsData, error } = await Astro.callAction(
