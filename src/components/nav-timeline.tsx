@@ -1,51 +1,36 @@
-import {
-  Link as LinkIcon,
-  ArrowUpRight,
-  MoreHorizontal,
-  StarOff,
-  Trash2,
-} from "lucide-react"
+import { Link as LinkIcon, ArrowUpRight, MoreHorizontal, StarOff, Trash2 } from "lucide-react"
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuAction,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar"
 import Link from "./link";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
+import { useEffect, useState } from "react";
+import type { Post } from "@/db/schema";
+import type { User } from "better-auth";
 
-export function NavTimeline({
-  timeline,
-}: {
-  timeline: {
-    name: string
-    url: string
-    emoji: string
-  }[]
-}) {
+type NavTimelineProps = {
+  userId: string,
+}
+
+export function NavTimeline({ userId }: NavTimelineProps) {
   const { isMobile } = useSidebar()
+  const [posts, setPosts] = useState<Post[]>([])
+
+  useEffect(() => {
+
+  }, [])
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Timeline</SidebarGroupLabel>
       <SidebarMenu>
-        {timeline.map((item) => (
-          <SidebarMenuItem key={item.name}>
+        {posts.map((post) => (
+          <SidebarMenuItem key={post.id}>
             <SidebarMenuButton asChild>
-              <Link href={item.url} title={item.name}>
+              {/* <Link href={item.url} title={item.name}>
                <span>{item.emoji}</span>
                <span>{item.name}</span>
-              </Link>
+              </Link> */}
+              <p>{post.title}</p>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

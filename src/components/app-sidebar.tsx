@@ -127,7 +127,7 @@ export function AppSidebar({ user, currentPath, ...props }: AppSidebarProps) {
         <NavMain items={data.navMain} currentPath={currentPath} />
       </SidebarHeader>
       <SidebarContent>
-        <NavTimeline timeline={data.timeline} />
+        <NavTimeline userId={user.id} />
         {/* <NavCollections collections={data.collections} /> */}
         <NavSecondary user={user} items={data.navSecondary} currentPath={currentPath} className="mt-auto" />
       </SidebarContent>
