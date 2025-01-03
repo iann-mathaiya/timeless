@@ -6,6 +6,7 @@ import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuAction, Sideba
 import { useEffect, useState } from "react";
 import type { Post } from "@/db/schema";
 import type { User } from "better-auth";
+import { actions } from "astro:actions";
 
 type NavTimelineProps = {
   userId: string,
@@ -16,8 +17,13 @@ export function NavTimeline({ userId }: NavTimelineProps) {
   const [posts, setPosts] = useState<Post[]>([])
 
   useEffect(() => {
+    async function fetchPosts() {
+      const { data, error } = await actions.posts.getPosts({userId: userId})
+      if(data?.success) return  setPosts(data.postData)
+    }
 
-  }, [])
+    fetchPosts()
+  }, [userId])
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
