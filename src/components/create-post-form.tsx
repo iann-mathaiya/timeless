@@ -27,8 +27,6 @@ export default function CreatePostForm() {
 
         const file = files[0];
 
-        console.log(file);
-
         const formData = new FormData();
         formData.append("file", file);
 
@@ -39,22 +37,17 @@ export default function CreatePostForm() {
 
         error && toast.error(error.message)
 
-        console.log(data);
-
         if (data?.success) {
             const justUploaded = { fileName: data.fileName, fileType: data.fileType };
             setUploadedFiles(prevFiles => [...prevFiles, justUploaded]);
 
             const { data: signedUrlData, error } = await actions.media.getSignedUrl({ key: data.fileName });
-            console.log(signedUrlData);
 
             if (signedUrlData?.success) {
                 toast.success(`${file.name} has been uploaded successfully`)
                 const media: Media = { mediaURL: signedUrlData.signedUrl, fileType: data.fileType };
                 setFetchedMedia(prevMedia => [...prevMedia, media]);
             }
-
-            console.log(fetchedMedia);
         }
     }
 

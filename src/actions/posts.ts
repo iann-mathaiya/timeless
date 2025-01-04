@@ -13,7 +13,6 @@ export const posts = {
             media: z.string().array().min(1)
         }),
         handler: async ({ title, description, media }, context) => {
-            // console.log({ title, description, media });
             const { env } = context.locals.runtime;
             const db = drizzle(env.ARS_DB);
 
@@ -29,9 +28,6 @@ export const posts = {
                 const { user } = authDetails;
 
                 const mediaInput = JSON.parse(media[0])
-
-                console.log('media', media)
-                console.log('mediaInput:', mediaInput)
 
                 const postData = await db.insert(postsSchema).values({
                     id: crypto.randomUUID(),
