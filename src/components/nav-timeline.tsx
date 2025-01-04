@@ -1,42 +1,61 @@
-import { Link as LinkIcon, ArrowUpRight, MoreHorizontal, StarOff, Trash2 } from "lucide-react"
+import { Link as LinkIcon, ArrowUpRight, MoreHorizontal, StarOff, Trash2 } from "lucide-react";
 
 import Link from "./link";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { useEffect, useState } from "react";
 import type { Post } from "@/db/schema";
 import type { User } from "better-auth";
 import { actions } from "astro:actions";
+import { format } from "date-fns";
 
 type NavTimelineProps = {
   userId: string,
-}
+};
+
+type Timeline = { createdAt: string; posts: Post[] }
 
 export function NavTimeline({ userId }: NavTimelineProps) {
-  const { isMobile } = useSidebar()
-  const [posts, setPosts] = useState<Post[]>([])
+  const { isMobile } = useSidebar();
+  const [timeline, setTimeline] = useState<Timeline[]>([]);
 
   useEffect(() => {
     async function fetchPosts() {
-      const { data, error } = await actions.posts.getPosts({userId: userId})
-      if(data?.success) return  setPosts(data.postData)
+      const { data, error } = await actions.posts.getPosts({ userId: userId });
+      if (data?.success) {
+
+        const newPosts = data.postData.reduce(
+          (acc, post) => {
+            const date = post.createdAt.split(" ")[0]; // Extract the date portion
+            if (!acc[date]) {
+              acc[date] = [];
+            }
+            acc[date].push(post);
+            return acc;
+          },
+          {} as Record<string, typeof data.postData>,
+        );
+
+        const timelineEntries = Object.entries(newPosts).map(([date, posts]) => ({
+          createdAt: date,
+          posts,
+      }));
+
+        return setTimeline(timelineEntries);
+      }
     }
 
-    fetchPosts()
-  }, [userId])
+    fetchPosts();
+  }, [userId]);
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Timeline</SidebarGroupLabel>
       <SidebarMenu>
-        {posts.map((post) => (
-          <SidebarMenuItem key={post.id}>
+        {timeline?.map((entry) => (
+          <SidebarMenuItem key={entry.createdAt}>
             <SidebarMenuButton asChild>
-              {/* <Link href={item.url} title={item.name}>
-               <span>{item.emoji}</span>
-               <span>{item.name}</span>
-              </Link> */}
-              <p>{post.title}</p>
+              <span>{'- '} {format(entry.createdAt, 'ccc do MMM')}</span>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -80,5 +99,5 @@ export function NavTimeline({ userId }: NavTimelineProps) {
         </SidebarMenuItem> */}
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }
