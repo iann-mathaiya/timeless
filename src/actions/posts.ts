@@ -1,9 +1,9 @@
-import { eq } from 'drizzle-orm';
 import { z } from 'astro:schema';
 import { auth } from '@/lib/auth';
+import { eq, desc } from 'drizzle-orm';
 import { drizzle } from "drizzle-orm/d1";
-import { ActionError, actions, defineAction } from "astro:actions";
-import { posts as postsSchema, users, type Post } from '@/db/schema';
+import { ActionError, defineAction } from "astro:actions";
+import { posts as postsSchema, type Post } from '@/db/schema';
 
 export const posts = {
     createPost: defineAction({
@@ -67,7 +67,7 @@ export const posts = {
                     throw new ActionError({code: 'FORBIDDEN'})
                 }
 
-                const postData: Post[] = await db.select().from(postsSchema).where(eq(postsSchema.userId, user.id));
+                const postData: Post[] = await db.select().from(postsSchema).where(eq(postsSchema.userId, user.id)).orderBy(desc(postsSchema.createdAt));
 
                 return { success: true, postData };
             } catch (error) {
