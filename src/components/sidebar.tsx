@@ -12,7 +12,7 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
-import type { User } from "better-auth";
+import type { User } from "@/db/schema";
 
 type SidebarProps = {
     user: User

@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import type { User } from "better-auth";
+import type { User } from "@/db/schema";
 
 type NavSecondaryProps = React.ComponentPropsWithoutRef<typeof SidebarGroup> & {
   user: User;
@@ -25,11 +25,15 @@ type NavSecondaryProps = React.ComponentPropsWithoutRef<typeof SidebarGroup> & {
 };
 
 export function NavSecondary({ items, user, currentPath, ...props }: NavSecondaryProps) {
+
+  const userLinks = items.filter(item => item.isAdminOnly === false)
+  const links = user.role === 'admin' ? items : userLinks
+
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
-          {items.map((item) => (
+          {links.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild isActive={currentPath === item.url}>
                 <a href={item.url}>

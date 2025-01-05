@@ -1,4 +1,4 @@
-import type { User } from "better-auth";
+import type { User } from "@/db/schema";
 import { NavMain } from "@/components/nav-main";
 import { Profile } from "@/components/profile";
 import { NavSecondary } from "./nav-secondary";
@@ -38,7 +38,7 @@ const data = {
       title: "Permissions",
       url: "#",
       icon: ShieldCheckIcon,
-      isAdminOnly: false,
+      isAdminOnly: true,
     },
   ],
   timeline: [

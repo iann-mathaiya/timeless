@@ -1,5 +1,6 @@
 ---
 import { auth } from "@/lib/auth";
+import type { User } from "@/db/schema";
 import RootLayout from "./RootLayout.astro";
 import { Sidebar } from "@/components/sidebar";
 import { Toaster } from "@/components/ui/sonner";
@@ -14,13 +15,15 @@ if (!authDetails) {
     return Astro.redirect("/join");
 }
 
+const user = authDetails.user as User
+
 const currentPath = Astro.url.pathname;
 ---
 
 <RootLayout title={title} description={description}>
     <Sidebar
         client:load
-        user={authDetails.user}
+        user={user}
         pageTitle={title}
         currentPath={currentPath}
     >

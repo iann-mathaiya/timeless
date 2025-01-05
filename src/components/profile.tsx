@@ -53,14 +53,14 @@ export function Profile({ name, imageSrc }: ProfileProps) {
               <span>Settings</span>
             </DropdownMenuItem> */}
             <DropdownMenuItem
-              onClick={() => console.log(name)}
+              onClick={() => console.log(name)} disabled
               className="gap-2 rounded-md text-gray-600 hover:text-gray-900"
             >
               <CircleHelp className="size-4 shrink-0" />
               <span>Support</span>
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => console.log(name)}
+              onClick={() => console.log(name)} disabled
               className="gap-2 rounded-md text-gray-600 hover:text-gray-900"
             >
               <LightbulbIcon className="size-4 shrink-0" />
