@@ -1,4 +1,4 @@
-import { Link as LinkIcon, ArrowUpRight, MoreHorizontal, StarOff, Trash2 } from "lucide-react";
+import { Link as LinkIcon, ArrowUpRight, MoreHorizontal, StarOff, Trash2, DotIcon } from "lucide-react";
 
 import Link from "./link";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -13,7 +13,7 @@ type NavTimelineProps = {
   userId: string,
 };
 
-type Timeline = { createdAt: string; posts: Post[] }
+type Timeline = { createdAt: string; posts: Post[]; };
 
 export function NavTimeline({ userId }: NavTimelineProps) {
   const { isMobile } = useSidebar();
@@ -39,7 +39,7 @@ export function NavTimeline({ userId }: NavTimelineProps) {
         const timelineEntries = Object.entries(newPosts).map(([date, posts]) => ({
           createdAt: date,
           posts,
-      }));
+        }));
 
         return setTimeline(timelineEntries);
       }
@@ -54,10 +54,16 @@ export function NavTimeline({ userId }: NavTimelineProps) {
       <SidebarMenu>
         {timeline?.map((entry) => (
           <SidebarMenuItem key={entry.createdAt}>
-            <SidebarMenuButton asChild>
-              <span>{'- '} {format(entry.createdAt, 'ccc do MMM')}</span>
+            <SidebarMenuButton className="max-h-7 group flex items-center justify-between">
+                <span className="text-xs text-gray-600 group-hover:text-gray-900">{format(entry.createdAt, 'ccc do MMM')}</span>
+                <div className="flex items-center gap-x-0.5">
+                  {entry.posts.map(dot =>
+                    // <DotIcon key={dot.id} className="size-4" />
+                    <span key={dot.id} className="text-lg font-semibold text-gray-600">&middot;</span>
+                  )}
+                </div>
             </SidebarMenuButton>
-            <DropdownMenu>
+            {/* <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuAction showOnHover>
                   <MoreHorizontal />
@@ -88,7 +94,7 @@ export function NavTimeline({ userId }: NavTimelineProps) {
                   <span>Delete</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
           </SidebarMenuItem>
         ))}
         {/* <SidebarMenuItem>
