@@ -5,14 +5,14 @@ import { NavSecondary } from "./nav-secondary";
 import { NavTimeline } from "@/components/nav-timeline";
 import { NavCollections } from "@/components/nav-collections";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
-import { AudioWaveform, CircleHelp, Command, Home, Images, LightbulbIcon, UserRoundPlusIcon } from "lucide-react";
+import { HomeIcon, ImagesIcon, ShieldCheckIcon, UserRoundPlusIcon, UsersIcon } from "lucide-react";
 
 const data = {
   navMain: [
     {
       title: "Home",
       url: "/home",
-      icon: Home,
+      icon: HomeIcon,
       isActive: true,
     },
     {
@@ -23,21 +23,21 @@ const data = {
     {
       title: "Gallery",
       url: "/gallery",
-      icon: Images,
+      icon: ImagesIcon,
       badge: "10",
     },
   ],
   navSecondary: [
     {
-      title: "Support",
+      title: "Users",
       url: "#",
-      icon: CircleHelp,
-      isAdminOnly: false,
+      icon: UsersIcon,
+      isAdminOnly: true,
     },
     {
-      title: "Feedback",
+      title: "Permissions",
       url: "#",
-      icon: LightbulbIcon,
+      icon: ShieldCheckIcon,
       isAdminOnly: false,
     },
   ],

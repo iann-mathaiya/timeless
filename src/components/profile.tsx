@@ -1,6 +1,6 @@
 import { signOut } from "@/lib/auth-client";
 import { navigate } from "astro:transitions/client";
-import { ChevronDown, LogOutIcon, Settings, User } from "lucide-react";
+import { ChevronDown, CircleHelp, LightbulbIcon, LogOutIcon, Settings, User } from "lucide-react";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Link from "./link";
@@ -45,12 +45,26 @@ export function Profile({ name, imageSrc }: ProfileProps) {
                 <span>Profile</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem
+            {/* <DropdownMenuItem
               onClick={() => console.log(name)}
               className="gap-2 rounded-md text-gray-600 hover:text-gray-900"
             >
               <Settings className="size-4 shrink-0" />
               <span>Settings</span>
+            </DropdownMenuItem> */}
+            <DropdownMenuItem
+              onClick={() => console.log(name)}
+              className="gap-2 rounded-md text-gray-600 hover:text-gray-900"
+            >
+              <CircleHelp className="size-4 shrink-0" />
+              <span>Support</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => console.log(name)}
+              className="gap-2 rounded-md text-gray-600 hover:text-gray-900"
+            >
+              <LightbulbIcon className="size-4 shrink-0" />
+              <span>Feedback</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
