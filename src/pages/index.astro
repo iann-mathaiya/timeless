@@ -13,7 +13,7 @@ if (authDetails) {
 ---
 
 <RootLayout>
-	<section class="mx-auto w-full max-w-screen-xl min-h-screen">
+	<section class="mx-auto w-full min-h-screen bg-gradient-to-br from-[#f8f9c7]/80 to-[#f0cd97]/80">
 		<div class="pt-28 flex flex-col items-center justify-center">
 			<Logo width={40} height={40} fill="currentColor" />
 			<h1 class="mt-4 font-serif text-4xl font-medium">
@@ -24,13 +24,17 @@ if (authDetails) {
 				built to record your memories
 			</p>
 
-			<div class="mt-4 sm:mt-6 flex items-center justify-center gap-2">
-				<a href="/join" class="px-4 py-1.5 text-sm text-white font-medium bg-gray-900 hover:bg-orange-600 rounded-full">
+			<div class="mt-4 sm:mt-6 flex items-center justify-center gap-3">
+				<a href="/join" class="px-4 py-1.5 text-sm text-white font-medium bg-orange-600 hover:scale-110 rounded-full transition-all duration-300 ease-in-out">
 					Join Now
 				</a>
-				<a href="/sign-in" class="px-4 py-1.5 text-sm text-gray-900 font-medium hover:text-orange-600 bg-gray-200 hover:bg-orange-100 rounded-full">
+				<a href="/sign-in" class="px-4 py-1.5 text-sm font-medium text-orange-600 bg-orange-200/50 border border-orange-300  hover:scale-110 rounded-full transition-all duration-300 ease-in-out">
 					Sign In
 				</a>
+			</div>
+
+			<div>
+
 			</div>
 		</div>
 	</section>
