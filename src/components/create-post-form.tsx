@@ -11,6 +11,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/t
 export default function CreatePostForm() {
     const [fetchedMedia, setFetchedMedia] = useState<Media[]>([]);
     const [files, setFiles] = useState<File[]>([]);
+    const [uploading, setUploading] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -30,12 +31,16 @@ export default function CreatePostForm() {
         const formData = new FormData();
         formData.append("file", file);
 
-        const uploadToast = toast('')
-        toast(`Uploading ${file.name}`, { id: uploadToast, duration: Number.POSITIVE_INFINITY })
+        setUploading(true);
+
+        // return;
+
+        const uploadToast = toast('');
+        toast(`Uploading ${file.name}`, { id: uploadToast, duration: Number.POSITIVE_INFINITY });
         const { data, error } = await actions.media.uploadFile(formData);
         toast.dismiss(uploadToast);
 
-        error && toast.error(error.message)
+        error && toast.error(error.message);
 
         if (data?.success) {
             const justUploaded = { fileName: data.fileName, fileType: data.fileType };
@@ -44,9 +49,10 @@ export default function CreatePostForm() {
             const { data: signedUrlData, error } = await actions.media.getSignedUrl({ key: data.fileName });
 
             if (signedUrlData?.success) {
-                toast.success(`${file.name} has been uploaded successfully`)
+                toast.success(`${file.name} has been uploaded successfully`);
                 const media: Media = { mediaURL: signedUrlData.signedUrl, fileType: data.fileType };
                 setFetchedMedia(prevMedia => [...prevMedia, media]);
+                setUploading(false);
             }
         }
     }
@@ -72,21 +78,29 @@ export default function CreatePostForm() {
             <input placeholder='Add title' name='title' className='w-full text-xl font-medium bg-transparent outline-none placeholder:text-gray-400' />
 
             <textarea placeholder='Write something...' name='description'
-                className={twMerge('mt-2 min-h-20 w-full text-sm outline-none', fetchedMedia.length > 0 && 'min-h-fit')} />
+                className={twMerge('mt-2 min-h-20 w-full text-sm outline-none', (uploading || fetchedMedia.length > 0) && 'min-h-fit')} />
 
-            {fetchedMedia.length > 0 &&
-                <div className='flex items-center gap-2'>
-                    {fetchedMedia.map(({ mediaURL, fileType }) =>
-                        fileType === 'video/mp4' ?
-                            <video key={`${mediaURL}`} className='aspect-square w-80 rounded-lg lg:rounded-xl' controls>
-                                <source src={mediaURL} type="video/mp4" />
-                                <track src="captions_en.vtt" kind="captions" srcLang="en" label="english_captions" />
-                            </video>
-                            :
-                            <img key={`${mediaURL}`} src={mediaURL} alt='Just a placeholder' className='w-80 rounded-lg lg:rounded-xl' />
-                    )}
-                </div>
-            }
+            <div className='flex items-center gap'>
+                {uploading &&
+                    <div className='aspect-square w-80 flex items-center justify-center bg-gray-200 animate-plse rounded-lg lg:rounded-xl'>
+                        <div className="loader" />
+                    </div>
+                }
+                {fetchedMedia.length > 0 &&
+                    <div className='flex items-center gap-2'>
+
+                        {fetchedMedia.map(({ mediaURL, fileType }) =>
+                            fileType === 'video/mp4' ?
+                                <video key={`${mediaURL}`} className='aspect-square w-80 rounded-lg lg:rounded-xl' controls>
+                                    <source src={mediaURL} type="video/mp4" />
+                                    <track src="captions_en.vtt" kind="captions" srcLang="en" label="english_captions" />
+                                </video>
+                                :
+                                <img key={`${mediaURL}`} src={mediaURL} alt='Just a placeholder' className='aspect-square w-80 object-cover object-center rounded-lg lg:rounded-xl' />
+                        )}
+                    </div>
+                }
+            </div>
 
             <div className='mt-4 w-full flex items-center gap-2'>
                 <div className='w-full flex items-center justify-between'>
