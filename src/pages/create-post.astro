@@ -10,8 +10,6 @@ const authDetails = await auth.api.getSession({
 if (!authDetails) {
     return Astro.redirect("/join");
 }
-
-const { user } = authDetails;
 ---
 
 <AppLayout title="Create Post">

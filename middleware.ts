@@ -1,5 +1,4 @@
 import { defineMiddleware } from "astro:middleware"
-import { initDbConnectionDev } from "./src/db"
 
 export const onRequest = defineMiddleware(async (context, next) => {
 

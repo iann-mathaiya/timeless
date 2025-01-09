@@ -117,7 +117,7 @@ export default function CreatePostForm() {
                                         <ImagePlus className='size-5' />
                                     </button>
                                 </TooltipTrigger>
-                                <TooltipContent>
+                                <TooltipContent side='right' align='start'>
                                     <p>{files.length === 3 ? 'You can only add 3 images/reels' : 'Upload image or reel'}</p>
                                 </TooltipContent>
                             </Tooltip>

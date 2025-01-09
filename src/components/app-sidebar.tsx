@@ -3,7 +3,6 @@ import { NavMain } from "@/components/nav-main";
 import { Profile } from "@/components/profile";
 import { NavSecondary } from "./nav-secondary";
 import { NavTimeline } from "@/components/nav-timeline";
-import { NavCollections } from "@/components/nav-collections";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { HomeIcon, ImagesIcon, ShieldCheckIcon, UserRoundPlusIcon, UsersIcon } from "lucide-react";
 
