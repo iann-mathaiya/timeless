@@ -94,7 +94,12 @@ const gallery = Object.values(
                                 )} />
                             ))}
                         </div>
-                        <p class="mt-4 text-sm text-center text-gray-600">{format(post.createdAt, "PP")}</p>
+                        <p class="mt-4 text-sm text-center text-gray-600">
+                            {/* {format(post.createdAt, "PP")} */}
+                            {parseInt(post.createdAt) === new Date().getFullYear()
+                            ? format(post.createdAt, "EEE, MMM do")
+                            : format(post.createdAt, "EEE, MMM do yyyy")}
+                            </p>
                     </li>
                 ))
             }
