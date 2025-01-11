@@ -1,7 +1,7 @@
 import { Input } from './ui/input';
-import { AnimatePresence, motion } from 'motion/react';
 import { useRef, useState } from 'react';
 import { SmilePlus, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 
 export default function SearchFriendInput() {
     const [showInput, setShowInput] = useState(false);
@@ -28,7 +28,7 @@ export default function SearchFriendInput() {
         focusInput();
     }
 
-    function handleBlur(e: React.FocusEvent) {
+    function handleBlur() {
         if (!searchValue) {
             setIsAnimating(true);
             setShowInput(false);
@@ -49,6 +49,7 @@ export default function SearchFriendInput() {
                         transition={{ duration: isAnimating ? 0.2 : 0 }}
                         onAnimationComplete={onAnimationComplete}
                     >
+
                         <Input
                             type="text"
                             ref={inputRef}
@@ -76,9 +77,9 @@ export default function SearchFriendInput() {
                         onAnimationComplete={onAnimationComplete}
                         type="button"
                         onClick={toggle}
-                        className='h-7 px-4 flex items-center gap-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded-md focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-gray-900'>
+                        className='h-7 sm:w-fit px-4 flex items-center gap-2 text-gray-600 hover:text-gray-900 hover:bg-gray-200 rounded-md focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-gray-900'>
                         <SmilePlus size={16} strokeWidth={2} aria-hidden="true" />
-                        <span>Search Friend</span>
+                        <span className='hidden sm:block'>Search Friend</span>
                     </motion.button>
                 }
             </AnimatePresence>

@@ -6,3 +6,5 @@ export type Media = {
 }
 
 export type UploadedFiles =  { fileName: string, fileType: FileType };
+
+export type FriendRequestStatus = "pending" | "accepted" | "rejected"
