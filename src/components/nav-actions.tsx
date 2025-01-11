@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import Link from "./link";
+import SearchFriendInput from "./search-friend-input";
 
 const data = [
   [
@@ -92,25 +93,13 @@ type NavActionsProps = {
 
 export function NavActions({ currentPath }: NavActionsProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentDateTime, setCurrentDateTime] = useState(new Date());
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentDateTime(new Date());
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
 
   return (
     <div className="flex items-center gap-2 text-sm">
-      <p className="hidden text-gray-600 md:inline-block transition-all duration-300 ease-in-out">
-        {format(currentDateTime, 'EEE d LLL pp')}
-      </p>
+      <SearchFriendInput />
+      
       {currentPath !== '/create-post' &&
-        <Link href="/create-post" className="pl-2 pr-3 py-1 h-7 w-fit flex items-center gap-2 text-gray-900 bg-transparent hover:bg-gray-200 rounded-lg transition-all duration-300 ease-in-out">
+        <Link href="/create-post" className="pl-2 pr-3 py-1 h-7 w-fit flex items-center gap-2 text-gray-900 bg-transparent hover:bg-gray-200 rounded-md focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-gray-900 transition-all duration-300 ease-in-out">
           <Plus className="size-4" />
           <span>Add Post</span>
         </Link>

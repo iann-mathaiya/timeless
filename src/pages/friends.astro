@@ -1,6 +1,7 @@
 ---
 import { auth } from "../lib/auth";
 import AppLayout from "../layouts/AppLayout.astro";
+import SearchFriendInput from "@/components/search-friend-input";
 
 const authDetails = await auth.api.getSession({
     headers: Astro.request.headers,
@@ -12,7 +13,10 @@ if (!authDetails) {
 ---
 
 <AppLayout title="Friends & Family">
-    <section class="p-4 sm:p-8">
-
+    <section class="py-2 px-4">
+        <div class="flex items-center justify-between">
+            <h1 class="text-sm text-gray-900 font-medium">Pocket Universe</h1>
+            <SearchFriendInput client:load />
+        </div>
     </section>
 </AppLayout>
