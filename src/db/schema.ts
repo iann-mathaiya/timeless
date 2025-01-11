@@ -14,14 +14,14 @@ export type Post = typeof posts.$inferSelect; //for select queries
 export type NewPost = typeof posts.$inferInsert; //for insert queries
 
 export const users = sqliteTable("users", {
+	image: text('image'),
 	id: text("id").primaryKey(),
 	name: text('name').notNull(),
 	email: text('email').notNull().unique(),
-	emailVerified: integer('emailVerified', { mode: 'boolean' }).notNull(),
-	image: text('image'),
 	role: text("role").notNull().default('user'),
 	createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
-	updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull()
+	updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
+	emailVerified: integer('emailVerified', { mode: 'boolean' }).notNull(),
 });
 
 export type User = typeof users.$inferSelect;

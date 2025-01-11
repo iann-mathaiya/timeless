@@ -41,7 +41,7 @@ export function Sidebar({ user, currentPath, pageTitle, children }: SidebarProps
                         </Breadcrumb>
                     </div>
                     <div className="ml-auto px-3">
-                        <NavActions currentPath={currentPath} />
+                        <NavActions currentPath={currentPath} userId={user.id} />
                     </div>
                 </header>
 

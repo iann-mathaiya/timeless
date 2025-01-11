@@ -88,15 +88,16 @@ const data = [
 ];
 
 type NavActionsProps = {
+  userId: string
   currentPath: string;
 };
 
-export function NavActions({ currentPath }: NavActionsProps) {
+export function NavActions({ userId, currentPath }: NavActionsProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="flex items-center gap-2 text-sm">
-      <SearchFriendInput />
+      <SearchFriendInput userId={userId} />
       
       {currentPath !== '/create-post' &&
         <Link href="/create-post" className="pl-2 pr-3 py-1 h-7 w-fit flex items-center gap-2 text-gray-900 bg-transparent hover:bg-gray-200 rounded-md focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-gray-900 transition-all duration-300 ease-in-out">

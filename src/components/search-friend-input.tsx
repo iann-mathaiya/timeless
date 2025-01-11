@@ -1,13 +1,20 @@
 import { Input } from './ui/input';
+import type { User } from '@/db/schema';
 import { useRef, useState } from 'react';
 import { SmilePlus, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import { actions } from 'astro:actions';
 
-export default function SearchFriendInput() {
+type SearchFriendInputProps = {
+    userId: string;
+};
+
+export default function SearchFriendInput({ userId }: SearchFriendInputProps) {
     const [showInput, setShowInput] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const [isAnimating, setIsAnimating] = useState(false);
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const [searchedUsers, setSearchedUsers] = useState<User[] | null | undefined>([]);
 
     function focusInput() {
         setTimeout(() => {
@@ -39,6 +46,20 @@ export default function SearchFriendInput() {
         setIsAnimating(false);
     }
 
+    const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+
+            const { data, error } = await actions.friends.searchFriend({ userId: userId, keyword: searchValue.trim() });
+
+            if(data?.success){
+                setSearchedUsers(data?.matchingUsers);
+                console.log(searchedUsers)
+            }
+
+        }
+    };
+
     return (
         <div className="relative">
             <AnimatePresence initial={false} mode='wait' presenceAffectsLayout={false}>
@@ -55,6 +76,7 @@ export default function SearchFriendInput() {
                             ref={inputRef}
                             value={searchValue}
                             onBlur={handleBlur}
+                            onKeyDown={handleKeyDown}
                             placeholder="Search friend"
                             onChange={e => setSearchValue(e.target.value)}
                             className="peer ps-9 h-7 w-fit border-none shadow-none" />
