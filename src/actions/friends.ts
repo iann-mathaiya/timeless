@@ -3,7 +3,7 @@ import { ActionError, defineAction } from "astro:actions";
 import { drizzle } from 'drizzle-orm/d1';
 import { auth } from '@/lib/auth';
 import { users, type User } from '@/db/schema';
-import { and, eq, like, not } from 'drizzle-orm';
+import { and, eq, like, not, or } from 'drizzle-orm';
 
 
 export const friends = {
@@ -45,7 +45,7 @@ export const friends = {
                 const matchingUsers = await db.select().from(users)
                     .where(
                         and(
-                            like(users.email, searchKeyword), 
+                            or( like(users.email, searchKeyword),  like(users.name, searchKeyword)), 
                             not(eq(users.id, user.id))
                         )
                     ) as User[]
