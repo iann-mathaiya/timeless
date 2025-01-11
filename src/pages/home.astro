@@ -63,7 +63,7 @@ const timelineEntries = Object.entries(timeline).map(([date, posts]) => ({
 
 <AppLayout title="Home">
     <section
-        class="py-4 pl-4 sm:pl-0 mx-auto w-full max-w-screen-lg overflow-hidden"
+        class="py-4 pl-4 mx-auto w-full max-w-screen-lg overflow-hidden"
     >
         {
             timelineEntries.map((entry) => (
@@ -95,24 +95,13 @@ const timelineEntries = Object.entries(timeline).map(([date, posts]) => ({
                                     {(post.media as Media[]).map(
                                         (media: Media) =>
                                             media.fileType === "video/mp4" ? (
-                                                <video
-                                                    class="aspect-square w-80 rounded-lg lg:rounded-xl"
-                                                    controls
-                                                >
-                                                    <source
-                                                        src={media.mediaURL}
-                                                        type="video/mp4"
-                                                    />
-                                                    <track
-                                                        src="captions_en.vtt"
-                                                        kind="captions"
-                                                        srclang="en"
-                                                        label="english_captions"
-                                                    />
+                                                <video class="w-72 xl:w-80 last:mr-4 aspect-square rounded-lg lg:rounded-xl" controls>
+                                                    <source src={media.mediaURL} type="video/mp4" />
+                                                    <track src="captions_en.vtt" kind="captions" srclang="en" label="english_captions" />
                                                 </video>
                                             ) : (
                                                 <img
-                                                    class="w-96 md:w-72 xl:w-80 last:mr-4 aspect-square object-cover object-center rounded-lg lg:rounded-xl"
+                                                    class="w-72 xl:w-80 last:mr-4 aspect-square object-cover object-center rounded-lg lg:rounded-xl"
                                                     src={media.mediaURL}
                                                     alt={`${post.title} media`}
                                                 />
