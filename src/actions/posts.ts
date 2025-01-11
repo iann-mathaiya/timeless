@@ -35,6 +35,8 @@ export const posts = {
                     userId: user.id,
                     media: mediaInput,
                     description: description,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
                 });
 
                 return { success: true, postData };
