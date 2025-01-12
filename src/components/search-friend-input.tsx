@@ -66,7 +66,7 @@ export default function SearchFriendInput({ userId }: SearchFriendInputProps) {
 
     return (
         <div className="relative">
-            <SearchFriednCmdK users={searchedUsers} isOpen={isCommandOpen} onClose={toggleCommand} />
+            <SearchFriednCmdK users={searchedUsers} searchedUser={searchValue} isOpen={isCommandOpen} onClose={toggleCommand} />
             <AnimatePresence initial={false} mode='wait' presenceAffectsLayout={false}>
                 {showInput ?
                     <motion.div
