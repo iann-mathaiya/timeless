@@ -50,7 +50,7 @@ export default function SearchFriendInput({ userId }: SearchFriendInputProps) {
         setIsAnimating(false);
     }
 
-    const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    async function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
         if (event.key === "Enter") {
             event.preventDefault();
 
@@ -66,7 +66,7 @@ export default function SearchFriendInput({ userId }: SearchFriendInputProps) {
 
     return (
         <div className="relative">
-            <SearchFriednCmdK users={searchedUsers} searchedUser={searchValue} isOpen={isCommandOpen} onClose={toggleCommand} />
+            <SearchFriednCmdK users={searchedUsers} userId={userId} searchedUser={searchValue} isOpen={isCommandOpen} onClose={toggleCommand} />
             <AnimatePresence initial={false} mode='wait' presenceAffectsLayout={false}>
                 {showInput ?
                     <motion.div

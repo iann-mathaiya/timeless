@@ -14,6 +14,8 @@ export const friends = {
         }),
         handler: async ({ userId, friendId }, context) => {
 
+            console.log('user id:', userId)
+            console.log('friend id:', friendId)
         }
     }),
     searchFriend: defineAction({
@@ -49,8 +51,6 @@ export const friends = {
                             not(eq(users.id, user.id))
                         )
                     ) as User[]
-
-                    console.log(matchingUsers)
 
                 return { success: true, matchingUsers };
             } catch (error) {
