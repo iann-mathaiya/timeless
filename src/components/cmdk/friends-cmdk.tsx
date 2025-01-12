@@ -3,9 +3,9 @@ import type { User } from '@/db/schema';
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command';
 
 type CommandPalette = {
-    users: User[];
     isOpen: boolean;
     onClose: () => void;
+    users: User[] | null | undefined;
 };
 
 export default function SearchFriednCmdK({ users, isOpen, onClose }: CommandPalette) {
@@ -24,11 +24,14 @@ export default function SearchFriednCmdK({ users, isOpen, onClose }: CommandPale
             <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
                 <CommandGroup heading="Users">
-                    <CommandItem asChild className='hover:cursor-pointer'>
-                        <form className='w-full'>
-
-                        </form>
-                    </CommandItem>
+                    {users?.map(user =>
+                        <CommandItem key={user.id} asChild className='hover:cursor-pointer'>
+                            <form onSubmit={handleSubmit}>
+                                <h2>{user.name}</h2>
+                                <p>{user.email}</p>
+                            </form>
+                        </CommandItem>
+                    )}
                 </CommandGroup>
             </CommandList>
         </CommandDialog>

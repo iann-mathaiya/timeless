@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { SmilePlus, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { actions } from 'astro:actions';
+import SearchFriednCmdK from './cmdk/friends-cmdk';
 
 type SearchFriendInputProps = {
     userId: string;
@@ -14,7 +15,10 @@ export default function SearchFriendInput({ userId }: SearchFriendInputProps) {
     const [searchValue, setSearchValue] = useState('');
     const [isAnimating, setIsAnimating] = useState(false);
     const inputRef = useRef<HTMLInputElement | null>(null);
+    const [isCommandOpen, setIsCommandOpen] = useState(false)
     const [searchedUsers, setSearchedUsers] = useState<User[] | null | undefined>([]);
+
+    const toggleCommand = () => setIsCommandOpen((prev) => !prev)
 
     function focusInput() {
         setTimeout(() => {
@@ -55,13 +59,14 @@ export default function SearchFriendInput({ userId }: SearchFriendInputProps) {
             if(data?.success){
                 setSearchedUsers(data?.matchingUsers);
                 console.log(searchedUsers)
+                setIsCommandOpen(true)
             }
-
         }
     };
 
     return (
         <div className="relative">
+            <SearchFriednCmdK users={searchedUsers} isOpen={isCommandOpen} onClose={toggleCommand} />
             <AnimatePresence initial={false} mode='wait' presenceAffectsLayout={false}>
                 {showInput ?
                     <motion.div
