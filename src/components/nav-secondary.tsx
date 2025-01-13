@@ -9,11 +9,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import type { User } from "@/db/schema";
+import { useAtom } from "jotai";
+import { userAtom, currentPathAtom } from "@/lib/store";
 
 type NavSecondaryProps = React.ComponentPropsWithoutRef<typeof SidebarGroup> & {
-  user: User;
-  currentPath: string,
 } & {
   items: {
     title: string;
@@ -24,10 +23,12 @@ type NavSecondaryProps = React.ComponentPropsWithoutRef<typeof SidebarGroup> & {
   }[];
 };
 
-export function NavSecondary({ items, user, currentPath, ...props }: NavSecondaryProps) {
+export function NavSecondary({ items, ...props }: NavSecondaryProps) {
+    const [user] = useAtom(userAtom);
+    const [currentPath] = useAtom(currentPathAtom);
 
   const userLinks = items.filter(item => item.isAdminOnly === false)
-  const links = user.role === 'admin' ? items : userLinks
+  const links = user && user.role === 'admin' ? items : userLinks
 
   return (
     <SidebarGroup {...props}>

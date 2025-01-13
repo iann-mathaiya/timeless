@@ -1,16 +1,16 @@
 "use client"
 
-import type { LucideIcon } from "lucide-react"
-
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import Link from "./link";
+import { useAtom } from "jotai";
+import type { LucideIcon } from "lucide-react"
+import { currentPathAtom } from "@/lib/store";
 
 type NavMainProps = {
-  currentPath: string,
   items: {
     title: string
     url: string
@@ -18,7 +18,9 @@ type NavMainProps = {
   }[]
 }
 
-export function NavMain({ items, currentPath}: NavMainProps) {
+export function NavMain({ items}: NavMainProps) {
+    const [currentPath] = useAtom(currentPathAtom);
+  
   return (
     <SidebarMenu>
       {items.map((item) => (

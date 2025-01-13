@@ -1,12 +1,11 @@
-import type { User } from "@/db/schema";
-import { NavMain } from "@/components/nav-main";
+import { useAtom } from "jotai";
 import { Profile } from "@/components/profile";
 import { NavSecondary } from "./nav-secondary";
+import { NavMain } from "@/components/nav-main";
 import { NavTimeline } from "@/components/nav-timeline";
+import { currentPathAtom, userAtom } from "@/lib/store";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { HomeIcon, ImagesIcon, ShieldCheckIcon, UserRoundPlusIcon, UsersIcon } from "lucide-react";
-import { useAtom } from "jotai";
-import { currentPathAtom, userAtom } from "@/lib/store";
 
 const data = {
   navMain: [
@@ -132,12 +131,12 @@ export function AppSidebar() {
       <Sidebar className="border-r-0" >
         <SidebarHeader>
           <Profile name={user.name} imageSrc={user.image} />
-          <NavMain items={data.navMain} currentPath={currentPath} />
+          <NavMain items={data.navMain} />
         </SidebarHeader>
         <SidebarContent>
           <NavTimeline userId={user.id} />
           {/* <NavCollections collections={data.collections} /> */}
-          <NavSecondary user={user} items={data.navSecondary} currentPath={currentPath} className="mt-auto" />
+          <NavSecondary items={data.navSecondary} className="mt-auto" />
         </SidebarContent>
         <SidebarRail />
       </Sidebar>
