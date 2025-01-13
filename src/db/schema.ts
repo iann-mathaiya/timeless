@@ -4,7 +4,7 @@ export const posts = sqliteTable("posts", {
 	id: text("id").primaryKey(),
 	title: text("title").notNull(),
 	description: text("description"),
-	userId: text('user_id').notNull().references(() => users.id),
+	userId: text('user-id').notNull().references(() => users.id),
 	media: text('media', { mode: 'json' }).default('[]').notNull(),
 	createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
 	updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
@@ -29,8 +29,8 @@ export type User = typeof users.$inferSelect;
 
 export const friends = sqliteTable("friends", {
 	id: text("id").primaryKey(),
-	userId: text("userId").notNull().references(() => users.id),
-	friendId: text("friendId").notNull().references(() => users.id),
+	userId: text("user_Id").notNull().references(() => users.id),
+	friendId: text("friend_Id").notNull().references(() => users.id),
 	createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
 	updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
 	status: text("status", { enum: ["pending", "accepted", "rejected"] }).notNull().default("pending"),

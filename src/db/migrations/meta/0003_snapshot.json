@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "cc8b417e-8f7d-4af1-a448-c396a2820dac",
+  "id": "45af5b8f-37c7-41ff-94c2-035f421bc443",
   "prevId": "63471609-118a-4cc1-b9a2-285914824d4f",
   "tables": {
     "accounts": {
@@ -129,15 +129,15 @@
           "notNull": true,
           "autoincrement": false
         },
-        "userId": {
-          "name": "userId",
+        "user_Id": {
+          "name": "user_Id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "friendId": {
-          "name": "friendId",
+        "friend_Id": {
+          "name": "friend_Id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -168,12 +168,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "friends_userId_users_id_fk": {
-          "name": "friends_userId_users_id_fk",
+        "friends_user_Id_users_id_fk": {
+          "name": "friends_user_Id_users_id_fk",
           "tableFrom": "friends",
           "tableTo": "users",
           "columnsFrom": [
-            "userId"
+            "user_Id"
           ],
           "columnsTo": [
             "id"
@@ -181,12 +181,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "friends_friendId_users_id_fk": {
-          "name": "friends_friendId_users_id_fk",
+        "friends_friend_Id_users_id_fk": {
+          "name": "friends_friend_Id_users_id_fk",
           "tableFrom": "friends",
           "tableTo": "users",
           "columnsFrom": [
-            "friendId"
+            "friend_Id"
           ],
           "columnsTo": [
             "id"
@@ -223,8 +223,8 @@
           "notNull": false,
           "autoincrement": false
         },
-        "user_id": {
-          "name": "user_id",
+        "user-id": {
+          "name": "user-id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -255,12 +255,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "posts_user_id_users_id_fk": {
-          "name": "posts_user_id_users_id_fk",
+        "posts_user-id_users_id_fk": {
+          "name": "posts_user-id_users_id_fk",
           "tableFrom": "posts",
           "tableTo": "users",
           "columnsFrom": [
-            "user_id"
+            "user-id"
           ],
           "columnsTo": [
             "id"
@@ -364,6 +364,13 @@
     "users": {
       "name": "users",
       "columns": {
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "id": {
           "name": "id",
           "type": "text",
@@ -385,20 +392,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "emailVerified": {
-          "name": "emailVerified",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "image": {
-          "name": "image",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "role": {
           "name": "role",
           "type": "text",
@@ -416,6 +409,13 @@
         },
         "updatedAt": {
           "name": "updatedAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "emailVerified": {
+          "name": "emailVerified",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -494,9 +494,7 @@
   "_meta": {
     "schemas": {},
     "tables": {},
-    "columns": {
-      "\"posts\".\"user-id\"": "\"posts\".\"user_id\""
-    }
+    "columns": {}
   },
   "internal": {
     "indexes": {}
