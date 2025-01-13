@@ -5,6 +5,8 @@ import { NavSecondary } from "./nav-secondary";
 import { NavTimeline } from "@/components/nav-timeline";
 import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
 import { HomeIcon, ImagesIcon, ShieldCheckIcon, UserRoundPlusIcon, UsersIcon } from "lucide-react";
+import { useAtom } from "jotai";
+import { currentPathAtom, userAtom } from "@/lib/store";
 
 const data = {
   navMain: [
@@ -113,24 +115,32 @@ const data = {
   ],
 };
 
-type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
-  user: User;
-  currentPath: string
-};
+// type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+//   user: User;
+//   currentPath: string
+// };
 
-export function AppSidebar({ user, currentPath, ...props }: AppSidebarProps) {
-  return (
-    <Sidebar className="border-r-0" {...props}>
-      <SidebarHeader>
-        <Profile name={user.name} imageSrc={user.image} />
-        <NavMain items={data.navMain} currentPath={currentPath} />
-      </SidebarHeader>
-      <SidebarContent>
-        <NavTimeline userId={user.id} />
-        {/* <NavCollections collections={data.collections} /> */}
-        <NavSecondary user={user} items={data.navSecondary} currentPath={currentPath} className="mt-auto" />
-      </SidebarContent>
-      <SidebarRail />
-    </Sidebar>
-  );
+export function AppSidebar() {
+  const [user] = useAtom(userAtom);
+  const [currentPath] = useAtom(currentPathAtom);
+
+  console.log('User in Settings:', user);
+  console.log('Current Path in Settings:', currentPath);
+
+  if (user) {
+    return (
+      <Sidebar className="border-r-0" >
+        <SidebarHeader>
+          <Profile name={user.name} imageSrc={user.image} />
+          <NavMain items={data.navMain} currentPath={currentPath} />
+        </SidebarHeader>
+        <SidebarContent>
+          <NavTimeline userId={user.id} />
+          {/* <NavCollections collections={data.collections} /> */}
+          <NavSecondary user={user} items={data.navSecondary} currentPath={currentPath} className="mt-auto" />
+        </SidebarContent>
+        <SidebarRail />
+      </Sidebar>
+    );
+  }
 }

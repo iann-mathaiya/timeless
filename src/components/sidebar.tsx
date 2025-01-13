@@ -13,6 +13,9 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar"
 import type { User } from "@/db/schema";
+import { currentPathAtom, userAtom } from "@/lib/store";
+import { atom, useAtom, useSetAtom } from "jotai";
+import { useEffect } from "react";
 
 type SidebarProps = {
     user: User
@@ -22,9 +25,17 @@ type SidebarProps = {
 }
 
 export function Sidebar({ user, currentPath, pageTitle, children }: SidebarProps) {
+    const setUser = useSetAtom(userAtom);
+    const setCurrentPath = useSetAtom(currentPathAtom);
+
+    useEffect(() => {
+        setUser(user);
+        setCurrentPath(currentPath);
+    }, [user, currentPath, setUser, setCurrentPath]);
+
     return (
         <SidebarProvider>
-            <AppSidebar user={user} currentPath={currentPath} />
+            <AppSidebar />
             <SidebarInset>
                 <header className="flex h-14 shrink-0 items-center gap-2">
                     <div className="flex flex-1 items-center gap-2 px-3">
