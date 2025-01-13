@@ -30,6 +30,8 @@ export default function SearchFriednCmdK({ users, userId, searchedUser, isOpen, 
         event.preventDefault();
 
         const { data, error } = await actions.friends.sendFriendRequest({ userId: userId, friendId: friendId });
+
+        console.log(data)
         // onClose();
     }
 

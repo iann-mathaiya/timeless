@@ -54,7 +54,7 @@ if (data?.success) {
 const gallery = Object.values(
     updatedMedia.reduce(
         (acc, item) => {
-            const date = item.createdAt.split(" ")[0];
+            const date = item.createdAt
             if (!acc[date]) {
                 acc[date] = { createdAt: date, mediaData: [] };
             }
@@ -94,12 +94,11 @@ const gallery = Object.values(
                                 )} />
                             ))}
                         </div>
-                        <p class="mt-4 text-sm text-center text-gray-600">
-                            {/* {format(post.createdAt, "PP")} */}
+                        {/* <p class="mt-4 text-sm text-center text-gray-600">
                             {parseInt(post.createdAt) === new Date().getFullYear()
                             ? format(post.createdAt, "EEE, MMM do")
                             : format(post.createdAt, "EEE, MMM do yyyy")}
-                            </p>
+                        </p> */}
                     </li>
                 ))
             }
