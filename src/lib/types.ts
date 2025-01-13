@@ -8,3 +8,12 @@ export type Media = {
 export type UploadedFiles =  { fileName: string, fileType: FileType };
 
 export type FriendRequestStatus = "pending" | "accepted" | "rejected"
+
+export type MatchingUser = {
+    id: string;
+    name: string;
+    email: string;
+    image: string | null;
+    friendshipStatus: "pending" | "accepted" | "rejected" | null;
+    isRequester: boolean | null;
+}

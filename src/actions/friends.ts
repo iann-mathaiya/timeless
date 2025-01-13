@@ -1,12 +1,74 @@
 import { z } from 'astro:schema';
-import { ActionError, defineAction } from "astro:actions";
-import { drizzle } from 'drizzle-orm/d1';
 import { auth } from '@/lib/auth';
-import { users, type User, friends as friendsSchema } from '@/db/schema';
-import { and, eq, like, not, or } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/d1';
+import type { MatchingUser } from '@/lib/types';
+import { and, eq, like, not, or, sql } from 'drizzle-orm';
+import { ActionError, defineAction } from "astro:actions";
+import { users, friends as friendsSchema, type Friend } from '@/db/schema';
 
 
 export const friends = {
+    searchUser: defineAction({
+        input: z.object({
+            userId: z.string(),
+            keyword: z.string(),
+        }),
+        handler: async ({ keyword, userId }, context) => {
+            const { env } = context.locals.runtime;
+            const db = drizzle(env.ARS_DB);
+
+            try {
+                const authDetails = await auth.api.getSession({
+                    headers: context.request.headers,
+                });
+
+                if (!authDetails) {
+                    throw new ActionError({ code: 'UNAUTHORIZED' });
+                }
+
+                const { user } = authDetails;
+
+                if (user.id !== userId) {
+                    throw new ActionError({ code: 'FORBIDDEN' });
+                }
+
+                const searchKeyword = `%${keyword}%`; // Use SQL wildcards for partial matching
+
+                const matchingUsers = await db.select({
+                    id: users.id,
+                    name: users.name,
+                    email: users.email,
+                    image: users.image,
+                    friendshipStatus: friendsSchema.status,
+                    isRequester: sql<boolean>`${friendsSchema.userId} = ${user.id}`
+                }).from(users)
+                    .leftJoin(
+                        friendsSchema,
+                        or(
+                            and(
+                                eq(friendsSchema.userId, user.id),
+                                eq(friendsSchema.friendId, users.id)
+                            ),
+                            and(
+                                eq(friendsSchema.friendId, user.id),
+                                eq(friendsSchema.userId, users.id)
+                            )
+                        )
+                    )
+                    .where(
+                        and(
+                            or(like(users.email, searchKeyword), like(users.name, searchKeyword)),
+                            not(eq(users.id, user.id))
+                        )
+                    ) as unknown as MatchingUser[]
+
+                return { success: true, matchingUsers };
+            } catch (error) {
+                console.error(error);
+                return { success: false, message: "An unexpected error occurred." };
+            }
+        }
+    }),
     sendFriendRequest: defineAction({
         input: z.object({
             userId: z.string(),
@@ -46,46 +108,6 @@ export const friends = {
                 return { message: "An unexpected error occurred." };
             }
         }
-    }),
-    searchFriend: defineAction({
-        input: z.object({
-            userId: z.string(),
-            keyword: z.string(),
-        }),
-        handler: async ({ keyword, userId }, context) => {
-            const { env } = context.locals.runtime;
-            const db = drizzle(env.ARS_DB);
+    })
 
-            try {
-                const authDetails = await auth.api.getSession({
-                    headers: context.request.headers,
-                });
-
-                if (!authDetails) {
-                    throw new ActionError({ code: 'UNAUTHORIZED' });
-                }
-
-                const { user } = authDetails;
-
-                if (user.id !== userId) {
-                    throw new ActionError({ code: 'FORBIDDEN' });
-                }
-
-                const searchKeyword = `%${keyword}%`; // Use SQL wildcards for partial matching
-
-                const matchingUsers = await db.select().from(users)
-                    .where(
-                        and(
-                            or(like(users.email, searchKeyword), like(users.name, searchKeyword)),
-                            not(eq(users.id, user.id))
-                        )
-                    ) as User[];
-
-                return { success: true, matchingUsers };
-            } catch (error) {
-                console.error(error);
-                return { success: false, message: "An unexpected error occurred." };
-            }
-        }
-    }),
 };

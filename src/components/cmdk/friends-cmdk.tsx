@@ -1,43 +1,33 @@
-import { useState, type FormEvent } from 'react';
-import type { User } from '@/db/schema';
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command';
+import { useState } from 'react';
 import { Button } from '../ui/button';
+import { twMerge } from 'tailwind-merge';
 import { actions } from 'astro:actions';
+import type { MatchingUser } from '@/lib/types';
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command';
 
 type CommandPalette = {
     isOpen: boolean;
     userId: string;
     onClose: () => void;
     searchedUser: string;
-    users: User[] | null | undefined;
+    users: MatchingUser[] | null | undefined;
 };
 
 export default function SearchFriednCmdK({ users, userId, searchedUser, isOpen, onClose }: CommandPalette) {
     const [search, setSearch] = useState(searchedUser);
-    const [selectedUser, setSelectedUser] = useState('');
-
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        const formData = new FormData(e.target as HTMLFormElement);
-
-        const { data, error } = await actions.friends.sendFriendRequest({ userId: userId, friendId: '' });
-
-        onClose();
-
-    }
 
     async function handleAddFriend(event: React.MouseEvent<HTMLButtonElement>, friendId: string) {
         event.preventDefault();
 
         const { data, error } = await actions.friends.sendFriendRequest({ userId: userId, friendId: friendId });
 
-        console.log(data)
+        console.log(data);
         // onClose();
     }
 
     return (
         <CommandDialog open={isOpen} onOpenChange={onClose}>
-            <CommandInput defaultValue={searchedUser} value={search} onValueChange={setSearch} placeholder="Search user..." />
+            <CommandInput value={searchedUser} onValueChange={setSearch} placeholder="Search user..." />
             <CommandList>
                 <CommandEmpty>
                     <span className='text-gray-600'>No user named </span>
@@ -63,8 +53,12 @@ export default function SearchFriednCmdK({ users, userId, searchedUser, isOpen, 
                                     <Button
                                         variant='ghost' size='sm'
                                         onClick={(event) => handleAddFriend(event, user.id)}
-                                        className='h-7 w-fit text-gray-600 group-hover:text-orange-600 group-hover:bg-orange-200/30 hover:bg-orange-300'>
-                                        Add as friend
+                                        className={twMerge(
+                                            'h-7 w-fit text-gray-600',
+                                            user.friendshipStatus ? 'hover:text-gray-800 hover:bg-gray-200/50' : 'group-hover:text-orange-600 group-hover:bg-orange-200/30'
+                                        )}
+                                        >
+                                        {user.friendshipStatus ? 'Pending' : 'Add friend'}
                                     </Button>
                                 </div>
                             </div>

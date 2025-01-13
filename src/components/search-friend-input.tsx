@@ -1,10 +1,10 @@
 import { Input } from './ui/input';
-import type { User } from '@/db/schema';
+import { actions } from 'astro:actions';
 import { useRef, useState } from 'react';
 import { SmilePlus, X } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
-import { actions } from 'astro:actions';
+import type { MatchingUser } from '@/lib/types';
 import SearchFriednCmdK from './cmdk/friends-cmdk';
+import { AnimatePresence, motion } from 'motion/react';
 
 type SearchFriendInputProps = {
     userId: string;
@@ -16,7 +16,7 @@ export default function SearchFriendInput({ userId }: SearchFriendInputProps) {
     const [isAnimating, setIsAnimating] = useState(false);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const [isCommandOpen, setIsCommandOpen] = useState(false)
-    const [searchedUsers, setSearchedUsers] = useState<User[] | null | undefined>([]);
+    const [searchedUsers, setSearchedUsers] = useState<MatchingUser[] | null | undefined>([]);
 
     const toggleCommand = () => setIsCommandOpen((prev) => !prev)
 
@@ -54,7 +54,7 @@ export default function SearchFriendInput({ userId }: SearchFriendInputProps) {
         if (event.key === "Enter") {
             event.preventDefault();
 
-            const { data, error } = await actions.friends.searchFriend({ userId: userId, keyword: searchValue.trim() });
+            const { data, error } = await actions.friends.searchUser({ userId: userId, keyword: searchValue.trim() });
 
             if(data?.success){
                 setSearchedUsers(data?.matchingUsers);
