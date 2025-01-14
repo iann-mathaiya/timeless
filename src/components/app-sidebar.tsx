@@ -114,11 +114,6 @@ const data = {
   ],
 };
 
-// type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
-//   user: User;
-//   currentPath: string
-// };
-
 export function AppSidebar() {
   const [user] = useAtom(userAtom);
   const [currentPath] = useAtom(currentPathAtom);

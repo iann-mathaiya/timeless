@@ -26,7 +26,7 @@ export function NavTimeline({ userId }: NavTimelineProps) {
 
         const newPosts = data.postData.reduce(
           (acc, post) => {
-            const date = post.createdAt.split(" ")[0]; // Extract the date portion
+            const date = String(post.createdAt)
             if (!acc[date]) {
               acc[date] = [];
             }
@@ -55,7 +55,7 @@ export function NavTimeline({ userId }: NavTimelineProps) {
         {timeline?.map((entry) => (
           <SidebarMenuItem key={entry.createdAt}>
             <SidebarMenuButton className="max-h-7 group flex items-center justify-between">
-                <span className="text-xs text-gray-600 group-hover:text-gray-900">{format(entry.createdAt, 'ccc do MMM')}</span>
+                {/* <span className="text-xs text-gray-600 group-hover:text-gray-900">{format(entry.createdAt, 'ccc do MMM')}</span> */}
                 <div className="flex items-center gap-x-0.5">
                   {entry.posts.map(dot =>
                     // <DotIcon key={dot.id} className="size-4" />
