@@ -115,26 +115,19 @@ const data = {
 };
 
 export function AppSidebar() {
-  const [user] = useAtom(userAtom);
-  const [currentPath] = useAtom(currentPathAtom);
 
-  console.log('User in Settings:', user);
-  console.log('Current Path in Settings:', currentPath);
-
-  if (user) {
-    return (
-      <Sidebar className="border-r-0" >
-        <SidebarHeader>
-          <Profile name={user.name} imageSrc={user.image} />
-          <NavMain items={data.navMain} />
-        </SidebarHeader>
-        <SidebarContent>
-          <NavTimeline userId={user.id} />
-          {/* <NavCollections collections={data.collections} /> */}
-          <NavSecondary items={data.navSecondary} className="mt-auto" />
-        </SidebarContent>
-        <SidebarRail />
-      </Sidebar>
-    );
-  }
+  return (
+    <Sidebar className="border-r-0" >
+      <SidebarHeader>
+        <Profile />
+        <NavMain items={data.navMain} />
+      </SidebarHeader>
+      <SidebarContent>
+        {/* <NavTimeline userId={user.id} /> */}
+        {/* <NavCollections collections={data.collections} /> */}
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
+      </SidebarContent>
+      <SidebarRail />
+    </Sidebar>
+  );
 }

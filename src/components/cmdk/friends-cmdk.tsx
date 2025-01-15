@@ -4,16 +4,19 @@ import { twMerge } from 'tailwind-merge';
 import { actions } from 'astro:actions';
 import type { MatchingUser } from '@/lib/types';
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../ui/command';
+import { userIdAtom } from '@/lib/store';
+import { useAtom } from 'jotai';
 
 type CommandPalette = {
     isOpen: boolean;
-    userId: string;
     onClose: () => void;
     searchedUser: string;
     users: MatchingUser[] | null | undefined;
 };
 
-export default function SearchFriednCmdK({ users, userId, searchedUser, isOpen, onClose }: CommandPalette) {
+export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose }: CommandPalette) {
+      const [userId] = useAtom(userIdAtom);
+
     const [search, setSearch] = useState('');
 
     useEffect(() => {
@@ -26,7 +29,6 @@ export default function SearchFriednCmdK({ users, userId, searchedUser, isOpen, 
         const { data, error } = await actions.friends.sendFriendRequest({ userId: userId, friendId: friendId });
 
         console.log(data);
-        // onClose();
     }
 
     return (

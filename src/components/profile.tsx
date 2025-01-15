@@ -4,13 +4,15 @@ import { ChevronDown, CircleHelp, LightbulbIcon, LogOutIcon, Settings, User } fr
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Link from "./link";
+import { useAtom } from "jotai";
+import { userAtom } from "@/lib/store";
 
-type ProfileProps = {
-  name: string;
-  imageSrc: string | null | undefined;
-};
+export function Profile() {
+  const [user] = useAtom(userAtom);
 
-export function Profile({ name, imageSrc }: ProfileProps) {
+  if(!user) {
+    return 
+  }
 
   return (
     <SidebarMenu>
@@ -20,13 +22,13 @@ export function Profile({ name, imageSrc }: ProfileProps) {
             <SidebarMenuButton className="w-fit px-1.5">
               <div className="flex aspect-square size-5 items-center justify-center rounded-md bg-transparent overflow-hidden">
                 {
-                  imageSrc ?
-                    <img className="size-5" src={imageSrc} alt={`${name} profile`} />
+                  user.image ?
+                    <img className="size-5" src={user.image} alt={`${user.name} profile`} />
                     :
                     <div className="size-5 bg-gradient-to-br from-[#08203e] to-[#557c93]" />
                 }
               </div>
-              <span className="truncate font-medium text-gray-900">{name}</span>
+              <span className="truncate font-medium text-gray-900">{user.name}</span>
               <ChevronDown className="opacity-50" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>

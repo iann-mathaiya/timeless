@@ -13,7 +13,7 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar"
 import type { User } from "@/db/schema";
-import { currentPathAtom, userAtom } from "@/lib/store";
+import { currentPathAtom, userAtom, userIdAtom } from "@/lib/store";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { useEffect } from "react";
 
@@ -26,12 +26,14 @@ type SidebarProps = {
 
 export function Sidebar({ user, currentPath, pageTitle, children }: SidebarProps) {
     const setUser = useSetAtom(userAtom);
+    const setUserId = useSetAtom(userIdAtom);
     const setCurrentPath = useSetAtom(currentPathAtom);
 
     useEffect(() => {
         setUser(user);
+        setUserId(user.id)
         setCurrentPath(currentPath);
-    }, [user, currentPath, setUser, setCurrentPath]);
+    }, [user, currentPath, setUser, setUserId, setCurrentPath]);
 
     return (
         <SidebarProvider>
@@ -52,7 +54,7 @@ export function Sidebar({ user, currentPath, pageTitle, children }: SidebarProps
                         </Breadcrumb>
                     </div>
                     <div className="ml-auto px-3">
-                        <NavActions currentPath={currentPath} userId={user.id} />
+                        <NavActions />
                     </div>
                 </header>
 

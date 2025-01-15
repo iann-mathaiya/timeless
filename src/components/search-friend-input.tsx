@@ -5,20 +5,20 @@ import { SmilePlus, X } from 'lucide-react';
 import type { MatchingUser } from '@/lib/types';
 import SearchFriednCmdK from './cmdk/friends-cmdk';
 import { AnimatePresence, motion } from 'motion/react';
+import { useAtom } from 'jotai';
+import { userIdAtom } from '@/lib/store';
 
-type SearchFriendInputProps = {
-    userId: string;
-};
+export default function SearchFriendInput() {
+    const [userId] = useAtom(userIdAtom);
 
-export default function SearchFriendInput({ userId }: SearchFriendInputProps) {
     const [showInput, setShowInput] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const [isAnimating, setIsAnimating] = useState(false);
     const inputRef = useRef<HTMLInputElement | null>(null);
-    const [isCommandOpen, setIsCommandOpen] = useState(false)
+    const [isCommandOpen, setIsCommandOpen] = useState(false);
     const [searchedUsers, setSearchedUsers] = useState<MatchingUser[] | null | undefined>([]);
 
-    const toggleCommand = () => setIsCommandOpen((prev) => !prev)
+    const toggleCommand = () => setIsCommandOpen((prev) => !prev);
 
     function focusInput() {
         setTimeout(() => {
@@ -56,17 +56,17 @@ export default function SearchFriendInput({ userId }: SearchFriendInputProps) {
 
             const { data, error } = await actions.friends.searchUser({ userId: userId, keyword: searchValue.trim() });
 
-            if(data?.success){
+            if (data?.success) {
                 setSearchedUsers(data?.matchingUsers);
-                console.log(searchedUsers)
-                setIsCommandOpen(true)
+                console.log(searchedUsers);
+                setIsCommandOpen(true);
             }
         }
     };
 
     return (
         <div className="relative">
-            <SearchFriednCmdK users={searchedUsers} userId={userId} searchedUser={searchValue} isOpen={isCommandOpen} onClose={toggleCommand} />
+            <SearchFriednCmdK users={searchedUsers} searchedUser={searchValue} isOpen={isCommandOpen} onClose={toggleCommand} />
             <AnimatePresence initial={false} mode='wait' presenceAffectsLayout={false}>
                 {showInput ?
                     <motion.div
