@@ -1,12 +1,12 @@
 CREATE TABLE `friends` (
 	`id` text PRIMARY KEY NOT NULL,
-	`user_Id` text NOT NULL,
-	`friend_Id` text NOT NULL,
+	`respondent_id` text NOT NULL,
+	`requester_id` text NOT NULL,
 	`createdAt` integer NOT NULL,
 	`updatedAt` integer NOT NULL,
 	`status` text DEFAULT 'pending' NOT NULL,
-	FOREIGN KEY (`user_Id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`friend_Id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`respondent_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`requester_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 PRAGMA foreign_keys=OFF;--> statement-breakpoint

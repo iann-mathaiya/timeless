@@ -17,3 +17,10 @@ export type MatchingUser = {
     friendshipStatus: "pending" | "accepted" | "rejected" | null;
     isRequester: boolean | null;
 }
+
+export type Friend = {
+    id: string;
+    name: string;
+    email: string;
+    image: string | null;
+  };

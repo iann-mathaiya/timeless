@@ -40,18 +40,18 @@ export const friends = {
                     email: users.email,
                     image: users.image,
                     friendshipStatus: friendsSchema.status,
-                    isRequester: sql<boolean>`${friendsSchema.userId} = ${user.id}`
+                    isRequester: sql<boolean>`${friendsSchema.requesterId} = ${user.id}`
                 }).from(users)
                     .leftJoin(
                         friendsSchema,
                         or(
                             and(
-                                eq(friendsSchema.userId, user.id),
-                                eq(friendsSchema.friendId, users.id)
+                                eq(friendsSchema.requesterId, user.id),
+                                eq(friendsSchema.respondentId, users.id)
                             ),
                             and(
-                                eq(friendsSchema.friendId, user.id),
-                                eq(friendsSchema.userId, users.id)
+                                eq(friendsSchema.respondentId, user.id),
+                                eq(friendsSchema.requesterId, users.id)
                             )
                         )
                     )
@@ -60,7 +60,7 @@ export const friends = {
                             or(like(users.email, searchKeyword), like(users.name, searchKeyword)),
                             not(eq(users.id, user.id))
                         )
-                    ) as unknown as MatchingUser[]
+                    ) as unknown as MatchingUser[];
 
                 return { success: true, matchingUsers };
             } catch (error) {
@@ -72,9 +72,9 @@ export const friends = {
     sendFriendRequest: defineAction({
         input: z.object({
             userId: z.string(),
-            friendId: z.string(),
+            requestedfriendId: z.string(),
         }),
-        handler: async ({ userId, friendId }, context) => {
+        handler: async ({ userId, requestedfriendId }, context) => {
             const { env } = context.locals.runtime;
             const db = drizzle(env.ARS_DB);
 
@@ -95,14 +95,57 @@ export const friends = {
 
                 const friendRequestData = await db.insert(friendsSchema).values({
                     id: crypto.randomUUID(),
-                    userId: userId,
-                    friendId: friendId,
+                    requesterId: userId,
+                    respondentId: requestedfriendId,
                     status: "pending",
                     createdAt: new Date(),
                     updatedAt: new Date()
                 });
 
                 return { success: true, friendRequestData };
+            } catch (error) {
+                console.error(error);
+                return { message: "An unexpected error occurred." };
+            }
+        }
+    }),
+    getFriendReqests: defineAction({
+        input: z.object({
+            userId: z.string(),
+        }),
+        handler: async ({  userId }, context) => {
+            const { env } = context.locals.runtime;
+            const db = drizzle(env.ARS_DB);
+
+            try {
+                const authDetails = await auth.api.getSession({
+                    headers: context.request.headers,
+                });
+
+                if (!authDetails) {
+                    throw new ActionError({ code: 'UNAUTHORIZED' });
+                }
+
+                const { user } = authDetails;
+
+                if (user.id !== userId) {
+                    throw new ActionError({ code: 'FORBIDDEN' });
+                }
+
+                const pendingRequests = await db.select({
+                    id: users.id,
+                    name: users.name,
+                    email: users.email,
+                    image: users.image
+                  })
+                  .from(users)
+                  .innerJoin(friendsSchema, and(
+                    // eq(users.id, friendsSchema.friendId),
+                    eq(friendsSchema.respondentId, userId),
+                    eq(friendsSchema.status, 'pending')
+                  ));
+                
+                return { success: true, pendingRequests };
             } catch (error) {
                 console.error(error);
                 return { message: "An unexpected error occurred." };

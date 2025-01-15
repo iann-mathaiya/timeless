@@ -23,8 +23,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import Link from "./link";
 import SearchFriendInput from "./search-friend-input";
-import { currentPathAtom } from "@/lib/store";
+import { currentPathAtom, userIdAtom } from "@/lib/store";
 import { useAtom } from "jotai";
+import { actions } from "astro:actions";
+import type { Friend } from "@/lib/types";
 
 const data = [
   [
@@ -91,21 +93,37 @@ const data = [
 
 
 export function NavActions() {
-    const [currentPath] = useAtom(currentPathAtom);
+  const [userId] = useAtom(userIdAtom);
+  const [currentPath] = useAtom(currentPathAtom);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
+  const [pendingRequests, setPendingRequest] = useState<Friend[]>([]);
+
+  useEffect(() => {
+    async function fetchPendingRequests() {
+      const { data, error } = await actions.friends.getFriendReqests({ userId: userId });
+
+      if (data?.success) {
+        setPendingRequest(data.pendingRequests);
+      }
+    }
+    fetchPendingRequests();
+    
+  }, [userId]);
+  
+  console.log(pendingRequests)
 
   return (
     <div className="flex items-center gap-2 text-sm">
       <SearchFriendInput />
-      
+
       {currentPath !== '/create-post' &&
         <Link href="/create-post" className="pl-2 pr-3 py-1 h-7 w-fit flex items-center gap-2 text-gray-900 bg-transparent hover:bg-gray-200 rounded-md focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-gray-900 transition-all duration-300 ease-in-out">
           <Plus className="size-4" />
           <span>Add Post</span>
         </Link>
       }
-      {/* <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="ghost"
@@ -116,30 +134,14 @@ export function NavActions() {
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-56 overflow-hidden rounded-lg p-0"
+          className="p-2 w-72 sm:w-96 overflow-hidden rounded-lg"
           align="end"
         >
-          <Sidebar collapsible="none" className="bg-transparent">
-            <SidebarContent>
-              {data.map((group, index) => (
-                <SidebarGroup key={index} className="border-b last:border-none">
-                  <SidebarGroupContent className="gap-0">
-                    <SidebarMenu>
-                      {group.map((item, index) => (
-                        <SidebarMenuItem key={index}>
-                          <SidebarMenuButton>
-                            <item.icon /> <span>{item.label}</span>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      ))}
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </SidebarGroup>
-              ))}
-            </SidebarContent>
-          </Sidebar>
+          <span className="text-sm text-gray-600">Friend Requests</span>
+
+          <pre>{JSON.stringify(pendingRequests, null, 2)}</pre>
         </PopoverContent>
-      </Popover> */}
+      </Popover>
     </div>
   );
 }

@@ -23,10 +23,10 @@ export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose 
         setSearch(searchedUser);
     }, [searchedUser]);
 
-    async function sendFriendRequest(event: React.MouseEvent<HTMLButtonElement>, friendId: string) {
+    async function sendFriendRequest(event: React.MouseEvent<HTMLButtonElement>, requestedfriendId: string) {
         event.preventDefault();
 
-        const { data, error } = await actions.friends.sendFriendRequest({ userId: userId, friendId: friendId });
+        const { data, error } = await actions.friends.sendFriendRequest({ userId: userId, requestedfriendId: requestedfriendId });
 
         console.log(data);
     }

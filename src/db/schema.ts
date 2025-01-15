@@ -29,8 +29,8 @@ export type User = typeof users.$inferSelect;
 
 export const friends = sqliteTable("friends", {
 	id: text("id").primaryKey(),
-	userId: text("user_Id").notNull().references(() => users.id),
-	friendId: text("friend_Id").notNull().references(() => users.id),
+	respondentId: text("respondent_id").notNull().references(() => users.id),
+	requesterId: text("requester_id").notNull().references(() => users.id),
 	createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
 	updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
 	status: text("status", { enum: ["pending", "accepted", "rejected"] }).notNull().default("pending"),
