@@ -15,20 +15,27 @@ type CommandPalette = {
 };
 
 export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose }: CommandPalette) {
-      const [userId] = useAtom(userIdAtom);
+    const [userId] = useAtom(userIdAtom);
 
     const [search, setSearch] = useState('');
 
     useEffect(() => {
-        setSearch(searchedUser)
-    }, [searchedUser])
+        setSearch(searchedUser);
+    }, [searchedUser]);
 
-    async function handleAddFriend(event: React.MouseEvent<HTMLButtonElement>, friendId: string) {
+    async function sendFriendRequest(event: React.MouseEvent<HTMLButtonElement>, friendId: string) {
         event.preventDefault();
 
         const { data, error } = await actions.friends.sendFriendRequest({ userId: userId, friendId: friendId });
 
         console.log(data);
+    }
+
+    async function acceptFriendRequest(event: React.MouseEvent<HTMLButtonElement>, friendId: string) {
+        event.preventDefault();
+
+        // action to accept friend request
+        
     }
 
     return (
@@ -56,15 +63,27 @@ export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose 
                                         <p className="text-gray-600 text-pretty">{user.email}</p>
                                     </div>
 
-                                    {user.friendshipStatus !== 'accepted' &&
+                                    {(user.friendshipStatus !== 'accepted' && user.friendshipStatus !== 'pending') &&
                                         <Button
                                             variant='ghost' size='sm'
-                                            disabled={user.friendshipStatus === 'pending'}
-                                            onClick={(event) => handleAddFriend(event, user.id)}
+                                            onClick={(event) => sendFriendRequest(event, user.id)}
                                             className="h-7 w-fit text-gray-600 group-hover:text-orange-600 group-hover:bg-orange-200/30"
                                         >
-                                            {user.friendshipStatus === 'pending' && 'Pending'}
                                             {(user.friendshipStatus === 'rejected' || user.friendshipStatus === null) && 'Add friend'}
+                                        </Button>
+                                    }
+                                    {
+                                        user.friendshipStatus === 'pending' &&
+                                        <Button
+                                            variant='ghost' size='sm'
+                                            onClick={(event) => acceptFriendRequest(event, user.id)}
+                                            disabled={(user.isRequester as unknown as number) === 1}
+                                            className={twMerge(
+                                                "h-7 w-fit text-gray-600 group-hover:text-orange-600 group-hover:bg-orange-200/30", 
+                                                (user.isRequester as unknown as number) === 1 && 'group-hover:text-gray-900 group-hover:bg-gray-200'
+                                            )}
+                                        >
+                                            {!user.isRequester ? 'Accept request' : 'Pending'}
                                         </Button>
                                     }
                                 </div>
