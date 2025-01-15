@@ -1,7 +1,7 @@
 import { z } from 'astro:schema';
 import { auth } from '@/lib/auth';
 import { drizzle } from 'drizzle-orm/d1';
-import type { MatchingUser } from '@/lib/types';
+import type { MatchingUser, PendingFriendRequest } from '@/lib/types';
 import { and, eq, like, not, or, sql } from 'drizzle-orm';
 import { ActionError, defineAction } from "astro:actions";
 import { users, friends as friendsSchema, type Friend } from '@/db/schema';
@@ -133,17 +133,19 @@ export const friends = {
                 }
 
                 const pendingRequests = await db.select({
-                    id: users.id,
-                    name: users.name,
-                    email: users.email,
-                    image: users.image
-                  })
-                  .from(users)
-                  .innerJoin(friendsSchema, and(
-                    // eq(users.id, friendsSchema.friendId),
+                  id: friendsSchema.id,
+                  status: friendsSchema.status,
+                  createdAt: friendsSchema.createdAt,
+                  requester: { id: users.id, name: users.name, email: users.email, image: users.image},
+                })
+                .from(friendsSchema)
+                .innerJoin(users, eq(users.id, friendsSchema.requesterId))
+                .where(
+                  and(
                     eq(friendsSchema.respondentId, userId),
                     eq(friendsSchema.status, 'pending')
-                  ));
+                  )
+                ) as unknown as PendingFriendRequest[]
                 
                 return { success: true, pendingRequests };
             } catch (error) {

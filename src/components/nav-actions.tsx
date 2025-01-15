@@ -26,7 +26,7 @@ import SearchFriendInput from "./search-friend-input";
 import { currentPathAtom, userIdAtom } from "@/lib/store";
 import { useAtom } from "jotai";
 import { actions } from "astro:actions";
-import type { Friend } from "@/lib/types";
+import type { PendingFriendRequest } from "@/lib/types";
 
 const data = [
   [
@@ -97,7 +97,7 @@ export function NavActions() {
   const [currentPath] = useAtom(currentPathAtom);
 
   const [isOpen, setIsOpen] = useState(true);
-  const [pendingRequests, setPendingRequest] = useState<Friend[]>([]);
+  const [pendingRequests, setPendingRequest] = useState<PendingFriendRequest[]>([]);
 
   useEffect(() => {
     async function fetchPendingRequests() {
@@ -110,7 +110,7 @@ export function NavActions() {
     fetchPendingRequests();
     
   }, [userId]);
-  
+
   console.log(pendingRequests)
 
   return (

@@ -16,17 +16,29 @@ type CommandPalette = {
 
 export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose }: CommandPalette) {
     const [userId] = useAtom(userIdAtom);
+    const [isLoading, setIsLoading] = useState(false);
+    const [relevantUsers, setRelevantUsers] = useState<MatchingUser[] | null | undefined>([]);
 
-    const [search, setSearch] = useState('');
+    const [searchValue, setSearchValue] = useState('');
+
 
     useEffect(() => {
-        setSearch(searchedUser);
-    }, [searchedUser]);
+        setSearchValue(searchedUser);
+        setRelevantUsers(users)
+    }, [searchedUser, users]);
 
     async function sendFriendRequest(event: React.MouseEvent<HTMLButtonElement>, requestedfriendId: string) {
         event.preventDefault();
 
+        setIsLoading(true);
+
         const { data, error } = await actions.friends.sendFriendRequest({ userId: userId, requestedfriendId: requestedfriendId });
+
+        if (data?.success) {
+            const { data: newUsersData, error } = await actions.friends.searchUser({ userId: userId, keyword: searchValue.trim() });
+            setRelevantUsers(newUsersData?.matchingUsers)
+            setIsLoading(false);
+        }
 
         console.log(data);
     }
@@ -35,20 +47,20 @@ export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose 
         event.preventDefault();
 
         // action to accept friend request
-        
+
     }
 
     return (
         <CommandDialog open={isOpen} onOpenChange={onClose}>
-            <CommandInput value={search} onValueChange={setSearch} placeholder="Search user..." />
+            <CommandInput value={searchValue} onValueChange={setSearchValue} placeholder="Search user..." />
             <CommandList>
                 <CommandEmpty>
                     <span className='text-gray-600'>No user named </span>
-                    <span className='text-gray-900 font-medium'>{search} </span>
+                    <span className='text-gray-900 font-medium'>{searchValue} </span>
                     <span className='text-gray-600'>found.</span>
                 </CommandEmpty>
                 <CommandGroup heading="Users found:">
-                    {users?.map(user =>
+                    {relevantUsers?.map(user =>
                         <CommandItem key={user.id} asChild className='group data-[selected=true]:bg--transparent hover:bg-transparent hover:cursor-pointer'>
                             <div className="pl-1 w-full flex gap-2 sm:gap-3 bg-transparent hover:bg-gray-100/85 hover:cursor-pointer">
                                 {user.image ?
@@ -66,10 +78,12 @@ export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose 
                                     {(user.friendshipStatus !== 'accepted' && user.friendshipStatus !== 'pending') &&
                                         <Button
                                             variant='ghost' size='sm'
+                                            disabled={isLoading}
                                             onClick={(event) => sendFriendRequest(event, user.id)}
                                             className="h-7 w-fit text-gray-600 group-hover:text-orange-600 group-hover:bg-orange-200/30"
                                         >
                                             {(user.friendshipStatus === 'rejected' || user.friendshipStatus === null) && 'Add friend'}
+                                            {isLoading && 'Sending request'}
                                         </Button>
                                     }
                                     {
@@ -79,7 +93,7 @@ export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose 
                                             onClick={(event) => acceptFriendRequest(event, user.id)}
                                             disabled={(user.isRequester as unknown as number) === 1}
                                             className={twMerge(
-                                                "h-7 w-fit text-gray-600 group-hover:text-orange-600 group-hover:bg-orange-200/30", 
+                                                "h-7 w-fit text-gray-600 group-hover:text-orange-600 group-hover:bg-orange-200/30",
                                                 (user.isRequester as unknown as number) === 1 && 'group-hover:text-gray-900 group-hover:bg-gray-200'
                                             )}
                                         >

@@ -1,13 +1,13 @@
-export type FileType = "image/webp" | "image/jpeg" | "image/png" | "video/mp4"
+export type FileType = "image/webp" | "image/jpeg" | "image/png" | "video/mp4";
 
 export type Media = {
-    mediaURL: string
-    fileType: FileType
-}
+    mediaURL: string;
+    fileType: FileType;
+};
 
-export type UploadedFiles =  { fileName: string, fileType: FileType };
+export type UploadedFiles = { fileName: string, fileType: FileType; };
 
-export type FriendRequestStatus = "pending" | "accepted" | "rejected"
+export type FriendRequestStatus = "pending" | "accepted" | "rejected";
 
 export type MatchingUser = {
     id: string;
@@ -16,11 +16,11 @@ export type MatchingUser = {
     image: string | null;
     friendshipStatus: "pending" | "accepted" | "rejected" | null;
     isRequester: boolean | null;
-}
+};
 
-export type Friend = {
+export type PendingFriendRequest = {
     id: string;
-    name: string;
-    email: string;
-    image: string | null;
-  };
+    createdAt: Date;
+    status: "pending";
+    requester: { id: string; name: string; email: string; image: string | null; };
+};
