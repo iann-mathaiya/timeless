@@ -9,31 +9,36 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 
 export default function Notifications() {
     const [userId] = useAtom(userIdAtom);
-  const [isOpen, setIsOpen] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
-  const [pendingRequests, setPendingRequest] = useState<PendingFriendRequest[]>([]);
+    const [pendingRequests, setPendingRequest] = useState<PendingFriendRequest[]>([]);
 
-  useEffect(() => {
+    useEffect(() => {
+        fetchPendingRequests();
+    }, []);
+
     async function fetchPendingRequests() {
-      const { data, error } = await actions.friends.getFriendReqests({ userId: userId });
+        const { data, error } = await actions.friends.getFriendReqests({ userId: userId });
 
-      if (data?.success) {
-        setPendingRequest(data.pendingRequests);
-      }
+        if (data?.success) {
+            setPendingRequest(data.pendingRequests);
+        }
     }
-    fetchPendingRequests();
-    
-  }, [userId]);
 
-  async function acceptFriendRequest(event: React.MouseEvent<HTMLButtonElement>, respondentId: string) {
-    event.preventDefault();
+    async function acceptFriendRequest(event: React.MouseEvent<HTMLButtonElement>, requesterId: string) {
+        event.preventDefault();
+        setIsLoading(true)
+        const { data, error } = await actions.friends.acceptFriendRequest({respondentId: userId, requesterId: requesterId})
 
-    // action to accept friend request
+        if(data?.success) {
+            fetchPendingRequests()
+            setIsLoading(false)
+        }
 
-}
+    }
 
-  
+
     return (
         <Popover open={isOpen} onOpenChange={setIsOpen}>
             <PopoverTrigger asChild>
@@ -55,19 +60,19 @@ export default function Notifications() {
                 <span className="text-xs text-gray-600">Friend Requests</span>
 
                 <ul className="mt-1 space-y-1">
-                    {pendingRequests.map(pendingRequest => 
-                        <li  key={pendingRequest.id} className="p-2 w-full group flex gap-2 bg-transparent rounded-md">
-                        {pendingRequest.requester.image ?
-                            <img src={pendingRequest.requester.image} alt={`${pendingRequest.requester.name} profile`} className="mt-0.5 size-5 sm:size-7 rounded-full" />
-                            :
-                            <div className="mt-0.5 py-4 pl-6 size-5 sm:size-7 rounded-full" />
-                        }
+                    {pendingRequests.map(pendingRequest =>
+                        <li key={pendingRequest.id} className="p-2 w-full group flex gap-2 bg-transparent rounded-md">
+                            {pendingRequest.requester.image ?
+                                <img src={pendingRequest.requester.image} alt={`${pendingRequest.requester.name} profile`} className="mt-0.5 size-5 sm:size-7 rounded-full" />
+                                :
+                                <div className="mt-0.5 py-4 pl-6 size-5 sm:size-7 rounded-full" />
+                            }
 
-                        <div className="w-full flex items-center justify-between">
-                            <div className="pr-6 w-full h-full space-y-0 text-xs">
-                                <h2 className="text-gray-900 font-medium">{pendingRequest.requester.name}</h2>
-                                <p className="text-gray-600 text-pretty lowercase">{pendingRequest.requester.email}</p>
-                            </div>
+                            <div className="w-full flex items-center justify-between">
+                                <div className="pr-6 w-full h-full space-y-0 text-xs">
+                                    <h2 className="text-gray-900 font-medium">{pendingRequest.requester.name}</h2>
+                                    <p className="text-gray-600 text-pretty lowercase">{pendingRequest.requester.email}</p>
+                                </div>
 
                                 <Button
                                     variant='ghost' size='sm'
@@ -77,8 +82,8 @@ export default function Notifications() {
                                 >
                                     {isLoading ? 'Processing...' : 'Accept'}
                                 </Button>
-                        </div>
-                    </li>
+                            </div>
+                        </li>
                     )}
                 </ul>
 

@@ -62,7 +62,7 @@ export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose 
                 <CommandGroup heading="Users found:">
                     {relevantUsers?.map(user =>
                         <CommandItem key={user.id} asChild className='group data-[selected=true]:bg--transparent hover:bg-transparent hover:cursor-pointer'>
-                            <div className="pl-1 w-full flex gap-2 sm:gap-3 bg-transparent hover:bg-gray-100/85 hover:cursor-pointer">
+                            <div className="pl-1 w-full flex gap-2 sm:gap-3 bg-transparent">
                                 {user.image ?
                                     <img src={user.image} alt={`${user.name} profile`} className="mt-0.5 size-5 sm:size-7 rounded-full" />
                                     :
@@ -80,7 +80,7 @@ export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose 
                                             variant='ghost' size='sm'
                                             disabled={isLoading}
                                             onClick={(event) => sendFriendRequest(event, user.id)}
-                                            className="h-7 w-fit text-gray-600 group-hover:text-orange-600 group-hover:bg-orange-200/30"
+                                            className="h-7 w-fit text-gray-600 group-hover:text-orange-600 group-hover:bg-orange-200/30 border border-transparent hover:border-orange-600/50"
                                         >
                                             {(user.friendshipStatus === 'rejected' || user.friendshipStatus === null) && 'Add friend'}
                                             {isLoading && 'Sending request'}
@@ -93,7 +93,7 @@ export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose 
                                             onClick={(event) => acceptFriendRequest(event, user.id)}
                                             disabled={(user.isRequester as unknown as number) === 1}
                                             className={twMerge(
-                                                "h-7 w-fit text-gray-600 group-hover:text-orange-600 group-hover:bg-orange-200/30",
+                                                "h-7 w-fit text-gray-600 group-hover:text-orange-600 group-hover:bg-orange-200/30 border border-transparent hover:border-orange-600/50",
                                                 (user.isRequester as unknown as number) === 1 && 'group-hover:text-gray-900 group-hover:bg-gray-200'
                                             )}
                                         >

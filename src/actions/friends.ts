@@ -113,7 +113,7 @@ export const friends = {
         input: z.object({
             userId: z.string(),
         }),
-        handler: async ({  userId }, context) => {
+        handler: async ({ userId }, context) => {
             const { env } = context.locals.runtime;
             const db = drizzle(env.ARS_DB);
 
@@ -133,25 +133,64 @@ export const friends = {
                 }
 
                 const pendingRequests = await db.select({
-                  id: friendsSchema.id,
-                  status: friendsSchema.status,
-                  createdAt: friendsSchema.createdAt,
-                  requester: { id: users.id, name: users.name, email: users.email, image: users.image},
+                    id: friendsSchema.id,
+                    status: friendsSchema.status,
+                    createdAt: friendsSchema.createdAt,
+                    requester: { id: users.id, name: users.name, email: users.email, image: users.image },
                 })
-                .from(friendsSchema)
-                .innerJoin(users, eq(users.id, friendsSchema.requesterId))
-                .where(
-                  and(
-                    eq(friendsSchema.respondentId, userId),
-                    eq(friendsSchema.status, 'pending')
-                  )
-                ) as unknown as PendingFriendRequest[]
-                
+                    .from(friendsSchema)
+                    .innerJoin(users, eq(users.id, friendsSchema.requesterId))
+                    .where(
+                        and(
+                            eq(friendsSchema.respondentId, userId),
+                            eq(friendsSchema.status, 'pending')
+                        )
+                    ) as unknown as PendingFriendRequest[];
+
                 return { success: true, pendingRequests };
             } catch (error) {
                 console.error(error);
                 return { message: "An unexpected error occurred." };
             }
+        }
+    }),
+    acceptFriendRequest: defineAction({
+        input: z.object({
+            respondentId: z.string(),
+            requesterId: z.string(),
+        }),
+        handler: async ({ respondentId, requesterId }, context) => {
+            const { env } = context.locals.runtime;
+            const db = drizzle(env.ARS_DB);
+
+            try {
+                const authDetails = await auth.api.getSession({
+                    headers: context.request.headers,
+                });
+
+                if (!authDetails) {
+                    throw new ActionError({ code: 'UNAUTHORIZED' });
+                }
+
+                const { user } = authDetails;
+
+                if (user.id !== respondentId) {
+                    throw new ActionError({ code: 'FORBIDDEN' });
+                }
+
+                const friendRequestData = await db.update(friendsSchema).set({status: 'accepted'}).where(
+                    and(
+                        eq(friendsSchema.respondentId, respondentId),
+                        eq(friendsSchema.requesterId, requesterId)
+                    )
+                )
+
+                return { success: true, friendRequestData };
+            } catch (error) {
+                console.error(error);
+                return { message: "An unexpected error occurred." };
+            }
+
         }
     })
 
