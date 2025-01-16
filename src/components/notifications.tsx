@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { Bell } from "lucide-react";
+import { Bell, UserSearch } from "lucide-react";
 import { actions } from "astro:actions";
 import { userIdAtom } from "@/lib/store";
 import { useState, useEffect } from "react";
@@ -58,6 +58,16 @@ export default function Notifications() {
                 align="end"
             >
                 <span className="text-xs text-gray-600">Friend Requests</span>
+
+                {pendingRequests.length === 0 && 
+                    <div className="my-10 flex flex-col items-center">
+                        <div className="size-14 flex items-center justify-center border border-dashed border-gray-200 rounded-lg">
+                            <UserSearch className="size-10 stroke-gray-600" aria-hidden />
+                        </div>
+                            <h2 className="mt-4 text-gray-900 text-sm font-medium">No Friend Requests</h2>
+                            <p className="mt-0.5 text-xs text-gray-600">Try searching for your friends instead</p>
+                    </div>
+                }
 
                 <ul className="mt-1 space-y-1">
                     {pendingRequests.map(pendingRequest =>
