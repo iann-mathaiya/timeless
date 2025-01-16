@@ -43,7 +43,7 @@ export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose 
         console.log(data);
     }
 
-    async function acceptFriendRequest(event: React.MouseEvent<HTMLButtonElement>, friendId: string) {
+    async function acceptFriendRequest(event: React.MouseEvent<HTMLButtonElement>, respondentId: string) {
         event.preventDefault();
 
         // action to accept friend request
