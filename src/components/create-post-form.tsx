@@ -75,7 +75,7 @@ export default function CreatePostForm() {
 
     return (
         <form onSubmit={handleSumbit} encType="multipart/form-data" className='mt-4 mx-auto w-full max-w-xl'>
-            <input placeholder='Add title' name='title' className='w-full text-xl font-medium bg-transparent outline-none placeholder:text-gray-400' />
+            <input placeholder='Add title' name='title' required className='w-full text-xl font-medium bg-transparent outline-none placeholder:text-gray-400' />
 
             <textarea placeholder='Write something...' name='description'
                 className={twMerge('mt-2 min-h-20 w-full text-sm outline-none', (uploading || fetchedMedia.length > 0) && 'min-h-fit')} />
@@ -91,12 +91,12 @@ export default function CreatePostForm() {
 
                         {fetchedMedia.map(({ mediaURL, fileType }) =>
                             fileType === 'video/mp4' ?
-                                <video key={`${mediaURL}`} className='aspect-square min-w-80 rounded-lg lg:rounded-xl' controls>
+                                <video key={`${mediaURL}`} className='aspect-square min-w-80 w-80 rounded-lg lg:rounded-xl' controls>
                                     <source src={mediaURL} type="video/mp4" />
                                     <track src="captions_en.vtt" kind="captions" srcLang="en" label="english_captions" />
                                 </video>
                                 :
-                                <img key={`${mediaURL}`} src={mediaURL} alt='Just a placeholder' className='aspect-square min-w-80 object-cover object-center rounded-lg lg:rounded-xl' />
+                                <img key={`${mediaURL}`} src={mediaURL} alt='Just a placeholder' className='aspect-square min-w-80 w-80 object-cover object-center rounded-lg lg:rounded-xl' />
                         )}
                     </div>
                 }

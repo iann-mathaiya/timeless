@@ -15,11 +15,11 @@ export default function Notifications() {
     const [pendingRequests, setPendingRequest] = useState<PendingFriendRequest[]>([]);
 
     useEffect(() => {
-        fetchPendingRequests();
-    }, []);
+        fetchPendingRequests(userId);
+    }, [userId]);
 
-    async function fetchPendingRequests() {
-        const { data, error } = await actions.friends.getFriendReqests({ userId: userId });
+    async function fetchPendingRequests(id: string) {
+        const { data, error } = await actions.friends.getFriendReqests({ userId: id });
 
         if (data?.success) {
             setPendingRequest(data.pendingRequests);
@@ -32,7 +32,7 @@ export default function Notifications() {
         const { data, error } = await actions.friends.acceptFriendRequest({respondentId: userId, requesterId: requesterId})
 
         if(data?.success) {
-            fetchPendingRequests()
+            fetchPendingRequests(userId)
             setIsLoading(false)
         }
 
