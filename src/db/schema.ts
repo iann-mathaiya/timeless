@@ -4,10 +4,10 @@ export const posts = sqliteTable("posts", {
 	id: text("id").primaryKey(),
 	title: text("title").notNull(),
 	description: text("description"),
-	userId: text('user-id').notNull().references(() => users.id),
+	userId: text('userId').notNull().references(() => users.id),
 	media: text('media', { mode: 'json' }).default('[]').notNull(),
-	createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
-	updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
+	createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
+	updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull()
 });
 
 export type Post = typeof posts.$inferSelect; //for select queries
@@ -29,8 +29,8 @@ export type User = typeof users.$inferSelect;
 
 export const friends = sqliteTable("friends", {
 	id: text("id").primaryKey(),
-	respondentId: text("respondent_id").notNull().references(() => users.id),
-	requesterId: text("requester_id").notNull().references(() => users.id),
+	respondentId: text("respondentId").notNull().references(() => users.id),
+	requesterId: text("requesterId").notNull().references(() => users.id),
 	createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
 	updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
 	status: text("status", { enum: ["pending", "accepted", "rejected"] }).notNull().default("pending"),
