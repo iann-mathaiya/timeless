@@ -19,12 +19,12 @@ const { data, error } = await Astro.callAction(actions.media.getUserMedia, {
 });
 
 
-const updatedMedia: { mediaData: Media[]; createdAt: string }[] = [];
+const updatedMedia: { mediaData: Media[]; createdAt: Date }[] = [];
 
 if (data?.success) {
     for (const post of data.userMedia) {
         const media = post.mediaData as UploadedFiles[];
-        const createdAt = post.createdAt as string;
+        const createdAt = post.createdAt as Date
 
         const postMediaURLs = await Promise.all(
             media.map(async (fileData) => {
@@ -54,7 +54,7 @@ if (data?.success) {
 const gallery = Object.values(
     updatedMedia.reduce(
         (acc, item) => {
-            const date = item.createdAt
+            const date = item.createdAt.toISOString().split("T")[0]
             if (!acc[date]) {
                 acc[date] = { createdAt: date, mediaData: [] };
             }
@@ -68,7 +68,6 @@ const gallery = Object.values(
 
 <AppLayout title="Gallery">
     <section class="p-4">
-
         <ul class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center gap-4">
             {
                 gallery.map((post) => (
@@ -94,11 +93,11 @@ const gallery = Object.values(
                                 )} />
                             ))}
                         </div>
-                        {/* <p class="mt-4 text-sm text-center text-gray-600">
+                        <p class="mt-4 text-sm text-center text-gray-600">
                             {parseInt(post.createdAt) === new Date().getFullYear()
                             ? format(post.createdAt, "EEE, MMM do")
                             : format(post.createdAt, "EEE, MMM do yyyy")}
-                        </p> */}
+                        </p>
                     </li>
                 ))
             }

@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 
 export default function Notifications() {
     const [userId] = useAtom(userIdAtom);
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const [pendingRequests, setPendingRequest] = useState<PendingFriendRequest[]>([]);
