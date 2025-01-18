@@ -1,21 +1,13 @@
-import { AppSidebar } from "@/components/app-sidebar"
-import { NavActions } from "@/components/nav-actions"
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbList,
-    BreadcrumbPage,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
-import {
-    SidebarInset,
-    SidebarProvider,
-    SidebarTrigger,
-} from "@/components/ui/sidebar"
-import type { User } from "@/db/schema";
-import { currentPathAtom, userAtom, userIdAtom } from "@/lib/store";
-import { atom, useAtom, useSetAtom } from "jotai";
+import { Toaster } from "sonner";
 import { useEffect } from "react";
+import { useSetAtom } from "jotai";
+import type { User } from "@/db/schema";
+import { NavActions } from "@/components/nav-actions"
+import { AppSidebar } from "@/components/app-sidebar"
+import { Separator } from "@/components/ui/separator"
+import { currentPathAtom, userAtom, userIdAtom } from "@/lib/store";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb"
 
 type SidebarProps = {
     user: User
@@ -42,6 +34,7 @@ export function Sidebar({ user, currentPath, pageTitle, children }: SidebarProps
                 <header className="flex h-14 shrink-0 items-center gap-2">
                     <div className="flex flex-1 items-center gap-2 px-3">
                         <SidebarTrigger />
+                        <Toaster richColors />
                         <Separator orientation="vertical" className="mr-2 h-4" />
                         <Breadcrumb>
                             <BreadcrumbList>

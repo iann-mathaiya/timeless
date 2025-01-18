@@ -4,7 +4,6 @@ import { auth } from "@/lib/auth";
 import type { User } from "@/db/schema";
 import RootLayout from "./RootLayout.astro";
 import { Sidebar } from "@/components/sidebar";
-import { Toaster } from "@/components/ui/sonner";
 
 const { title, description } = Astro.props;
 
@@ -30,7 +29,6 @@ const currentPath = Astro.url.pathname;
             currentPath={currentPath}
         >
             <slot />
-            <Toaster richColors client:load />
         </Sidebar>
     </Provider>
 </RootLayout>
