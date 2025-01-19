@@ -77,5 +77,39 @@ export const posts = {
                 return { message: "An unexpected error occurred." };
             }
         }
+    }),
+    deletePost: defineAction({
+        input: z.object({
+            postId: z.string(),
+            userId: z.string()
+        }),
+        handler: async ({postId, userId}, context) => {
+            const { env } = context.locals.runtime;
+            const db = drizzle(env.ARS_DB);
+
+            try {
+                const authDetails = await auth.api.getSession({
+                    headers: context.request.headers,
+                });
+
+                if (!authDetails) {
+                    throw new ActionError({ code: 'UNAUTHORIZED' });
+                }
+
+                const { user } = authDetails;
+
+                if(user.id !== userId){
+                    throw new ActionError({code: 'FORBIDDEN'})
+                }
+
+                const deletedPost = await db.delete(postsSchema).where(eq(postsSchema.id, postId)).returning({ deletedTitle: postsSchema.title });
+
+                return { success: true, deletedPost };
+
+            } catch (error) {
+                console.error(error);
+                return { message: "An unexpected error occurred." };
+            }
+        }
     })
 };
