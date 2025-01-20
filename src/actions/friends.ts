@@ -190,7 +190,6 @@ export const friends = {
                 console.error(error);
                 return { message: "An unexpected error occurred." };
             }
-
         }
     })
 

@@ -1,6 +1,7 @@
 ---
 import { auth } from "../lib/auth";
 import AppLayout from "../layouts/AppLayout.astro";
+import { actions } from "astro:actions";
 
 const authDetails = await auth.api.getSession({
     headers: Astro.request.headers,
@@ -9,9 +10,14 @@ const authDetails = await auth.api.getSession({
 if (!authDetails) {
     return Astro.redirect("/join");
 }
+
+const { data, error } = await Astro.callAction(actions.posts.getFriendsPosts, {
+    userId: authDetails.user.id,
+});
 ---
 
 <AppLayout title="Friends & Family">
     <section class="py-2 px-4">
+        <pre>{JSON.stringify(data, null, 2)}</pre>
     </section>
 </AppLayout>
