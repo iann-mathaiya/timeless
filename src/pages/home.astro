@@ -63,7 +63,7 @@ const timelineEntries = Object.entries(timeline).map(([date, posts]) => ({
 
 <AppLayout title="Home">
     <section
-        class="py-4 pl-4 mx-auto w-full max-w-screen-lg overflow-hidden"
+        class="py-4 pl-4 mx-auto w-full max-w-screen-lg xl:overflow-visible"
     >
         {
             timelineEntries.map((entry) => (
@@ -91,7 +91,7 @@ const timelineEntries = Object.entries(timeline).map(([date, posts]) => ({
                                     {post.description}
                                 </p>
 
-                                <div class="mt-1.5 w-full flex items-center gap-1.5 lg:gap-2.5 overflow-x-auto">
+                                <div class="mt-1.5 w-full flex items-center gap-1.5 lg:gap-2.5 overflow-x-auto xl:overflow-visible">
                                     {(post.media as Media[]).map(
                                         (media: Media) =>
                                             media.fileType === "video/mp4" ? (
