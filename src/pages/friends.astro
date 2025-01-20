@@ -1,7 +1,9 @@
 ---
 import { auth } from "../lib/auth";
-import AppLayout from "../layouts/AppLayout.astro";
 import { actions } from "astro:actions";
+import type { FriendPost, UploadedFiles } from "@/lib/types";
+import AppLayout from "../layouts/AppLayout.astro";
+import type { Media } from "@/lib/types";
 
 const authDetails = await auth.api.getSession({
     headers: Astro.request.headers,
@@ -14,10 +16,44 @@ if (!authDetails) {
 const { data, error } = await Astro.callAction(actions.posts.getFriendsPosts, {
     userId: authDetails.user.id,
 });
+
+const friendsPosts: FriendPost[] = []
+
+if (data?.success) {
+    for (const friendPost of data.friendsPostsData) {
+        const media = friendPost.post.media as UploadedFiles[];
+        
+        const postMediaURLs = await Promise.all(
+            media.map(async (fileData) => {
+                const { data: URLsData, error } = await Astro.callAction(
+                    actions.media.getSignedUrl,
+                    { key: fileData.fileName },
+                );
+                if (URLsData?.success) {
+                    return {
+                        mediaURL: URLsData.signedUrl,
+                        fileType: fileData.fileType,
+                    };
+                }
+            })
+        );
+
+        const validMediaURLs = postMediaURLs.filter((url): url is Media => url !== null);
+
+        friendsPosts.push({
+            ...friendPost,
+            post: {
+                ...friendPost.post,
+                media: validMediaURLs,
+            },
+        });
+    }
+}
 ---
 
 <AppLayout title="Friends & Family">
-    <section class="py-2 px-4">
-        <pre>{JSON.stringify(data, null, 2)}</pre>
+    <section class="py-4 pl-4 mx-auto w-full max-w-screen-lg overflow-hidden">
+
+        <pre>{JSON.stringify(friendsPosts, null, 2)}</pre>
     </section>
 </AppLayout>
