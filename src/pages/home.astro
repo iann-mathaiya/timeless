@@ -5,6 +5,7 @@ import { actions } from "astro:actions";
 import type { Post } from "@/db/schema";
 import AppLayout from "@/layouts/AppLayout.astro";
 import type { Media, UploadedFiles } from "@/lib/types";
+import MoreActions from "@/components/more-actions";
 
 const authDetails = await auth.api.getSession({
     headers: Astro.request.headers,
@@ -81,12 +82,16 @@ const timelineEntries = Object.entries(timeline).map(([date, posts]) => ({
                             </span>
 
                             <div>
-                                <h2 class="text-base text-gray-900 font-medium">
-                                    {String(post.title)
-                                        .charAt(0)
-                                        .toUpperCase() +
-                                        String(post.title).slice(1)}
-                                </h2>
+                                <div class="flex items-center justify-between">
+                                    <h2 class="text-base text-gray-900 font-medium">
+                                        {String(post.title)
+                                            .charAt(0)
+                                            .toUpperCase() +
+                                            String(post.title).slice(1)}
+                                    </h2>
+
+                                    <MoreActions postId={post.id} client:load />
+                                </div>
                                 <p class="text-sm text-gray-600 whitespace-pre-line">
                                     {post.description}
                                 </p>
