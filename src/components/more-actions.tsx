@@ -1,10 +1,24 @@
 import { Ellipsis, Pencil, Trash2 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Button } from './ui/button';
+import { actions } from 'astro:actions';
+import { useAtom } from 'jotai';
+import { userIdAtom } from '@/lib/store';
+import { toast } from 'sonner';
 
 type MoreActions = { postId: string; };
 
 export default function MoreActions({ postId }: MoreActions) {
+    const [userId] = useAtom(userIdAtom);
+    
+    async function handleDelete() {
+        const { data, error } = await actions.posts.deletePost({userId: userId, postId: postId})
+
+        if(data?.success){
+            toast(`${data.deletedPost[0].deletedTitle} has been deleted successfully`)
+        }
+    }
+
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -21,7 +35,7 @@ export default function MoreActions({ postId }: MoreActions) {
                     <Pencil />
                     <span>Edit</span>
                 </Button>
-                <Button variant="destructive" className='px-2 h-8 w-full inline-flex justify-start font-normal text-gray-900 hover:text-red-600 text-start bg-transparent hover:bg-red-100/80'>
+                <Button variant="destructive" onClick={handleDelete} className='px-2 h-8 w-full inline-flex justify-start font-normal text-gray-900 hover:text-red-600 text-start bg-transparent hover:bg-red-100/80'>
                     <Trash2 />
                     <span>Delete</span>
                 </Button>
