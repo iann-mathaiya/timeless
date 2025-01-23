@@ -5,6 +5,7 @@ import { actions } from 'astro:actions';
 import { useAtom } from 'jotai';
 import { userIdAtom } from '@/lib/store';
 import { toast } from 'sonner';
+import { navigate } from 'astro:transitions/client';
 
 type MoreActions = { postId: string; };
 
@@ -16,6 +17,9 @@ export default function MoreActions({ postId }: MoreActions) {
 
         if(data?.success){
             toast(`${data.deletedPost[0].deletedTitle} has been deleted successfully`)
+            setTimeout(() => {
+                navigate('/home')
+            }, 200);
         }
     }
 
