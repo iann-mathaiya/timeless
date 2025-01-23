@@ -1,9 +1,9 @@
 ---
 import { auth } from "../lib/auth";
-import AppLayout from "../layouts/AppLayout.astro";
-import { actions } from "astro:actions";
 import { format } from "date-fns";
-import { twMerge } from 'tailwind-merge'
+import { Asterisk } from "lucide-react";
+import { actions } from "astro:actions";
+import AppLayout from "../layouts/AppLayout.astro";
 import type { Media, UploadedFiles } from "@/lib/types";
 
 const authDetails = await auth.api.getSession({
@@ -18,13 +18,12 @@ const { data, error } = await Astro.callAction(actions.media.getUserMedia, {
     userId: authDetails.user.id,
 });
 
-
 const updatedMedia: { mediaData: Media[]; createdAt: Date }[] = [];
 
 if (data?.success) {
     for (const post of data.userMedia) {
         const media = post.mediaData as UploadedFiles[];
-        const createdAt = post.createdAt as Date
+        const createdAt = post.createdAt as Date;
 
         const postMediaURLs = await Promise.all(
             media.map(async (fileData) => {
@@ -39,12 +38,12 @@ if (data?.success) {
                     };
                 }
 
-                return undefined
-            })
-        )
+                return undefined;
+            }),
+        );
 
         const validMediaURLs = postMediaURLs.filter(
-            (item): item is Media => item !== undefined
+            (item): item is Media => item !== undefined,
         );
 
         updatedMedia.push({ ...post, createdAt, mediaData: validMediaURLs });
@@ -54,7 +53,7 @@ if (data?.success) {
 const gallery = Object.values(
     updatedMedia.reduce(
         (acc, item) => {
-            const date = item.createdAt.toISOString().split("T")[0]
+            const date = item.createdAt.toISOString().split("T")[0];
             if (!acc[date]) {
                 acc[date] = { createdAt: date, mediaData: [] };
             }
@@ -68,35 +67,32 @@ const gallery = Object.values(
 
 <AppLayout title="Gallery">
     <section class="p-4">
-        <ul class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center gap-4">
+        <ul
+            class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center gap-4"
+        >
             {
                 gallery.map((post) => (
                     <li>
-                        <div class="w-40 md:w-52 lg:w-56 h-40 md:h-52 lg:h-56 group relative cursor-pointer">
-                            {(post.mediaData as Media[]).map((media, index) => (
-                                media.fileType === 'video/mp4' ? 
-                                <video controls class={twMerge(
-                                    "w-40 md:w-52 lg:w-56 h-40 md:h-52 lg:h-56 absolute top-0 left-0 border-2 border-white rounded-lg transition-all duration-300 ease-in-out",
-                                    index === 0 && 'rotate-0 group-hover:rotate-6',
-                                    index === 1 && '-rotate-3 group-hover:-rotate-6',
-                                    index === 2 && 'rotate-3 group-hover:rotate-6',
-                                )}>
-                                    <source src={media.mediaURL} type="video/mp4" />
-                                    <track src="captions_en.vtt" kind="captions" srclang="en" label="english_captions" />
+                        <div class="w-40 md:w-52 lg:w-56 h-40 md:h-52 lg:h-56 relative group cursor-pointer">
+                            {post.mediaData[0].fileType === "video/mp4" ? (
+                                <video draggable="false" class="w-40 md:w-52 lg:w-56 h-40 md:h-52 lg:h-56 object-cover object-center rounded-[12px]">
+                                    <source src={post.mediaData[0].mediaURL} type="video/mp4" />
+                                    <track src="captions_en.vtt" kind="captions" srclang="en" label="english_captions"/>
                                 </video>
-                                :
-                                <img src={media.mediaURL} alt="" class={twMerge(
-                                    "w-40 md:w-52 lg:w-56 h-40 md:h-52 lg:h-56 object-cover object-center absolute top-0 left-0 border-2 border-white rounded-lg transition-all duration-300 ease-in-out",
-                                    index === 0 && 'rotate-0 group-hover:rotate-6',
-                                    index === 1 && '-rotate-3 group-hover:-rotate-6',
-                                    index === 2 && 'rotate-3 group-hover:rotate-6',
-                                )} />
-                            ))}
+                            ) : (
+                                <img draggable="false" src={post.mediaData[0].mediaURL} alt="" class="w-40 md:w-52 lg:w-56 h-40 md:h-52 lg:h-56 object-cover object-center rounded-[12px]"/>
+                            )}
+                            <p class="min-w-6 h-6 absolute bottom-1 right-1 flex items-center justify-center text-white bg-gray-700 rounded-[4px] rounded-br-[8px]">
+                                {post.mediaData.length <= 9 ? post.mediaData.length : <Asterisk size={16} /> }
+                            </p>
                         </div>
-                        <p class="mt-4 text-sm text-center text-gray-600">
-                            {parseInt(post.createdAt) === new Date().getFullYear()
-                            ? format(post.createdAt, "EEE, MMM do")
-                            : format(post.createdAt, "EEE, MMM do yyyy")}
+
+                        <p class="mt-0.5 px-1 text-sm text-start text-gray-600">
+                            {
+                                parseInt(post.createdAt) === new Date().getFullYear() ? 
+                                format(post.createdAt, "EEE, MMM do") : 
+                                format(post.createdAt, "EEE, MMM do yyyy") 
+                            }
                         </p>
                     </li>
                 ))
