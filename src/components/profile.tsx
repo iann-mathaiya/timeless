@@ -1,7 +1,6 @@
 import { signOut } from "@/lib/auth-client";
 import { navigate } from "astro:transitions/client";
 import { ChevronDown, CircleHelp, LightbulbIcon, LogOutIcon, Settings, User } from "lucide-react";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Link from "./link";
 import { useAtom } from "jotai";
@@ -15,25 +14,19 @@ export function Profile() {
   }
 
   return (
-    <SidebarMenu>
-      <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton className="w-fit px-1.5">
-              <div className="flex aspect-square size-5 items-center justify-center rounded-md bg-transparent overflow-hidden">
+          <DropdownMenuTrigger className="flex items-center gap-1">
+              <div className="flex aspect-square size-5 sm:size-6 items-center justify-center rounded-md bg-transparent overflow-hidden">
                 {
                   user.image ?
-                    <img className="size-5" src={user.image} alt={`${user.name} profile`} />
+                    <img className="size-5 sm:size-6" src={user.image} alt={`${user.name} profile`} />
                     :
-                    <div className="size-5 bg-gradient-to-br from-[#08203e] to-[#557c93]" />
+                    <div className="size-5 sm:size-6 bg-gradient-to-br from-[#08203e] to-[#557c93]" />
                 }
               </div>
-              <span className="truncate font-medium text-gray-900">{user.name}</span>
-              <ChevronDown className="opacity-50" />
-            </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-56 rounded-lg space-y-1"
+            className="w-56 mr-2 rounded-lg space-y-1"
             align="start"
             side="bottom"
             sideOffset={4}
@@ -77,7 +70,5 @@ export function Profile() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
   );
 }

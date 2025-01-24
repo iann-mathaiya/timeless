@@ -47,7 +47,7 @@ export function Container({ user, currentPath, pageTitle, children }: ContainerP
                 </header>
 
                 <section className="flex-1 overflow-hidden">
-                    <div className="h-full pt-4 pb-20 pl-[17px] sm:pl-16 overflow-y-auto bg-white rounded-b-xl">
+                    <div className="h-full pb-20 sm:pl-16 overflow-y-auto bg-white rounded-b-xl">
                         {children}
                     </div>
                 </section>
