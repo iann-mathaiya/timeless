@@ -47,6 +47,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.1.4
         version: 1.1.4(@types/react-dom@18.3.2)(@types/react@18.3.14)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@remixicon/react':
+        specifier: ^4.6.0
+        version: 4.6.0(react@19.0.0)
       '@types/react':
         specifier: ^18.3.14
         version: 18.3.14
@@ -2146,6 +2149,11 @@ packages:
 
   '@radix-ui/rect@1.1.0':
     resolution: {integrity: sha512-A9+lCBZoaMJlVKcRBz2YByCG+Cp2t6nAnMnNba+XiWxnj6r4JUFqfsgwocMBZU9LPtdxC6wB56ySYpc7LQIoJg==}
+
+  '@remixicon/react@4.6.0':
+    resolution: {integrity: sha512-bY56maEgT5IYUSRotqy9h03IAKJC85vlKtWFg2FKzfs8JPrkdBAYSa9dxoUSKFwGzup8Ux6vjShs9Aec3jvr2w==}
+    peerDependencies:
+      react: '>=18.2.0'
 
   '@rollup/pluginutils@5.1.3':
     resolution: {integrity: sha512-Pnsb6f32CD2W3uCaLZIzDmeFyQ2b8UWMFI7xtwUezpcGBDVDW6y9XgAWIlARiGAo6eNF5FK5aQTr0LFyNyqq5A==}
@@ -6798,6 +6806,10 @@ snapshots:
       '@types/react-dom': 18.3.2
 
   '@radix-ui/rect@1.1.0': {}
+
+  '@remixicon/react@4.6.0(react@19.0.0)':
+    dependencies:
+      react: 19.0.0
 
   '@rollup/pluginutils@5.1.3(rollup@4.28.1)':
     dependencies:
