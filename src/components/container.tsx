@@ -2,7 +2,7 @@ import { Toaster } from "sonner";
 import { useEffect } from "react";
 import { useSetAtom } from "jotai";
 import type { User } from "@/db/schema";
-import MobileNavigation from "./mobile-navigation";
+import Navigation from "./navigation";
 import { NavActions } from "@/components/nav-actions";
 import { currentPathAtom, userAtom, userIdAtom } from "@/lib/store";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
@@ -58,7 +58,7 @@ export function Container({ user, currentPath, pageTitle, children }: ContainerP
                 <div className="min-w-[17px] h-[17px] fixed z-20 bottom-16 sm:bottom-0 right-0 sm:right-auto sm:left-16 bg-white rounded-br-full sm:rounded-none sm:rounded-bl-full" />
                 <div className="min-w-4 h-4 fixed z-10 bottom-16 sm:bottom-0 right-0 sm:right-auto sm:left-16 bg-gray-950" />
 
-                <MobileNavigation />
+                <Navigation />
             </section>
         </main>
     );

@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { RiAddCircleFill, RiAddCircleLine, RiHome6Fill, RiHome6Line, RiNotification3Fill, RiNotification3Line, RiUser6Fill, RiUser6Line, RiUserSmileFill, RiUserSmileLine } from "@remixicon/react";
 import { currentPathAtom } from "@/lib/store";
 
-export default function NobileNavigation() {
+export default function Navigation() {
         const [currentPath] = useAtom(currentPathAtom);
     
 
