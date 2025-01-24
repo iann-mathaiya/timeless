@@ -2,22 +2,19 @@ import { Toaster } from "sonner";
 import { useEffect } from "react";
 import { useSetAtom } from "jotai";
 import type { User } from "@/db/schema";
-import { NavActions } from "@/components/nav-actions";
-import { AppSidebar } from "@/components/app-sidebar";
-import { Separator } from "@/components/ui/separator";
-import { currentPathAtom, userAtom, userIdAtom } from "@/lib/store";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import MobileNavigation from "./mobile-navigation";
+import { NavActions } from "@/components/nav-actions";
+import { currentPathAtom, userAtom, userIdAtom } from "@/lib/store";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
 
-type SidebarProps = {
+type ContainerProps = {
     user: User;
     pageTitle: string;
     currentPath: string;
     children: React.ReactNode;
 };
 
-export function Sidebar({ user, currentPath, pageTitle, children }: SidebarProps) {
+export function Container({ user, currentPath, pageTitle, children }: ContainerProps) {
     const setUser = useSetAtom(userAtom);
     const setUserId = useSetAtom(userIdAtom);
     const setCurrentPath = useSetAtom(currentPathAtom);
@@ -29,14 +26,11 @@ export function Sidebar({ user, currentPath, pageTitle, children }: SidebarProps
     }, [user, currentPath, setUser, setUserId, setCurrentPath]);
 
     return (
-        <SidebarProvider>
-            {/* <AppSidebar /> */}
-            <SidebarInset className="min-h-screen flex flex-col">
-                <header className="flex h-14 shrink-0 items-center gap-2 bg-white">
+        <main>
+            <section className="min-h-screen flex flex-col">
+                <header className="flex sm:pl-16 h-14 shrink-0 items-center gap-2 bg-white">
                     <div className="flex flex-1 items-center gap-2 px-3">
-                        <SidebarTrigger />
                         <Toaster richColors />
-                        <Separator orientation="vertical" className="mr-2 h-4" />
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem>
@@ -53,7 +47,7 @@ export function Sidebar({ user, currentPath, pageTitle, children }: SidebarProps
                 </header>
 
                 <section className="flex-1 overflow-hidden">
-                    <div className="h-full overflow-y-auto pb-16 bg-white rounded-b-xl">
+                    <div className="h-full pt-4 pb-20 pl-[17px] sm:pl-16 overflow-y-auto bg-white rounded-b-xl">
                         {children}
                     </div>
                 </section>
@@ -65,7 +59,7 @@ export function Sidebar({ user, currentPath, pageTitle, children }: SidebarProps
                 <div className="min-w-4 h-4 fixed z-10 bottom-16 sm:bottom-0 right-0 sm:right-auto sm:left-16 bg-gray-950" />
 
                 <MobileNavigation />
-            </SidebarInset>
-        </SidebarProvider>
+            </section>
+        </main>
     );
 }
