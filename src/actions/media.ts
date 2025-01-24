@@ -7,7 +7,7 @@ import type { FileType } from '@/lib/types';
 import { MAX_FILE_SIZE } from "@/lib/constants";
 import { defineAction, ActionError } from "astro:actions";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 
 export const media = {
@@ -55,6 +55,42 @@ export const media = {
 
                 await s3Client.send(command);
                 return { success: true, fileName, fileType };
+            } catch (error) {
+                console.error("Error uploading to R2:", error);
+                throw new Error("Failed to upload file to R2");
+            }
+
+        }
+    }),
+    removeFile: defineAction({
+        input: z.object({
+            fileName: z.string(),
+        }),
+        handler: async ({ fileName }, context) => {
+            const { env } = context.locals.runtime;
+
+            const R2_BUCKET_NAME = env.BUCKET_NAME;
+            const R2_ACCESS_KEY_ID = env.R2_ACCESS_KEY_ID;
+            const R2_SECRET_ACCESS_KEY = env.R2_SECRET_ACCESS_KEY;
+            const R2_ENDPOINT = env.CLOUDFLARE_R2_ENDPOINT;
+
+            const s3Client = new S3Client({
+                region: "auto",
+                endpoint: R2_ENDPOINT,
+                credentials: {
+                    accessKeyId: R2_ACCESS_KEY_ID,
+                    secretAccessKey: R2_SECRET_ACCESS_KEY,
+                },
+            });
+
+            try {
+                const command = new DeleteObjectCommand({
+                    Bucket: R2_BUCKET_NAME,
+                    Key: fileName,
+                });
+
+                await s3Client.send(command);
+                return { success: true, message: `${fileName} removed successfully` };
             } catch (error) {
                 console.error("Error uploading to R2:", error);
                 throw new Error("Failed to upload file to R2");

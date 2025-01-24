@@ -6,6 +6,8 @@ import { navigate } from 'astro:transitions/client';
 import type { Media, UploadedFiles } from '@/lib/types';
 import { useRef, useState, type FormEvent } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { Button } from './ui/button';
+import { RiCloseLine } from '@remixicon/react';
 
 
 export default function CreatePostForm() {
@@ -15,7 +17,7 @@ export default function CreatePostForm() {
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    function handleAddImage(e: React.MouseEvent<HTMLButtonElement>) {
+    function handleAddFile(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         if (!inputRef || !inputRef.current) return;
 
@@ -50,13 +52,12 @@ export default function CreatePostForm() {
 
             if (signedUrlData?.success) {
                 toast.success(`${file.name} has been uploaded successfully`);
-                const media: Media = { mediaURL: signedUrlData.signedUrl, fileType: data.fileType };
+                const media: Media = { mediaURL: signedUrlData.signedUrl, fileName: data.fileName, fileType: data.fileType };
                 setFetchedMedia(prevMedia => [...prevMedia, media]);
                 setUploading(false);
             }
         }
     }
-
 
     async function handleSumbit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -73,8 +74,18 @@ export default function CreatePostForm() {
 
     }
 
+    async function handleRemoveFile(e: React.MouseEvent<HTMLButtonElement>, fileName: string){
+        e.preventDefault();
+
+        console.log(fileName)
+        const { data, error } = await actions.media.removeFile({fileName: fileName})
+
+        if(data?.success) toast.success(data.message)
+            // remove the fetched media item from the array after data?.success
+    }
+
     return (
-        <form onSubmit={handleSumbit} encType="multipart/form-data" className='mt-4 mx-auto w-full max-w-xl'>
+        <form onSubmit={handleSumbit} encType="multipart/form-data" className='px-4 mx-auto w-full max-w-xl'>
             <input placeholder='Add title' name='title' required className='w-full text-xl font-medium bg-transparent outline-none placeholder:text-gray-400' />
 
             <textarea placeholder='Write something...' name='description'
@@ -89,14 +100,20 @@ export default function CreatePostForm() {
                 {fetchedMedia.length > 0 &&
                     <div className='flex items-center gap-2'>
 
-                        {fetchedMedia.map(({ mediaURL, fileType }) =>
-                            fileType === 'video/mp4' ?
-                                <video key={`${mediaURL}`} className='aspect-square min-w-80 w-80 rounded-lg lg:rounded-xl' controls>
-                                    <source src={mediaURL} type="video/mp4" />
-                                    <track src="captions_en.vtt" kind="captions" srcLang="en" label="english_captions" />
-                                </video>
-                                :
-                                <img key={`${mediaURL}`} src={mediaURL} alt='Just a placeholder' className='aspect-square min-w-80 w-80 object-cover object-center rounded-lg lg:rounded-xl' />
+                        {fetchedMedia.map(({ mediaURL, fileType, fileName }) =>
+                            <div key={mediaURL} className='relative max-w-80 w-80'>
+                                {fileType === 'video/mp4' ?
+                                    <video className='aspect-square min-w-80 w-80 rounded-lg lg:rounded-xl' controls>
+                                        <source src={mediaURL} type="video/mp4" />
+                                        <track src="captions_en.vtt" kind="captions" srcLang="en" label="english_captions" />
+                                    </video>
+                                    :
+                                    <img src={mediaURL} alt='Just a placeholder' className='aspect-square min-w-80 w-80 object-cover object-center rounded-lg lg:rounded-xl' />
+                                }
+                                <Button onClick={(e) => handleRemoveFile(e, fileName as string)} variant='destructive' size='icon' className='absolute h-7 w-7 top-2 right-2 bg-red-100 hover:bg-red-200/65'>
+                                    <RiCloseLine className='w-6 h-6 fill-red-600' />
+                                </Button>
+                            </div>
                         )}
                     </div>
                 }
@@ -113,7 +130,7 @@ export default function CreatePostForm() {
                         <TooltipProvider delayDuration={400} skipDelayDuration={150}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <button type="button" disabled={files.length === 3} onClick={handleAddImage} className='p-1 text-gray-600 hover:text-gray-900 bg-transparent hover:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-100 rounded-md'>
+                                    <button type="button" disabled={files.length === 3} onClick={handleAddFile} className='p-1 text-gray-600 hover:text-gray-900 bg-transparent hover:bg-gray-200 disabled:text-gray-400 disabled:hover:bg-gray-100 rounded-md'>
                                         <ImagePlus className='size-5' />
                                     </button>
                                 </TooltipTrigger>
