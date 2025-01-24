@@ -15,7 +15,11 @@ export default function Notifications() {
     const [pendingRequests, setPendingRequest] = useState<PendingFriendRequest[]>([]);
 
     useEffect(() => {
-        fetchPendingRequests(userId);
+        // first check user id is not falsy so it doesn't 
+        // hit the db twice while the user id atom has being set
+        if(userId) {
+            fetchPendingRequests(userId);
+        }
     }, [userId]);
 
     async function fetchPendingRequests(id: string) {
