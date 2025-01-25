@@ -1,29 +1,36 @@
-import { defineMiddleware } from "astro:middleware"
+import { sessions, users } from "@/db/schema";
+import { defineMiddleware } from "astro:middleware";
+import { drizzle } from "drizzle-orm/d1";
+import { eq } from "drizzle-orm";
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  const sessionId = context.cookies.get('session')?.value;
 
-    // Inject D1 database connection first
-    // context.locals.db = initDbConnectionDev({ DB: context.locals.DB })
+    const { env } = context.locals.runtime;
+    const db = drizzle(env.ARS_DB);
 
-    try {
-        const isAuthed = await context.locals.auth.api
-        .getSession({
-            headers: context.request.headers,
-        })
- 
-    if (isAuthed) {
-        context.locals.user = isAuthed.user;
-        context.locals.session = isAuthed.session;
-    } else {
-        context.locals.user = null;
-        context.locals.session = null;
+  async function validateSession(sessionId: string) {
+    if (!sessionId) return null;
+  
+    const session = await db.select().from(sessions).where(eq(sessions.id, sessionId)).get();
+  
+    if (!session || session.expiresAt < Date.now()) {
+      return null;
     }
-    } catch (error) {
-        // Handle potential authentication errors
-        context.locals.user = null
-        context.locals.session = null
-        console.error('Authentication error:', error)
+  
+    const user = await db.select().from(users).where(eq(users.id, session.userId)).get();
+  
+    return user ? { session, user } : null;
+  }
+  
+  if (sessionId) {
+    const validatedSession = await validateSession(sessionId);
+    
+    if (validatedSession) {
+      context.locals.user = validatedSession.user;
+      context.locals.session = validatedSession.session;
     }
+  }
 
-    return next()
-})
+  return next();
+});

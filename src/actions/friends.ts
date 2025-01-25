@@ -6,7 +6,6 @@ import { and, eq, like, not, or, sql } from 'drizzle-orm';
 import { ActionError, defineAction } from "astro:actions";
 import { users, friends as friendsSchema, type Friend } from '@/db/schema';
 
-
 export const friends = {
     searchUser: defineAction({
         input: z.object({
@@ -38,7 +37,7 @@ export const friends = {
                     id: users.id,
                     name: users.name,
                     email: users.email,
-                    image: users.image,
+                    image: users.profilePicture,
                     friendshipStatus: friendsSchema.status,
                     isRequester: sql<boolean>`${friendsSchema.requesterId} = ${user.id}`
                 }).from(users)
@@ -136,7 +135,7 @@ export const friends = {
                     id: friendsSchema.id,
                     status: friendsSchema.status,
                     createdAt: friendsSchema.createdAt,
-                    requester: { id: users.id, name: users.name, email: users.email, image: users.image },
+                    requester: { id: users.id, name: users.name, email: users.email, image: users.profilePicture },
                 })
                     .from(friendsSchema)
                     .innerJoin(users, eq(users.id, friendsSchema.requesterId))

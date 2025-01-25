@@ -6,11 +6,7 @@ import AppLayout from "@/layouts/AppLayout.astro";
 import type { Media, UploadedFiles } from "@/lib/types";
 import MoreActions from "@/components/more-actions";
 
-const user = await Astro.locals.currentUser()
-
-if (!user || !Astro.locals.auth().userId) {
-  return Astro.redirect('/login')
-}
+const { user, session } = Astro.locals;
 
 const { data, error } = await Astro.callAction(actions.posts.getPosts, {
     userId: user.id,

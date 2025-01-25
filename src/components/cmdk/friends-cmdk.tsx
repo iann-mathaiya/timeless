@@ -63,8 +63,8 @@ export default function SearchFriednCmdK({ users, searchedUser, isOpen, onClose 
                     {relevantUsers?.map(user =>
                         <CommandItem key={user.id} asChild className='group data-[selected=true]:bg--transparent hover:bg-transparent hover:cursor-pointer'>
                             <div className="pl-1 w-full flex gap-2 sm:gap-3 bg-transparent">
-                                {user.image ?
-                                    <img src={user.image} alt={`${user.name} profile`} className="mt-0.5 size-5 sm:size-7 rounded-full" />
+                                {user.profilePicture ?
+                                    <img src={user.profilePicture} alt={`${user.name} profile`} className="mt-0.5 size-5 sm:size-7 rounded-full" />
                                     :
                                     <div className="mt-0.5 py-4 pl-6 size-5 sm:size-7 rounded-full" />
                                 }

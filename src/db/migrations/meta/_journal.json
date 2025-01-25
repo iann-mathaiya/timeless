@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1733850024541,
-      "tag": "0000_typical_crusher_hogan",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1734504761734,
-      "tag": "0001_handy_elektra",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1735503835105,
-      "tag": "0002_faithful_the_professor",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1736961282470,
-      "tag": "0003_hesitant_bloodstrike",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "6",
-      "when": 1737091283266,
-      "tag": "0004_moaning_thena",
+      "when": 1737813324813,
+      "tag": "0000_tired_lady_bullseye",
       "breakpoints": true
     }
   ]

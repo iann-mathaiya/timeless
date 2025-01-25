@@ -1,76 +1,49 @@
-import { sqliteTable, text, integer, } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, uniqueIndex, } from "drizzle-orm/sqlite-core";
 
 export const posts = sqliteTable("posts", {
 	id: text("id").primaryKey(),
 	title: text("title").notNull(),
 	description: text("description"),
-	userId: text('userId').notNull().references(() => users.id),
+	userId: text('user_id').notNull().references(() => users.id),
 	media: text('media', { mode: 'json' }).default('[]').notNull(),
-	createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
-	updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull()
+	createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+	updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull()
 });
 
 export type Post = typeof posts.$inferSelect; //for select queries
 export type NewPost = typeof posts.$inferInsert; //for insert queries
 
-export const users = sqliteTable("users", {
-	image: text('image'),
-	id: text("id").primaryKey(),
-	name: text('name').notNull(),
-	email: text('email').notNull().unique(),
-	role: text("role").notNull().default('user'),
-	createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
-	updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
-	emailVerified: integer('emailVerified', { mode: 'boolean' }).notNull(),
-});
-
-export type User = typeof users.$inferSelect;
-
-
 export const friends = sqliteTable("friends", {
 	id: text("id").primaryKey(),
-	respondentId: text("respondentId").notNull().references(() => users.id),
-	requesterId: text("requesterId").notNull().references(() => users.id),
-	createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
-	updatedAt: integer("updatedAt", { mode: "timestamp" }).notNull(),
+	respondentId: text("respondent_id").notNull().references(() => users.id),
+	requesterId: text("requester_id").notNull().references(() => users.id),
+	createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+	updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
 	status: text("status", { enum: ["pending", "accepted", "rejected"] }).notNull().default("pending"),
 });
 
 export type Friend = typeof friends.$inferSelect;
 
+export const users = sqliteTable("users", {
+	id: text("id").notNull().primaryKey(),
+	name: text("name").notNull(),
+	lastName: text("last_name"),
+	firstName: text("first_name"),
+	providerId: text('provider_id'),
+	refreshToken: text("refresh_token"),
+	profilePicture: text("profile_picture"),
+	email: text("email").unique().notNull(),
+	providerUserId: text('provider_user_id'),
+	role: text("role").notNull().default('user'),
+	emailIsVerified: integer('email_is_verified').notNull().default(0),
+})
 
-export const sessions = sqliteTable("sessions", {
-	id: text("id").primaryKey(),
-	expiresAt: integer('expiresAt', { mode: 'timestamp' }).notNull(),
-	token: text('token').notNull().unique(),
-	createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
-	updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull(),
-	ipAddress: text('ipAddress'),
-	userAgent: text('userAgent'),
-	userId: text('userId').notNull().references(() => users.id)
-});
+export type User = typeof users.$inferSelect;
 
-export const accounts = sqliteTable("accounts", {
-	id: text("id").primaryKey(),
-	accountId: text('accountId').notNull(),
-	providerId: text('providerId').notNull(),
-	userId: text('userId').notNull().references(() => users.id),
-	accessToken: text('accessToken'),
-	refreshToken: text('refreshToken'),
-	idToken: text('idToken'),
-	accessTokenExpiresAt: integer('accessTokenExpiresAt', { mode: 'timestamp' }),
-	refreshTokenExpiresAt: integer('refreshTokenExpiresAt', { mode: 'timestamp' }),
-	scope: text('scope'),
-	password: text('password'),
-	createdAt: integer('createdAt', { mode: 'timestamp' }).notNull(),
-	updatedAt: integer('updatedAt', { mode: 'timestamp' }).notNull()
-});
+export const sessions = sqliteTable('sessions', {
+	id: text('id').primaryKey(),
+	expiresAt: integer('expires_at').notNull(),
+	userId: text('user_id').references(() => users.id).notNull(),
+	createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
 
-export const verifications = sqliteTable("verifications", {
-	id: text("id").primaryKey(),
-	identifier: text('identifier').notNull(),
-	value: text('value').notNull(),
-	expiresAt: integer('expiresAt', { mode: 'timestamp' }).notNull(),
-	createdAt: integer('createdAt', { mode: 'timestamp' }),
-	updatedAt: integer('updatedAt', { mode: 'timestamp' })
 });

@@ -8,9 +8,9 @@ export default defineConfig({
     dialect: "sqlite",
             driver: "d1-http",
             dbCredentials: {
-                databaseId: import.meta.env.DB as unknown as string,
-                token: import.meta.env.CLOUDFLARE_API_TOKEN as string,
-                accountId: import.meta.env.CLOUDFLARE_ACCOUNT_ID as string,
+                databaseId: process.env.DB as unknown as string,
+                token: process.env.CLOUDFLARE_API_TOKEN as string,
+                accountId: process.env.CLOUDFLARE_ACCOUNT_ID as string,
             },
 
     tablesFilter: ['/^(?!.*_cf_KV).*$/'] //ignore the _cf_KV table

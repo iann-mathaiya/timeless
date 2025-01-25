@@ -1,21 +1,15 @@
 ---
 import { Provider } from 'jotai'
-import { auth } from "@/lib/auth";
 import type { User } from "@/db/schema";
 import RootLayout from "./RootLayout.astro";
 import { Container } from "@/components/container";
 
 const { title, description } = Astro.props;
+const { user, session } = Astro.locals;
 
-const authDetails = await auth.api.getSession({
-    headers: Astro.request.headers,
-});
-
-if (!authDetails) {
-    return Astro.redirect("/join");
+if (!user) {
+  return Astro.redirect('/join')
 }
-
-const user = authDetails.user as User
 
 const currentPath = Astro.url.pathname;
 ---

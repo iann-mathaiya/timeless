@@ -1,4 +1,3 @@
-import { signOut } from "@/lib/auth-client";
 import { navigate } from "astro:transitions/client";
 import { ChevronDown, CircleHelp, LightbulbIcon, LogOutIcon, Settings, User } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -18,8 +17,8 @@ export function Profile() {
           <DropdownMenuTrigger className="flex items-center gap-1">
               <div className="flex aspect-square size-5 sm:size-6 items-center justify-center rounded-md bg-transparent overflow-hidden">
                 {
-                  user.image ?
-                    <img className="size-5 sm:size-6" src={user.image} alt={`${user.name} profile`} />
+                  user.profilePicture ?
+                    <img className="size-5 sm:size-6" src={user.profilePicture} alt={`${user.name} profile`} />
                     :
                     <div className="size-5 sm:size-6 bg-gradient-to-br from-[#08203e] to-[#557c93]" />
                 }
@@ -62,11 +61,11 @@ export function Profile() {
               <span>Feedback</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={async () => { await signOut(); navigate('/sign-in'); }}
-              className="gap-2 rounded-md text-gray-600 hover:text-gray-900">
+            <DropdownMenuItem asChild className="gap-2 rounded-md text-gray-600 hover:text-gray-900">
+                <Link href="/api/auth/logout" className="flex gap-2">
               <LogOutIcon className="size-4 rotate-180" />
               <span>Sign Out</span>
+                </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

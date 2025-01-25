@@ -17,7 +17,7 @@ export type MatchingUser = {
     id: string;
     name: string;
     email: string;
-    image: string | null;
+    profilePicture: string | null;
     friendshipStatus: "pending" | "accepted" | "rejected" | null;
     isRequester: boolean | null;
 };
@@ -26,12 +26,22 @@ export type PendingFriendRequest = {
     id: string;
     createdAt: Date;
     status: "pending";
-    requester: { id: string; name: string; email: string; image: string | null; };
+    requester: { id: string; name: string; email: string; profilePicture: string | null; };
 };
 
-export type PostAuthor = Pick<User, "id" | "name" | "image">;
+export type PostAuthor = Pick<User, "id" | "name" | "profilePicture">;
 
 export type FriendPost = {
     post: Post;
     author: PostAuthor;
   };
+
+  export type GoogleUser = {
+	sub: string;
+	name: string;
+	email: string;
+	picture: string;
+	given_name: string;
+	family_name: string;
+	email_verified: boolean;
+};

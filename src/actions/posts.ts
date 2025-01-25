@@ -141,7 +141,7 @@ export const posts = {
                         author: {
                             id: users.id,
                             name: users.name,
-                            image: users.image,
+                            image: users.profilePicture,
                         },
                     })
                     .from(postsSchema)
