@@ -12,7 +12,6 @@ assets = { directory = "./dist", binding = "ASSETS" }
 enabled = true
 
 [vars]
-BETTER_AUTH_SECRET= ""
 CLOUDFLARE_ACCOUNT_ID = ""
 CLOUDFLARE_API_TOKEN = ""
 GOOGLE_CLIENT_ID = ""
@@ -22,6 +21,7 @@ BUCKET_NAME = "ars"
 R2_ACCESS_KEY_ID = ""
 R2_SECRET_ACCESS_KEY = ""
 CLOUDFLARE_R2_ENDPOINT=""
+PROJECT_STATE="production"
 
 [[d1_databases]]
 binding = "ARS_DB"
