@@ -87,7 +87,10 @@ export default function CreatePostForm() {
         if(data?.success) { 
             setFetchedMedia((prevItems) =>
                 prevItems.filter((item) => item.fileName !== fileName)
-              );
+            );
+            setUploadedFiles((prevItems) =>
+                prevItems.filter((item) => item.fileName !== fileName)
+            );
 
             toast.success(data.message)
         }

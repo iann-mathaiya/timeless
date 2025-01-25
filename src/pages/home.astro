@@ -68,7 +68,7 @@ const timelineEntries = Object.entries(timeline).map(([date, posts]) => ({
     >
         {
             timelineEntries.map((entry) => (
-                <div class="first:pt-0 lg:border-t first:border-t-transparent border-t-gray-200">
+                <div class="first:mt-0 mt-4 first:pt-0 pt-4 lg:border-t first:border-t-transparent border-t-gray-200">
                     <h1 class="px-[17px] lg:ml-[4.86rem] text-xl text-gray-900 font-medium">
                         {parseInt(entry.createdAt) === new Date().getFullYear()
                             ? format(entry.createdAt, "EEEE MMMM do")

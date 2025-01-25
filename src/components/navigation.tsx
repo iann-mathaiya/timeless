@@ -37,7 +37,7 @@ export default function Navigation() {
             </Drawer.Root>
 
             <Link href="/gallery" className="size-9 sm:size-8 flex items-center justify-center">
-                {(currentPath === '/gallery' && !isOpen) ? <RiGalleryFill className="fill-white size-7 sm:size-6" aria-hidden /> : <RiGalleryLine className="fill-gray-400 size-7 sm:size-6" aria-hidden />}
+                {(currentPath === '/gallery' && !isOpen) ? <RiGalleryFill className="fill-white size-6 sm:size-5" aria-hidden /> : <RiGalleryLine className="fill-gray-400 size-6 sm:size-5" aria-hidden />}
             </Link>
 
             <Link href="/profile" className="size-9 sm:size-8 flex items-center justify-center">
