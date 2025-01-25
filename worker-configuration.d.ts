@@ -6,6 +6,8 @@ interface Env {
 	CLOUDFLARE_ACCOUNT_ID: string;
 	CLOUDFLARE_API_TOKEN: string;
 	DB: string;
+	TURSO_DATABASE_URL: string;
+	TURSO_AUTH_TOKEN: string;
 	GOOGLE_CLIENT_ID: string;
 	GOOGLE_CLIENT_SECRET: string;
 	BUCKET_NAME: string;
