@@ -6,6 +6,7 @@
     "dev": "wrangler types && astro dev",
     "start": "wrangler types && astro dev",
     "build": "wrangler types && astro check && astro build",
+    "deploy": "wrangler types && astro check && astro build && wrangler deploy",
     "preview": "wrangler types && astro preview",
     "astro": "astro",
     "migrate": "drizzle-kit generate",
@@ -51,11 +52,13 @@
     "tailwind-merge": "^2.5.5",
     "tailwindcss": "^3.4.16",
     "tailwindcss-animate": "^1.0.7",
+    "timeless": "link:",
     "use-debounce": "^10.0.4",
     "vaul": "^1.1.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241205.0",
+    "@types/node": "^22.10.10",
     "@types/sanitize-html": "^2.13.0",
     "drizzle-kit": "^0.30.0",
     "wrangler": "^3.93.0"
