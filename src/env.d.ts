@@ -3,6 +3,28 @@
 
 type Runtime = import('@astrojs/cloudflare').Runtime<Env>
 
+
+type User = {
+    id: string;
+    name: string;
+    email: string;
+    lastName?: string | null; 
+    emailIsVerified: number;
+    firstName?: string | null;
+    providerId?: string | null;
+    refreshToken?: string | null;
+    profilePicture?: string | null;
+    providerUserId?: string | null;
+    role: 'user' | 'admin' | 'member' | string;
+ };
+
+type Session = {
+    id: string;
+    expiresAt: number;
+    userId: string;
+    createdAt: Date;
+ };
+
 declare namespace App {
     // Note: 'import {} from ""' syntax does not work in .d.ts files.
     interface Locals extends Runtime {

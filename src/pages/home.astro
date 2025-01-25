@@ -8,6 +8,11 @@ import MoreActions from "@/components/more-actions";
 
 const { user, session } = Astro.locals;
 
+if (!user) {
+	return Astro.redirect("/join");
+}
+
+
 const { data, error } = await Astro.callAction(actions.posts.getPosts, {
     userId: user.id,
 });

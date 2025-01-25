@@ -45,24 +45,3 @@ export type GoogleUser = {
     family_name: string;
     email_verified: boolean;
 };
-
-export type User = {
-    id: string;
-    name: string;
-    email: string;
-    lastName?: string;
-    firstName?: string;
-    providerId?: string;
-    refreshToken?: string;
-    profilePicture?: string;
-    providerUserId?: string;
-    emailIsVerified: boolean;
-    role: 'user' | 'admin' | 'member';
-};
-
-export type Session = {
-    id: string;
-    expiresAt: number;
-    userId: string;
-    createdAt: Date;
-};

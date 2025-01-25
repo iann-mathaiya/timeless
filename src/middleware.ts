@@ -6,8 +6,6 @@ import { eq } from "drizzle-orm";
 export const onRequest = defineMiddleware(async (context, next) => {
   const sessionId = context.cookies.get('auth_session')?.value;
 
-  console.log('sessionId from middleware', sessionId);
-
   if (!sessionId) {
     context.locals.user = null;
     context.locals.session = null;
@@ -35,17 +33,19 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (validatedSession) {
     context.cookies.set("auth_session", validatedSession.session.id, {
-      path: "/",
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "lax",
       secure: import.meta.env.PROD,
-      maxAge: validatedSession.session.expiresAt
-    });
+      maxAge: 60 * 60 * 24 * 14, // 60 days
+      path: "/"
+  });
 
-    context.locals.user = validatedSession.user;
-    context.locals.session = validatedSession.session;
+    if (validatedSession) {
+      context.locals.user = validatedSession.user;
+      context.locals.session = validatedSession.session;
 
-    console.log('user from middleware', context.locals.user);
+      // console.log("Validated session:", validatedSession);
+    }
 
   }
 
