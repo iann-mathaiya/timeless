@@ -8,7 +8,6 @@ interface Env {
 	GOOGLE_CLIENT_ID: string;
 	GOOGLE_CLIENT_SECRET: string;
 	PROJECT_STATE: string;
-	BASE_URL: string;
 	BUCKET_NAME: string;
 	R2_ACCESS_KEY_ID: string;
 	R2_SECRET_ACCESS_KEY: string;
