@@ -21,7 +21,8 @@ BUCKET_NAME = "ars"
 R2_ACCESS_KEY_ID = ""
 R2_SECRET_ACCESS_KEY = ""
 CLOUDFLARE_R2_ENDPOINT=""
-PROJECT_STATE="production"
+PROJECT_STATE = "production"
+BASE_URL = "https://pocket-journal.com"
 
 [[d1_databases]]
 binding = "ARS_DB"
