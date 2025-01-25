@@ -1,39 +1,36 @@
 ---
-import { auth } from "../lib/auth"
 import Logo from "../assets/logo.svg";
-import JoinButton from "../components/join-button";
 import RootLayout from "../layouts/RootLayout.astro";
-
-const authDetails = await auth.api.getSession({
-	headers: Astro.request.headers,
-});
-
-if (authDetails) {
-	return Astro.redirect("/home");
-}
+import { GoogleLogo } from "@/components/icons";
 ---
 
 <RootLayout title="Join">
-
     <section class="mx-auto w-full min-h-screen bg-gradient-to-br from-[#f8f9c7]/80 to-[#f0cd97]/80">
-
-        <div class="mx-auto w-full max-w-sm min-h-screen flex flex-col items-center justify-center gap-1">
+        <div
+            class="mx-auto w-full max-w-sm min-h-screen flex flex-col items-center justify-center gap-1"
+        >
             <Logo width={40} height={40} fill="currentColor" />
 
             <div class="mt-1 text-center">
-                <h1 class="text-2xl text-gray-950 font-serif font-medium">Create an account</h1>
-                <p class="text-sm text-gray-600">Adventure awaits, sign up and be timeless</p>
+                <h1 class="text-2xl text-gray-950 font-serif font-medium">
+                    Create an account
+                </h1>
+                <p class="text-sm text-gray-600">
+                    Adventure awaits, sign up and be timeless
+                </p>
             </div>
 
-            <JoinButton client:load />
+            <!-- <JoinButton client:load /> -->
 
             <p class="mt-0.5 flex text-sm text-gray-600 gap-1">
                 <span>Already have an account? </span>
-                <a href="/sign-in" class="text-gray-900 hover:text-orange-600 underline underline-offset-2 decoration-gray-900 hover:decoration-orange-600">
+                <a
+                    href="/sign-in"
+                    class="text-gray-900 hover:text-orange-600 underline underline-offset-2 decoration-gray-900 hover:decoration-orange-600"
+                >
                     Sign in here.
                 </a>
             </p>
         </div>
     </section>
-    
 </RootLayout>

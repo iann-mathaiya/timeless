@@ -1,18 +1,9 @@
 ---
-import { auth } from "../lib/auth";
 import { actions } from "astro:actions";
 import type { FriendPost, UploadedFiles } from "@/lib/types";
 import AppLayout from "../layouts/AppLayout.astro";
 import type { Media } from "@/lib/types";
 import { formatPostDate } from "@/lib/utils";
-
-const authDetails = await auth.api.getSession({
-    headers: Astro.request.headers,
-});
-
-if (!authDetails) {
-    return Astro.redirect("/join");
-}
 
 const { data, error } = await Astro.callAction(actions.posts.getFriendsPosts, {
     userId: authDetails.user.id,

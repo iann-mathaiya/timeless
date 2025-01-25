@@ -1,17 +1,6 @@
 ---
 import { format } from "date-fns";
-import { auth } from "../lib/auth";
 import AppLayout from "../layouts/AppLayout.astro";
-
-const authDetails = await auth.api.getSession({
-    headers: Astro.request.headers,
-});
-
-if (!authDetails) {
-    return Astro.redirect("/join");
-}
-
-const { user } = authDetails;
 ---
 
 <AppLayout title="Profile">
