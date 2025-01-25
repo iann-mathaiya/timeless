@@ -3,7 +3,6 @@
 
 type Runtime = import('@astrojs/cloudflare').Runtime<Env>
 
-
 type User = {
     id: string;
     name: string;
@@ -39,7 +38,9 @@ declare namespace App {
 
 interface ImportMetaEnv {
     readonly DB: D1Database
-    readonly BETTER_AUTH_SECRET: string
+    readonly PROJECT_STATE: string
+    readonly GOOGLE_CLIENT_ID: string
+    readonly GOOGLE_CLIENT_SECRET: string
     readonly CLOUDFLARE_API_TOKEN: string
     readonly CLOUDFLARE_ACCOUNT_ID: string
 }
