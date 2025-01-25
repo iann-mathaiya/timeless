@@ -2,7 +2,7 @@ import { sessions, users, type User } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import type { APIContext } from "astro";
 import { drizzle } from "drizzle-orm/d1";
-import type { GoogleUser } from "@/lib/types";
+import type { GoogleUser, ProjectState } from "@/lib/types";
 import { ArcticFetchError, Google, OAuth2RequestError } from "arctic";
 
 
@@ -12,8 +12,9 @@ export async function GET(context: APIContext): Promise<Response> {
     const { env } = context.locals.runtime;
     const db = drizzle(env.ARS_DB, {schema: { users }});
 
-	const redirectURI = context.locals.runtime.env.PROJECT_STATE === 'production' ? 'https://www.pocket-journal.com/api/auth/callback/google' : 'http://localhost:4321/api/auth/callback/google'
-
+	const projectState = context.locals.runtime.env.PROJECT_STATE as ProjectState
+	
+	const redirectURI = projectState === 'production' ? 'https://www.pocket-journal.com/api/auth/callback/google' : 'http://localhost:4321/api/auth/callback/google';
 	const google = new Google(import.meta.env.GOOGLE_CLIENT_ID, import.meta.env.GOOGLE_CLIENT_SECRET, redirectURI)
 
     const code = context.url.searchParams.get("code")

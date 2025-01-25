@@ -1,6 +1,8 @@
 import type { posts } from "@/actions/posts";
 import type { Post } from "@/db/schema";
 
+export type ProjectState = 'development' | 'production';
+
 export type FileType = "image/webp" | "image/jpeg" | "image/png" | "video/mp4";
 
 export type Media = {
