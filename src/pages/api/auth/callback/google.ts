@@ -60,13 +60,26 @@ export async function GET(context: APIContext): Promise<Response> {
                 userId: userId,
                 createdAt: new Date(),
                 expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 60 // 60 days
+            }).returning({sessionId: sessions.id, expiresAt: sessions.expiresAt})
+
+            return session[0]
+        }
+
+        function setSessionTokenCookie(token: string): void {
+            context.cookies.set("auth_session", token, {
+                httpOnly: true,
+                sameSite: "lax",
+                secure: import.meta.env.PROD,
+                maxAge: 60 * 60 * 24 * 14, // 60 days
+                path: "/"
             });
 
-            return session
         }
             
             if(existingUser){
-                createSession(existingUser.id)
+                const session = createSession(existingUser.id)
+                setSessionTokenCookie((await session).sessionId)
+                // console.log('sessionId from callback', (await session).sessionId)
                 return context.redirect("/home")
         }
 
@@ -83,7 +96,9 @@ export async function GET(context: APIContext): Promise<Response> {
             name: `${googleUser.given_name} ${googleUser.family_name}`,
         }).returning();
 
-        createSession(user.id)
+        const session = createSession(user.id)
+
+        setSessionTokenCookie((await session).sessionId)
               
     } catch (error) {
                if (error instanceof OAuth2RequestError) {

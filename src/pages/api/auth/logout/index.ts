@@ -19,5 +19,9 @@ export async function POST(context: APIContext): Promise<Response> {
       await db.delete(sessions).where(eq(sessions.id, sessionId));
   }
 
+  context.cookies.delete('session', { 
+    path: '/' 
+  });
+
   return context.redirect("/join")
 }
