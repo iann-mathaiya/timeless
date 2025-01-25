@@ -7,17 +7,15 @@ import { Container } from "@/components/container";
 const { title, description } = Astro.props;
 const { user, session } = Astro.locals;
 
-// if (!user || !session) {
-//   return Astro.redirect('/join')
-// }
-
-// console.log('session', session)
+if (!user || !session) {
+  return Astro.redirect('/join')
+}
 
 const currentPath = Astro.url.pathname;
 ---
 
 <RootLayout title={title} description={description}>
-    <Provider >
+    <Provider>
         <Container
             client:load
             user={user}

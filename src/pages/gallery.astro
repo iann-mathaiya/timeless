@@ -5,8 +5,14 @@ import { actions } from "astro:actions";
 import AppLayout from "../layouts/AppLayout.astro";
 import type { Media, UploadedFiles } from "@/lib/types";
 
+const { user, session } = Astro.locals;
+
+if (!user) {
+	return Astro.redirect("/join");
+}
+
 const { data, error } = await Astro.callAction(actions.media.getUserMedia, {
-    userId: authDetails.user.id,
+    userId: user.id,
 });
 
 const updatedMedia: { mediaData: Media[]; createdAt: Date }[] = [];

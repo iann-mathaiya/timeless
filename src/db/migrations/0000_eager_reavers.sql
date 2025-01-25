@@ -39,6 +39,7 @@ CREATE TABLE `users` (
 	`email` text NOT NULL,
 	`provider_user_id` text,
 	`role` text DEFAULT 'user' NOT NULL,
+	`created_at` integer NOT NULL,
 	`email_is_verified` integer DEFAULT 0 NOT NULL
 );
 --> statement-breakpoint

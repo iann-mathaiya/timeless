@@ -1,5 +1,4 @@
 import { z } from 'astro:schema';
-import { auth } from '@/lib/auth';
 import { eq, desc, and, or, not } from 'drizzle-orm';
 import { drizzle } from "drizzle-orm/d1";
 import { ActionError, defineAction } from "astro:actions";
@@ -16,16 +15,14 @@ export const posts = {
             const { env } = context.locals.runtime;
             const db = drizzle(env.ARS_DB);
 
-            try {
-                const authDetails = await auth.api.getSession({
-                    headers: context.request.headers,
-                });
+            const user = context.locals.user
 
-                if (!authDetails) {
+            console.log('user from actions', user)
+
+            try {
+                if (!user) {
                     throw new ActionError({ code: 'UNAUTHORIZED' });
                 }
-
-                const { user } = authDetails;
 
                 const mediaInput = JSON.parse(media[0]);
 
@@ -54,16 +51,13 @@ export const posts = {
             const { env } = context.locals.runtime;
             const db = drizzle(env.ARS_DB);
 
-            try {
-                const authDetails = await auth.api.getSession({
-                    headers: context.request.headers,
-                });
+            const user = context.locals.user
 
-                if (!authDetails) {
+            try {
+
+                if (!user) {
                     throw new ActionError({ code: 'UNAUTHORIZED' });
                 }
-
-                const { user } = authDetails;
 
                 if (user.id !== userId) {
                     throw new ActionError({ code: 'FORBIDDEN' });
@@ -87,16 +81,13 @@ export const posts = {
             const { env } = context.locals.runtime;
             const db = drizzle(env.ARS_DB);
 
-            try {
-                const authDetails = await auth.api.getSession({
-                    headers: context.request.headers,
-                });
+            const user = context.locals.user
 
-                if (!authDetails) {
+            try {
+
+                if (!user) {
                     throw new ActionError({ code: 'UNAUTHORIZED' });
                 }
-
-                const { user } = authDetails;
 
                 if (user.id !== userId) {
                     throw new ActionError({ code: 'FORBIDDEN' });
@@ -120,16 +111,13 @@ export const posts = {
             const { env } = context.locals.runtime;
             const db = drizzle(env.ARS_DB);
 
-            try {
-                const authDetails = await auth.api.getSession({
-                    headers: context.request.headers,
-                });
+            const user = context.locals.user
 
-                if (!authDetails) {
+            try {
+
+                if (!user) {
                     throw new ActionError({ code: 'UNAUTHORIZED' });
                 }
-
-                const { user } = authDetails;
 
                 if (user.id !== userId) {
                     throw new ActionError({ code: 'FORBIDDEN' });

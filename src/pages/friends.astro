@@ -5,8 +5,14 @@ import AppLayout from "../layouts/AppLayout.astro";
 import type { Media } from "@/lib/types";
 import { formatPostDate } from "@/lib/utils";
 
+const { user, session } = Astro.locals;
+
+if (!user) {
+	return Astro.redirect("/join");
+}
+
 const { data, error } = await Astro.callAction(actions.posts.getFriendsPosts, {
-    userId: authDetails.user.id,
+    userId: user.id,
 });
 
 const friendsPosts: FriendPost[] = []
@@ -49,7 +55,7 @@ if (data?.success) {
             {friendsPosts.map(({post, author}) => 
                 <li class="">
                     <div class="px-[17px] flex items-center gap-2">
-                        <img class="size-6 min-w-6 rounded-full" src={author.image} alt={`${author.name} profile`} />
+                        <img class="size-6 min-w-6 rounded-full" src={author.profilePicture} alt={`${author.name} profile`} />
                         <h1 class="text-base text-gray-600 font-medium">{author.name}</h1>
                     </div>
                         <div class="mt-1.5 px-[17px] w-full flex items-center gap-1.5 lg:gap-2.5 overflow-x-auto xl:overflow-visible">

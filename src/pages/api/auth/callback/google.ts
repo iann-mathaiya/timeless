@@ -86,6 +86,7 @@ export async function GET(context: APIContext): Promise<Response> {
         const [user] = await db.insert(users).values({
             id: crypto.randomUUID(),
             providerId: 'Google',
+            createdAt: new Date(),
             email: googleUser.email,
             refreshToken: refreshToken,
             providerUserId: googleUser.sub,

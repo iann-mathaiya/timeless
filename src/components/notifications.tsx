@@ -77,8 +77,8 @@ export default function Notifications() {
                 <ul className="mt-1 space-y-1">
                     {pendingRequests.map(pendingRequest =>
                         <li key={pendingRequest.id} className="p-2 w-full group flex gap-2 bg-transparent rounded-md">
-                            {pendingRequest.requester.image ?
-                                <img src={pendingRequest.requester.image} alt={`${pendingRequest.requester.name} profile`} className="mt-0.5 size-5 sm:size-7 rounded-full" />
+                            {pendingRequest.requester.profilePicture ?
+                                <img src={pendingRequest.requester.profilePicture} alt={`${pendingRequest.requester.name} profile`} className="mt-0.5 size-5 sm:size-7 rounded-full" />
                                 :
                                 <div className="mt-0.5 py-4 pl-6 size-5 sm:size-7 rounded-full" />
                             }

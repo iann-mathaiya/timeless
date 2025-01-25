@@ -8,8 +8,6 @@ interface Env {
 	DB: string;
 	GOOGLE_CLIENT_ID: string;
 	GOOGLE_CLIENT_SECRET: string;
-	PUBLIC_CLERK_PUBLISHABLE_KEY: string;
-	CLERK_SECRET_KEY: string;
 	BUCKET_NAME: string;
 	R2_ACCESS_KEY_ID: string;
 	R2_SECRET_ACCESS_KEY: string;

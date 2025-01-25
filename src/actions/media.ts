@@ -1,5 +1,4 @@
 import { z } from "astro:schema";
-import { auth } from '@/lib/auth';
 import { posts } from "@/db/schema";
 import { eq, desc } from 'drizzle-orm';
 import { drizzle } from "drizzle-orm/d1";
@@ -142,16 +141,12 @@ export const media = {
             const { env } = context.locals.runtime;
             const db = drizzle(env.ARS_DB);
 
-            try {
-                const authDetails = await auth.api.getSession({
-                    headers: context.request.headers,
-                });
+            const user = context.locals.user
 
-                if (!authDetails) {
+            try {
+                if (!user) {
                     throw new ActionError({ code: 'UNAUTHORIZED' });
                 }
-
-                const { user } = authDetails;
                 
                 if(user.id !== userId){
                     throw new ActionError({code: 'FORBIDDEN'})

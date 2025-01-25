@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "c08afd7c-b6e3-4dc0-b104-0272428c13fb",
+  "id": "836d639b-6ce7-4829-896b-6db1d2e7b72b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "friends": {
@@ -283,6 +283,13 @@
           "notNull": true,
           "autoincrement": false,
           "default": "'user'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         },
         "email_is_verified": {
           "name": "email_is_verified",

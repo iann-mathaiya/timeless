@@ -35,6 +35,7 @@ export const users = sqliteTable("users", {
 	email: text("email").unique().notNull(),
 	providerUserId: text('provider_user_id'),
 	role: text("role").notNull().default('user'),
+	createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
 	emailIsVerified: integer('email_is_verified').notNull().default(0),
 })
 

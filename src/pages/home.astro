@@ -12,7 +12,6 @@ if (!user) {
 	return Astro.redirect("/join");
 }
 
-
 const { data, error } = await Astro.callAction(actions.posts.getPosts, {
     userId: user.id,
 });

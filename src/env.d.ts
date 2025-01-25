@@ -8,6 +8,7 @@ type User = {
     id: string;
     name: string;
     email: string;
+    createdAt: Date;
     lastName?: string | null; 
     emailIsVerified: number;
     firstName?: string | null;

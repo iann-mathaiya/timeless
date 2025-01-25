@@ -1,7 +1,6 @@
 import { Toaster } from "sonner";
 import { useEffect } from "react";
 import { useSetAtom } from "jotai";
-import type { User } from "@/db/schema";
 import Navigation from "./navigation";
 import { NavActions } from "@/components/nav-actions";
 import { currentPathAtom, userAtom, userIdAtom } from "@/lib/store";

@@ -1,6 +1,12 @@
 ---
 import { format } from "date-fns";
 import AppLayout from "../layouts/AppLayout.astro";
+
+const { user, session } = Astro.locals;
+
+if (!user) {
+	return Astro.redirect("/join");
+}
 ---
 
 <AppLayout title="Profile">
