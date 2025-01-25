@@ -7,7 +7,7 @@ export async function GET(context: APIContext): Promise<Response> {
 	const state = generateState()
 	const codeVerifier = generateCodeVerifier()
 
-	const redirectURI = import.meta.env.MODE === 'production' ? `${import.meta.env.BASE_URL}/api/auth/callback/google` : 'http://localhost:4321/api/auth/callback/google'
+	const redirectURI = import.meta.env.MODE === 'production' ? 'https://www.pocket-journal.com/api/auth/callback/google' : 'http://localhost:4321/api/auth/callback/google'
 
 	const google = new Google(import.meta.env.GOOGLE_CLIENT_ID, import.meta.env.GOOGLE_CLIENT_SECRET, redirectURI)
 
