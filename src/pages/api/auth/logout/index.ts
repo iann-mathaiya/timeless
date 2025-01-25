@@ -13,7 +13,7 @@ export async function POST(context: APIContext): Promise<Response> {
     });
   }
 
-  const sessionId = context.cookies.get('session')?.value;
+  const sessionId = context.cookies.get('auth_session')?.value;
 
   if(sessionId) {
       await db.delete(sessions).where(eq(sessions.id, sessionId));

@@ -12,7 +12,7 @@ export async function GET(context: APIContext): Promise<Response> {
     const { env } = context.locals.runtime;
     const db = drizzle(env.ARS_DB, {schema: { users }});
 
-	const redirectURI = env.PROJECT_STATE === 'production' ? `${env.BASE_URL}/api/auth/callback/google` : 'http://localhost:4321/api/auth/callback/google'
+	const redirectURI = import.meta.env.MODE === 'production' ? `${env.BASE_URL}/api/auth/callback/google` : 'http://localhost:4321/api/auth/callback/google'
 
 	const google = new Google(import.meta.env.GOOGLE_CLIENT_ID, import.meta.env.GOOGLE_CLIENT_SECRET, redirectURI)
 
