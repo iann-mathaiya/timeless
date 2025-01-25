@@ -35,11 +35,11 @@ export default function MoreActions({ postId }: MoreActions) {
                 </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className='w-40 p-1 flex flex-col gap-1'>
-                <Button variant="ghost" className='px-2 h-8 w-full inline-flex justify-start font-normal text-start'>
+                {/* <Button variant="ghost" disabled className='px-2 h-8 w-full inline-flex justify-start font-normal text-start'>
                     <Pencil />
                     <span>Edit</span>
-                </Button>
-                <Button variant="destructive" onClick={handleDelete} className='px-2 h-8 w-full inline-flex justify-start font-normal text-gray-900 hover:text-red-600 text-start bg-transparent hover:bg-red-100/80'>
+                </Button> */}
+                <Button variant="destructive" onClick={handleDelete} className='px-2 h-8 w-full inline-flex justify-start font-normal text-gray-900 hover:text-red-600 text-start bg-transparent shadow-none hover:bg-red-100/80'>
                     <Trash2 />
                     <span>Delete</span>
                 </Button>

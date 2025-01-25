@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import type { PendingFriendRequest } from "@/lib/types";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { RiNotification3Line } from "@remixicon/react";
 
 export default function Notifications() {
     const [userId] = useAtom(userIdAtom);
@@ -51,7 +52,7 @@ export default function Notifications() {
                     size="icon"
                     className="h-7 w-7 relative data-[state=open]:bg-accent overflow-visible"
                 >
-                    <Bell />
+                    <RiNotification3Line />
                     {pendingRequests.length > 0 &&
                         <div className="min-w-1.5 h-1.5 absolute top-0.5 right-0.5 bg-red-500 rounded-full" />
                     }

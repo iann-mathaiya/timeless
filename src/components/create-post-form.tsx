@@ -17,6 +17,8 @@ export default function CreatePostForm() {
     const [uploadedFiles, setUploadedFiles] = useState<UploadedFiles[]>([]);
     const inputRef = useRef<HTMLInputElement>(null);
 
+    console.log(fetchedMedia)
+
     function handleAddFile(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         if (!inputRef || !inputRef.current) return;
@@ -55,6 +57,8 @@ export default function CreatePostForm() {
                 const media: Media = { mediaURL: signedUrlData.signedUrl, fileName: data.fileName, fileType: data.fileType };
                 setFetchedMedia(prevMedia => [...prevMedia, media]);
                 setUploading(false);
+
+                console.log(fetchedMedia)
             }
         }
     }
@@ -80,8 +84,13 @@ export default function CreatePostForm() {
         console.log(fileName)
         const { data, error } = await actions.media.removeFile({fileName: fileName})
 
-        if(data?.success) toast.success(data.message)
-            // remove the fetched media item from the array after data?.success
+        if(data?.success) { 
+            setFetchedMedia((prevItems) =>
+                prevItems.filter((item) => item.fileName !== fileName)
+              );
+
+            toast.success(data.message)
+        }
     }
 
     return (
