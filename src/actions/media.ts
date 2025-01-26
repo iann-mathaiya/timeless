@@ -3,7 +3,7 @@ import { posts } from "@/db/schema";
 import { eq, desc } from 'drizzle-orm';
 import { drizzle } from "drizzle-orm/d1";
 import type { FileType, ProjectState } from '@/lib/types';
-import { MAX_FILE_SIZE } from "@/lib/constants";
+import { MAX_IMAGE_SIZE, MAX_VIDEO_SIZE } from "@/lib/constants";
 import { defineAction, ActionError } from "astro:actions";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
@@ -16,12 +16,19 @@ export const media = {
             file: z.instanceof(File),
         }),
         handler: async ({ file }, context) => {
-            if (!file.type.startsWith("image/webp") && !file.type.startsWith("image/jpeg") && !file.type.startsWith("image/png") && !file.type.startsWith("video/mp4")) {
-                throw new Error('File should either be a webp, jpeg, png or mp4 video');
+            const isImage = file.type.startsWith("image/webp") || file.type.startsWith("image/jpeg") || file.type.startsWith("image/png")
+            const isVideo = file.type.startsWith("video/mp4") || file.type.startsWith("video/mov") || file.type.startsWith("video/webm")
+
+            if (!isImage && !isVideo) {
+                throw new Error('File should either be a webp, jpeg png picture or webm, mp4, mov video');
             }
 
-            if (file.size > MAX_FILE_SIZE) {
-                throw new Error('File size should be less than 16MB');
+            if (file.size > MAX_IMAGE_SIZE && isImage) {
+                throw new Error('File size should be less than 15MB');
+            }
+
+            if (file.size > MAX_VIDEO_SIZE && isVideo) {
+                throw new Error('File size should be less than 30MB');
             }
 
             const { env } = context.locals.runtime;

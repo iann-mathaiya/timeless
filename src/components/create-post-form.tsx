@@ -137,7 +137,7 @@ export default function CreatePostForm() {
                         <input
                             disabled={files.length === 3}
                             ref={inputRef} type='file' multiple
-                            accept='image/webp, image/jpeg, image/png, video/mp4'
+                            accept='image/webp, image/jpeg, image/png, video/mp4, video/mov, video/webm'
                             onChange={handleFileUpload} className='hidden' />
                         <TooltipProvider delayDuration={400} skipDelayDuration={150}>
                             <Tooltip>
