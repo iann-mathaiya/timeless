@@ -70,11 +70,16 @@ export default function SearchFriendDrawer() {
         console.log(data);
     }
 
-    async function acceptFriendRequest(event: React.MouseEvent<HTMLButtonElement>, respondentId: string) {
+    async function acceptFriendRequest(event: React.MouseEvent<HTMLButtonElement>, friendId: string) {
         event.preventDefault();
+        setIsLoading(true)
+        const { data, error } = await actions.friends.acceptFriendRequest({respondentId: userId, requesterId: friendId})
 
-        // action to accept friend request
-
+        if (data?.success) {
+            const { data: newUsersData, error } = await actions.friends.searchUser({ userId: userId, keyword: searchValue.trim() });
+            setSearchedUsers(newUsersData?.matchingUsers);
+            setIsLoading(false);
+        }
     }
 
     return (

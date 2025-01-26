@@ -1,4 +1,3 @@
-import type { posts } from "@/actions/posts";
 import type { Post } from "@/db/schema";
 
 export type ProjectState = 'development' | 'production';
@@ -19,9 +18,9 @@ export type MatchingUser = {
     id: string;
     name: string;
     email: string;
+    isRequester: boolean | null;
     profilePicture: string | null;
     friendshipStatus: "pending" | "accepted" | "rejected" | null;
-    isRequester: boolean | null;
 };
 
 export type PendingFriendRequest = {

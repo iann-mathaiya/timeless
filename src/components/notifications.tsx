@@ -40,7 +40,6 @@ export default function Notifications() {
             fetchPendingRequests(userId)
             setIsLoading(false)
         }
-
     }
 
 
@@ -101,7 +100,6 @@ export default function Notifications() {
                         </li>
                     )}
                 </ul>
-
             </PopoverContent>
         </Popover>
     );

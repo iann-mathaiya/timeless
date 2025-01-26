@@ -123,7 +123,7 @@ export const friends = {
                     id: friendsSchema.id,
                     status: friendsSchema.status,
                     createdAt: friendsSchema.createdAt,
-                    requester: { id: users.id, name: users.name, email: users.email, image: users.profilePicture },
+                    requester: { id: users.id, name: users.name, email: users.email, profilePicture: users.profilePicture },
                 })
                     .from(friendsSchema)
                     .innerJoin(users, eq(users.id, friendsSchema.requesterId))
