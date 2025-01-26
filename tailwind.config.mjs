@@ -9,6 +9,7 @@ export default {
     		fontFamily: {
     			serif: [
     				'Instrument Serif',
+					'Times New Roman', //fallback
                     ...defaultTheme.fontFamily.serif
                 ],
     			sans: [
