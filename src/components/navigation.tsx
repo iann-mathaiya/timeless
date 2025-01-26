@@ -20,7 +20,7 @@ export default function Navigation() {
                 {(currentPath === '/friends' && !isOpen) ? <RiUserSmileFill className="fill-white size-7 sm:size-6" aria-hidden /> : <RiUserSmileLine className="fill-gray-400 size-7 sm:size-6" aria-hidden />}
             </Link>
 
-            <Drawer.Root open={isOpen} onOpenChange={setIsOpen}>
+            <Drawer.Root open={isOpen} onOpenChange={setIsOpen} repositionInputs={false}>
                 <Drawer.Trigger className="size-9 sm:size-8 flex items-center justify-center">
                     {isOpen ? <RiAddCircleFill className="fill-white size-7 sm:size-6" aria-hidden /> : <RiAddCircleLine className="fill-gray-400 size-7 sm:size-6" aria-hidden />}
                 </Drawer.Trigger>
