@@ -7,12 +7,8 @@ export const prerender = false
 export async function GET(context: APIContext): Promise<Response> {
 	const state = generateState()
 	const codeVerifier = generateCodeVerifier()
-
-	const projectState = context.locals.runtime.env.PROJECT_STATE as ProjectState
 	
-	const redirectURI = projectState === 'production' ? 'https://www.pocket-journal.com/api/auth/callback/google' : 'http://localhost:4321/api/auth/callback/google';
-	console.log('redirectURI: dddd', redirectURI)
-	console.log('Environment:', projectState);
+	const redirectURI = 'https://www.pocket-journal.com/api/auth/callback/google'
 
 	const google = new Google(import.meta.env.GOOGLE_CLIENT_ID, import.meta.env.GOOGLE_CLIENT_SECRET, redirectURI)
 
