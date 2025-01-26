@@ -13,24 +13,17 @@ export default defineConfig({
 			enabled: true
 		}
 	}),
-	integrations: [
-		react(),
-		tailwind({
-			applyBaseStyles: false,
-		})],
-	experimental: {
-		svg: true,
-	},
+	integrations: [ react(), tailwind({applyBaseStyles: false}) ],
+	experimental: { svg: true },
+	security: { checkOrigin: true },
 	vite: {
+		define: { "process.env" : process.env },
 		resolve: {
 		  // Use react-dom/server.edge instead of react-dom/server.browser for React 19.
 		  // Without this, MessageChannel from node:worker_threads needs to be polyfilled.
 		  alias: import.meta.env.PROD ? { "react-dom/server": "react-dom/server.edge" } : undefined
 		},
 	  },
-	security: {
-		checkOrigin: true
-	},
 	env: {
 		schema: {
 			DB: envField.string({ context: "server", access: "secret" }),
