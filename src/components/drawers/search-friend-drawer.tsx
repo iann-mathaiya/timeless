@@ -3,14 +3,13 @@ import { useAtom } from 'jotai';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { actions } from 'astro:actions';
+import { UserNotFound } from '../icons';
 import { useRef, useState } from 'react';
 import { userIdAtom } from '@/lib/store';
 import { twMerge } from 'tailwind-merge';
-import { SmilePlus, X } from 'lucide-react';
-import type { MatchingUser } from '@/lib/types';
-import { RiPokerHeartsFill, RiUserHeartLine } from '@remixicon/react';
 import CopyLinkButton from '../copy-link-button';
-import { UserNotFound } from '../icons';
+import type { MatchingUser } from '@/lib/types';
+import { RiCloseLine, RiPokerHeartsFill, RiUserHeartLine } from '@remixicon/react';
 
 export default function SearchFriendDrawer() {
     const [isOpen, setIsOpen] = useState(false);
@@ -101,6 +100,7 @@ export default function SearchFriendDrawer() {
 
                     <div className='relative h-8 w-full px-4'>
                         <Input
+                            autoFocus
                             type="text"
                             ref={inputRef}
                             value={searchValue}
@@ -108,15 +108,11 @@ export default function SearchFriendDrawer() {
                             onKeyDown={handleKeyDown}
                             placeholder="Search friend"
                             onChange={e => setSearchValue(e.target.value)}
-                            className="peer ps-9 h-8 w-full border-none shadow-none" />
-
-                        <div className="pointer-events-none absolute inset-y-0 start-0 left-4 sm:left-3 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
-                            <SmilePlus size={16} strokeWidth={2} aria-hidden="true" />
-                        </div>
+                            className="h-8 w-full border-none shadow-none" />
 
                         {searchValue &&
                             <button type='button' onClick={clearInput} className="ps-3 absolute inset-y-0 right-6 flex items-center justify-center text-muted-foreground/80 hover:text-gray-900 peer-disabled:opacity-50">
-                                <X size={16} strokeWidth={2} aria-hidden="true" />
+                                <RiCloseLine size={16} strokeWidth={2} aria-hidden="true" />
                             </button>
                         }
                     </div>

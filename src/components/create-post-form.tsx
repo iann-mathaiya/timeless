@@ -98,7 +98,8 @@ export default function CreatePostForm() {
 
     return (
         <form onSubmit={handleSumbit} encType="multipart/form-data" className='px-4 mx-auto w-full max-w-xl'>
-            <input placeholder='Add title' name='title' required className='w-full text-xl font-medium bg-transparent outline-none placeholder:text-gray-400' />
+            {/* biome-ignore lint/a11y/noAutofocus: <explanation> */}
+            <input autoFocus placeholder='Add title' name='title' required className='w-full text-xl font-medium bg-transparent outline-none placeholder:text-gray-400' />
 
             <textarea placeholder='Write something...' name='description'
                 className={twMerge('mt-2 min-h-20 w-full text-sm outline-none', (uploading || fetchedMedia.length > 0) && 'min-h-fit')} />
