@@ -3,7 +3,7 @@ import type { Post } from "@/db/schema";
 
 export type ProjectState = 'development' | 'production';
 
-export type FileType = "image/webp" | "image/jpeg" | "image/png" | "video/mp4";
+export type FileType = "image/webp" | "image/jpeg" | "image/png" | "video/mp4" | "video/webm" | "video/mov"
 
 export type Media = {
     mediaURL: string;

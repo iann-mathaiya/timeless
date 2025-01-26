@@ -44,7 +44,7 @@ export default function CreatePostForm() {
         const { data, error } = await actions.media.uploadFile(formData);
         toast.dismiss(uploadToast);
 
-        error && toast.error(error.message);
+        error && setUploading(false) && toast.error(error.message);
 
         if (data?.success) {
             const justUploaded = { fileName: data.fileName, fileType: data.fileType };
@@ -105,7 +105,7 @@ export default function CreatePostForm() {
 
             <div className='flex items-center gap-2'>
                 {uploading &&
-                    <div className='aspect-square min-w-80 flex items-center justify-center bg-gray-200 animate-plse rounded-lg lg:rounded-xl'>
+                    <div className='aspect-square w-full sm:w-80 flex items-center justify-center bg-gray-200 animate-plse rounded-lg lg:rounded-xl'>
                         <div className="loader" />
                     </div>
                 }
@@ -113,14 +113,14 @@ export default function CreatePostForm() {
                     <div className='flex items-center gap-2'>
 
                         {fetchedMedia.map(({ mediaURL, fileType, fileName }) =>
-                            <div key={mediaURL} className='relative max-w-80 w-80'>
-                                {fileType === 'video/mp4' ?
-                                    <video className='aspect-square min-w-80 w-80 rounded-lg lg:rounded-xl' controls>
-                                        <source src={mediaURL} type="video/mp4" />
+                            <div key={mediaURL} className='relative w-full sm:w-80'>
+                                {(fileType === 'video/mp4' || fileType === 'video/mov' || fileType === 'video/webm') ?
+                                    <video className='w-full sm:w-80 aspect-square rounded-lg lg:rounded-xl' controls>
+                                        <source src={mediaURL} type={fileType} />
                                         <track src="captions_en.vtt" kind="captions" srcLang="en" label="english_captions" />
                                     </video>
                                     :
-                                    <img src={mediaURL} alt='Just a placeholder' className='aspect-square min-w-80 w-80 object-cover object-center rounded-lg lg:rounded-xl' />
+                                    <img src={mediaURL} alt='Just a placeholder' className='w-full sm:w-80 aspect-square object-cover object-center rounded-lg lg:rounded-xl' />
                                 }
                                 <Button onClick={(e) => handleRemoveFile(e, fileName as string)} variant='destructive' size='icon' className='absolute h-7 w-7 top-2 right-2 bg-red-100 hover:bg-red-200/65'>
                                     <RiCloseLine className='w-6 h-6 fill-red-600' />

@@ -26,7 +26,7 @@ export default function Navigation() {
                 </Drawer.Trigger>
                 <Drawer.Portal>
                     <Drawer.Overlay className="sm:ml-16 fixed inset-0 bg-black/40 z-40" />
-                    <Drawer.Content className="pt-2 sm:ml-16 h-fit min-h-dvh bg-white space-y-4 fixed bottom-0 left-0 right-0 z-50 outline-none rounded-t-2xl sm:rounded-none sm:rounded-tl-2xl">
+                    <Drawer.Content className="pt-2 mt- sm:ml-16 h-[84vh] sm:h-[96vh] bg-white space-y-4 fixed bottom-0 left-0 right-0 z-50 outline-none rounded-t-2xl sm:rounded-none sm:rounded-tl-2xl">
                         <Drawer.Handle />
                         <Drawer.Title className="sr-only">Create a new post</Drawer.Title>
                         <Drawer.Description className="sr-only">Alter the timeline</Drawer.Description>
