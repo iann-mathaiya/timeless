@@ -2,6 +2,7 @@
 import { format } from "date-fns";
 import { Asterisk } from "lucide-react";
 import { actions } from "astro:actions";
+import EmptyAlbum from "../assets/empty-album.svg";
 import AppLayout from "../layouts/AppLayout.astro";
 import type { Media, UploadedFiles } from "@/lib/types";
 
@@ -64,15 +65,37 @@ const gallery = Object.values(
 
 <AppLayout title="Gallery">
     <section class="">
-        <ul
-            class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center gap-4"
-        >
+
+        {gallery.length === 0 && 
+            <div class="mt-24 flex flex-col items-center justify-center">
+                <EmptyAlbum width={80} height={80} />
+                <p class="mt-1 text-base text-gray-900 font-medium">No posts yet</p>
+                <p class="text-sm text-gray-600">Create your first post</p>
+                <p class="mt-8 text-xs"> 
+                    <span class="italic font-medium text-gray-800">Psst</span>
+                    <span class="text-gray-600">click on the plus in a circle 😉</span>
+                </p>
+    
+                <div class="mt-12 sm:mt-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="sm:hidden size-8 fill-gray-600  animate-bounce">
+                        <path d="M13.0001 1.99974L11.0002 1.9996L11.0002 18.1715L7.05044 14.2218L5.63623 15.636L12.0002 22L18.3642 15.636L16.9499 14.2218L13.0002 18.1716L13.0001 1.99974Z"></path>
+                    </svg>
+    
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden sm:block size-8 fill-gray-900 animate-pulse">
+                        <path d="M22.0003 13.0001L22.0004 11.0002L5.82845 11.0002L9.77817 7.05044L8.36396 5.63623L2 12.0002L8.36396 18.3642L9.77817 16.9499L5.8284 13.0002L22.0003 13.0001Z"></path>
+                    </svg>
+                </div>
+    
+            </div>
+        }
+
+        <ul class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center gap-4">
             {
                 gallery.map((post) => (
                     <li>
                         <div class="w-40 md:w-52 lg:w-56 h-40 md:h-52 lg:h-56 relative group cursor-pointer">
                             {post.mediaData[0].fileType === "video/mp4" ? (
-                                <video draggable="false" class="w-40 md:w-52 lg:w-56 h-40 md:h-52 lg:h-56 object-cover object-center rounded-[12px]">
+                                <video draggable="false" transition:persist class="w-40 md:w-52 lg:w-56 h-40 md:h-52 lg:h-56 object-cover object-center rounded-[12px]">
                                     <source src={post.mediaData[0].mediaURL} type="video/mp4" />
                                     <track src="captions_en.vtt" kind="captions" srclang="en" label="english_captions"/>
                                 </video>

@@ -1,9 +1,11 @@
 ---
 import { actions } from "astro:actions";
-import type { FriendPost, UploadedFiles } from "@/lib/types";
-import AppLayout from "../layouts/AppLayout.astro";
+import Heart from "../assets/heart.svg";
 import type { Media } from "@/lib/types";
 import { formatPostDate } from "@/lib/utils";
+import AppLayout from "../layouts/AppLayout.astro";
+import type { FriendPost, UploadedFiles } from "@/lib/types";
+import CopyLinkButton from "@/components/copy-link-button";
 
 const { user, session } = Astro.locals;
 
@@ -51,6 +53,25 @@ if (data?.success) {
 
 <AppLayout title="Friends & Family">
     <section class="mx-auto w-full max-w-screen-lg overflow-visible">
+        { friendsPosts.length === 0 &&
+            <div class="mt-24 flex flex-col items-center justify-center">
+                <Heart width={80} height={80} class='animate-pulse' />
+                <p class="mt-1 text-base text-gray-900 text-center font-medium">Huh?</p>
+                <p class="text-sm text-gray-600 text-center text-balance">
+                    You either haven't added your friends or they haven't uploaded anything, yet...
+                    </p>
+                <p class="mt-8 text-xs"> 
+                    <span class="italic font-medium text-gray-800">Ayo</span>
+                    <span class="text-gray-600">add your friends 🫂</span>
+                </p>
+                
+                <div class="mt-4 flex flex-col">
+                    <CopyLinkButton client:load />
+                    {/* <p class="text-xs text-gray-600 text-center">or</p>
+                    <button class="text-sm">Search friend</button> */}
+                </div>
+            </div>
+        }
         <ul class="space-y-4 sm:space-y-6">
             {friendsPosts.map(({post, author}) => 
                 <li class="">

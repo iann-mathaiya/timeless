@@ -1,6 +1,7 @@
 ---
 import "../styles/globals.css"
 import { ClientRouter } from "astro:transitions";
+import LoadingIndicator from "astro-loading-indicator/component"
 
 const { title, description } = Astro.props;
 ---
@@ -16,6 +17,7 @@ const { title, description } = Astro.props;
 		<meta name="title" content={title} />
 		<meta name="description" content={description} />
 		<ClientRouter />
+		<LoadingIndicator color="orange" height="2px" />
 	</head>
 	<body class="font-sans">
 		<slot />
