@@ -6,6 +6,7 @@ import { formatPostDate } from "@/lib/utils";
 import AppLayout from "../layouts/AppLayout.astro";
 import type { FriendPost, UploadedFiles } from "@/lib/types";
 import CopyLinkButton from "@/components/copy-link-button";
+import SearchFriendDrawer from "@/components/drawers/search-friend-drawer";
 
 const { user, session } = Astro.locals;
 
@@ -67,8 +68,8 @@ if (data?.success) {
                 
                 <div class="mt-4 flex flex-col">
                     <CopyLinkButton client:load />
-                    {/* <p class="text-xs text-gray-600 text-center">or</p>
-                    <button class="text-sm">Search friend</button> */}
+                    <p class="text-xs text-gray-600 text-center">or</p>
+                    <SearchFriendDrawer client:load />
                 </div>
             </div>
         }

@@ -32,7 +32,7 @@ export const friends = {
                     id: users.id,
                     name: users.name,
                     email: users.email,
-                    image: users.profilePicture,
+                    profilePicture: users.profilePicture,
                     friendshipStatus: friendsSchema.status,
                     isRequester: sql<boolean>`${friendsSchema.requesterId} = ${user.id}`
                 }).from(users)
