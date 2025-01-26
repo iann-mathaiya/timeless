@@ -1,12 +1,13 @@
 import { useAtom } from "jotai";
-import { Bell, UserSearch } from "lucide-react";
 import { actions } from "astro:actions";
 import { userIdAtom } from "@/lib/store";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Bell, UserSearch } from "lucide-react";
 import type { PendingFriendRequest } from "@/lib/types";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { RiNotification3Line } from "@remixicon/react";
+import { Penguin } from "./icons";
 
 export default function Notifications() {
     const [userId] = useAtom(userIdAtom);
@@ -18,7 +19,7 @@ export default function Notifications() {
     useEffect(() => {
         // first check user id is not falsy so it doesn't 
         // hit the db twice while the user id atom has being set
-        if(userId) {
+        if (userId) {
             fetchPendingRequests(userId);
         }
     }, [userId]);
@@ -33,12 +34,12 @@ export default function Notifications() {
 
     async function acceptFriendRequest(event: React.MouseEvent<HTMLButtonElement>, requesterId: string) {
         event.preventDefault();
-        setIsLoading(true)
-        const { data, error } = await actions.friends.acceptFriendRequest({respondentId: userId, requesterId: requesterId})
+        setIsLoading(true);
+        const { data, error } = await actions.friends.acceptFriendRequest({ respondentId: userId, requesterId: requesterId });
 
-        if(data?.success) {
-            fetchPendingRequests(userId)
-            setIsLoading(false)
+        if (data?.success) {
+            fetchPendingRequests(userId);
+            setIsLoading(false);
         }
     }
 
@@ -61,15 +62,15 @@ export default function Notifications() {
                 className="p-2 w-72 sm:w-96 overflow-hidden rounded-lg"
                 align="end"
             >
-                <span className="text-xs text-gray-600">Friend Requests</span>
+                <span className="text-xs text-gray-600">{pendingRequests.length > 0 && 'Friend Requests'}</span>
 
-                {pendingRequests.length === 0 && 
-                    <div className="my-10 flex flex-col items-center">
-                        <div className="size-14 flex items-center justify-center border border-dashed border-gray-200 rounded-lg">
-                            <UserSearch className="size-10 stroke-gray-600" aria-hidden />
-                        </div>
-                            <h2 className="mt-4 text-gray-900 text-sm font-medium">No Friend Requests</h2>
-                            <p className="mt-0.5 text-xs text-gray-600">Try searching for your friends instead</p>
+                {pendingRequests.length === 0 &&
+                    <div className="my-10 flex flex-col items-center justify-center">
+                        <Penguin width={80} height={80} />
+                        <h2 className="mt-4 text-gray-900 text-sm text-center font-medium">No Friend Requests</h2>
+                        <p className="mt-0.5 text-xs text-gray-600 text-center text-balance">
+                            Try searching for your friends instead or you can just chill with <span className="italic font-medium">Tux</span>
+                        </p>
                     </div>
                 }
 

@@ -8,7 +8,9 @@ import { userIdAtom } from '@/lib/store';
 import { twMerge } from 'tailwind-merge';
 import { SmilePlus, X } from 'lucide-react';
 import type { MatchingUser } from '@/lib/types';
-import { RiUserHeartLine } from '@remixicon/react';
+import { RiPokerHeartsFill, RiUserHeartLine } from '@remixicon/react';
+import CopyLinkButton from '../copy-link-button';
+import { UserNotFound } from '../icons';
 
 export default function SearchFriendDrawer() {
     const [isOpen, setIsOpen] = useState(false);
@@ -108,7 +110,7 @@ export default function SearchFriendDrawer() {
                             onChange={e => setSearchValue(e.target.value)}
                             className="peer ps-9 h-8 w-full border-none shadow-none" />
 
-                        <div className="pointer-events-none absolute inset-y-0 start-0 left-3 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
+                        <div className="pointer-events-none absolute inset-y-0 start-0 left-4 sm:left-3 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
                             <SmilePlus size={16} strokeWidth={2} aria-hidden="true" />
                         </div>
 
@@ -121,20 +123,33 @@ export default function SearchFriendDrawer() {
 
                     <div>
                         {searchedUsers?.length === 0 && searchValue && isSearchingFriend === false &&
-                            <p>Your friend isn't on pocket yet, share pocket link with them</p>
+                            <div className='mt-12 p-4 flex flex-col items-center justify-center gap-2'>
+                                <UserNotFound width={80} height={80} />
+                                <p className='text-sm text-gray-600 text-center text-balance'>
+                                    <span>Your friend called {' '}</span>
+                                    <span className='text-gray-900 font-medium'>{`${searchValue}`}</span>
+                                     <span>{' '}isn't on pocket yet, share your pocket link with them</span>
+                                </p>
+                                <CopyLinkButton />
+                            </div>
                         }
 
                         {searchedUsers?.map(user =>
                             <div key={user.id} className="p-4 w-full flex gap-2 sm:gap-3 bg-transparent group">
                                 {user.profilePicture ?
-                                    <img src={user.profilePicture} alt={`${user.name} profile`} className="mt-0.5 size-5 sm:size-7 rounded-full" />
+                                    <img src={user.profilePicture} alt={`${user.name} profile`} className="mt-0.5 size-7 rounded-full" />
                                     :
-                                    <div className="mt-0.5 py-4 pl-6 size-5 sm:size-7 rounded-full" />
+                                    <div className="mt-0.5 py-4 pl-6 size-7 rounded-full" />
                                 }
 
                                 <div className="w-full flex items-center justify-between">
-                                    <div className="pr-6 w-full h-full space-y-0 text-xs">
-                                        <h2 className="text-gray-900 font-medium">{user.name}</h2>
+                                    <div className="pr-6 w-full h-full space-y-0 text-sm">
+                                        <h2 className="text-gray-900 font-medium flex items-center gap-1">
+                                            <span>{user.name}</span>
+                                            {user.friendshipStatus === 'accepted' && 
+                                                <RiPokerHeartsFill className='size-4 text-orange-600' aria-hidden />
+                                            }
+                                            </h2>
                                         <p className="text-gray-600 text-pretty">{user.email}</p>
                                     </div>
 
