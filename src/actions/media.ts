@@ -2,7 +2,7 @@ import { z } from "astro:schema";
 import { posts } from "@/db/schema";
 import { eq, desc } from 'drizzle-orm';
 import { drizzle } from "drizzle-orm/d1";
-import type { FileType } from '@/lib/types';
+import type { FileType, ProjectState } from '@/lib/types';
 import { MAX_FILE_SIZE } from "@/lib/constants";
 import { defineAction, ActionError } from "astro:actions";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -24,11 +24,17 @@ export const media = {
                 throw new Error('File size should be less than 16MB');
             }
 
-            const fileBuffer = Buffer.from(await file.arrayBuffer());
+            const { env } = context.locals.runtime;
+
+            const projectState = env.PROJECT_STATE as ProjectState
+
+            const fileArrayBuffer = await file.arrayBuffer()
+
+            const fileBody = projectState === 'production' ? new Uint8Array(fileArrayBuffer) :  Buffer.from(fileArrayBuffer) // Use Buffer in Node.js
+
             const fileName = file.type.startsWith("video/mp4") ? `post-reels/${Date.now()}-${file.name}` : `post-images/${Date.now()}-${file.name}`;
             const fileType = file.type as FileType 
 
-            const { env } = context.locals.runtime;
 
             const R2_BUCKET_NAME = env.BUCKET_NAME;
             const R2_ACCESS_KEY_ID = env.R2_ACCESS_KEY_ID;
@@ -48,7 +54,7 @@ export const media = {
                 const command = new PutObjectCommand({
                     Bucket: R2_BUCKET_NAME,
                     Key: fileName,
-                    Body: fileBuffer,
+                    Body: fileBody,
                     ContentType: file.type,
                 });
 
