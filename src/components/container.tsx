@@ -25,7 +25,7 @@ export function Container({ user, currentPath, pageTitle, children }: ContainerP
     }, [user, currentPath, setUser, setUserId, setCurrentPath]);
 
     return (
-        <main>
+        <main className="relative">
             <section className="min-h-screen flex flex-col">
                 <header className="flex sm:pl-16 h-14 shrink-0 items-center gap-2 bg-white">
                     <div className="flex flex-1 items-center gap-2 px-3">
@@ -46,7 +46,7 @@ export function Container({ user, currentPath, pageTitle, children }: ContainerP
                 </header>
 
                 <section className="flex-1 overflow-hidden">
-                    <div className="h-full pb-20 sm:pl-16 overflow-y-auto bg-white rounded-b-xl">
+                    <div className="h-full pb-20 sm:pl-16 overflow-y-auto relative z-50 rounded-b-xl">
                         {children}
                     </div>
                 </section>

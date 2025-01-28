@@ -93,7 +93,7 @@ const gallery = Object.values(
             {
                 gallery.map((post) => (
                     <li>
-                        <div class="w-full aspect-square relative group cursor-pointer border border-red-500 rounded-[12px] overflow-hidden">
+                        <div class="w-full aspect-square relative group cursor-pointer rounded-[12px] overflow-hidden">
                             {post.mediaData[0].fileType === "video/mp4" ? (
                                 <video draggable="false" transition:persist class="w-full aspect-square object-cover object-center">
                                     <source src={post.mediaData[0].mediaURL} type="video/mp4" />
