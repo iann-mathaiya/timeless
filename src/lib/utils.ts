@@ -53,9 +53,9 @@ export function getGoogleRedirectURI(projectState: ProjectState, site: string) {
   console.log(projectState, site)
   let redirectURI = ''
 
-  if (projectState === 'production' && site === 'https://www.pocket-journal.com/') {
+  if (projectState === 'production' && site === 'https://www.pocket-journal.com') {
     redirectURI = 'https://www.pocket-journal.com/api/auth/callback/google';
-  } else if (projectState === 'production' && site === 'https://pocket-journal.com/') {
+  } else if (projectState === 'production' && site === 'https://pocket-journal.com') {
     redirectURI = 'https://pocket-journal.com/api/auth/callback/google';
   } else {
     redirectURI = 'http://localhost:4321/api/auth/callback/google';
