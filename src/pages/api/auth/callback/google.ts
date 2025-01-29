@@ -4,7 +4,6 @@ import type { APIContext } from "astro";
 import { drizzle } from "drizzle-orm/d1";
 import type { GoogleUser, ProjectState } from "@/lib/types";
 import { ArcticFetchError, Google, OAuth2RequestError } from "arctic";
-import { getGoogleRedirectURI } from "@/lib/utils";
 
 
 export const prerender = false
@@ -13,11 +12,9 @@ export async function GET(context: APIContext): Promise<Response> {
     const { env } = context.locals.runtime;
     const db = drizzle(env.ARS_DB, {schema: { users }});
 
-	const projectState = env.PROJECT_STATE as ProjectState
-    const site = env.SITE as string
-
-    const redirectURI = getGoogleRedirectURI(projectState, site)
+	const projectState = context.locals.runtime.env.PROJECT_STATE as ProjectState
 	
+	const redirectURI = projectState === 'production' ? 'https://www.pocket-journal.com/api/auth/callback/google' : 'http://localhost:4321/api/auth/callback/google';
 	const google = new Google(import.meta.env.GOOGLE_CLIENT_ID, import.meta.env.GOOGLE_CLIENT_SECRET, redirectURI)
 
     const code = context.url.searchParams.get("code")
