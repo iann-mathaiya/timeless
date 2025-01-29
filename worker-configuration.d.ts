@@ -2,6 +2,7 @@
 
 interface Env {
 	ars: KVNamespace;
+	SITE: "https://pocket-journal.com";
 	CLOUDFLARE_ACCOUNT_ID: string;
 	CLOUDFLARE_API_TOKEN: string;
 	DB: string;

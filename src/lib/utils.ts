@@ -1,11 +1,12 @@
 // import fs from "node:fs"
 // import path from "node:path"
-import { twMerge } from "tailwind-merge"
-import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge";
+import { clsx, type ClassValue } from "clsx";
 import { format, isToday, isYesterday, differenceInDays, isSameYear } from "date-fns";
+import type { ProjectState } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 // export function getLocalD1DB() {
@@ -48,3 +49,18 @@ export function formatPostDate(date: Date | number): string {
   return `${format(postDate, "MMM d, yyyy")} at ${time}`; // e.g., "Jan 20, 2023 at 2:30 PM"
 }
 
+export function getGoogleRedirectURI(projectState: ProjectState, site: string) {
+  console.log(projectState, site)
+  let redirectURI = ''
+
+  if (projectState === 'production' && site === 'https://www.pocket-journal.com/') {
+    redirectURI = 'https://www.pocket-journal.com/api/auth/callback/google';
+  } else if (projectState === 'production' && site === 'https://pocket-journal.com/') {
+    redirectURI = 'https://pocket-journal.com/api/auth/callback/google';
+  } else {
+    redirectURI = 'http://localhost:4321/api/auth/callback/google';
+  }
+
+  return redirectURI
+
+}
