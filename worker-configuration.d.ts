@@ -2,13 +2,13 @@
 
 interface Env {
 	ars: KVNamespace;
-	SITE: "https://pocket-journal.com";
 	CLOUDFLARE_ACCOUNT_ID: string;
 	CLOUDFLARE_API_TOKEN: string;
 	DB: string;
 	GOOGLE_CLIENT_ID: string;
 	GOOGLE_CLIENT_SECRET: string;
 	PROJECT_STATE: string;
+	SITE: string;
 	BUCKET_NAME: string;
 	R2_ACCESS_KEY_ID: string;
 	R2_SECRET_ACCESS_KEY: string;
