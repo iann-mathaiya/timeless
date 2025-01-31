@@ -1,5 +1,13 @@
 import { sqliteTable, text, integer, uniqueIndex, } from "drizzle-orm/sqlite-core";
 
+export const waitlist = sqliteTable('waitlist', {
+	id: text("id").notNull().primaryKey(),
+	email: text('email').notNull().unique(),
+	invitedOn: integer('invited_on', { mode: 'timestamp' }),
+	isInvited: integer({ mode: 'boolean' }).default(false).notNull(),
+	waitlistedAt: integer('waitlisted_at', { mode: 'timestamp' }).notNull(),
+  })
+
 export const posts = sqliteTable("posts", {
 	id: text("id").primaryKey(),
 	title: text("title").notNull(),
