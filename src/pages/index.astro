@@ -1,4 +1,5 @@
 ---
+import JoinWaitlistForm from "@/components/join-waitlist-form";
 import Logo from "../assets/logo.svg";
 import RootLayout from "../layouts/RootLayout.astro";
 
@@ -21,14 +22,16 @@ if (user) {
 				built to record your memories
 			</p>
 
-			<div class="mt-4 sm:mt-6 flex items-center justify-center gap-3">
+			<!-- <div class="mt-4 sm:mt-6 flex items-center justify-center gap-3">
 				<a href="/join" class="px-4 py-1.5 text-sm text-white bg-gray-900 hover:bg-orange-600 hover:scale-110 rounded-full transition-all duration-300 ease-in-out">
 					Join Now
 				</a>
 				<a href="/sign-in" class="px-4 py-1.5 text-sm font-medium text-gray-900 hover:text-orange-600 hover:bg-orange-200/50 border border-gray-900/30 hover:border-orange-300  hover:scale-110 rounded-full transition-all duration-300 ease-in-out">
 					Sign In
 				</a>
-			</div>
+			</div> -->
+
+			<JoinWaitlistForm client:load />
 
 			<div class="px-4 xl:px-0 mt-8 sm:mt-10 grid grid-rows-1 sm:grid-cols-3 gap-10 sm:gap-4">
 				<div class="">
@@ -51,7 +54,7 @@ if (user) {
 
 			</div>
 
-			<footer class="mt-2.5 px-4 xl:px-0 pb-2.5 w-full sm:fixed sm:bottom-0 flex items-center justify-between">
+			<footer class="mt-2.5 px-4 xl:px-0 pb-2.5 mx-auto w-full max-w-4xl sm:fixed sm:bottom-0 flex items-center justify-between">
 				<a href="https://github.com/iann-mathaiya/timeless/blob/master/LICENSE" target="_blank" class="group flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900">
 					&copy; 
 					<span class="underline underline-offset-2 decoration-[1.5px] decoration-transparent group-hover:decoration-orange-600">{new Date().getFullYear()}</span>

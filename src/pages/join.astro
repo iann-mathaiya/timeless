@@ -2,12 +2,13 @@
 import Logo from "../assets/logo.svg";
 import RootLayout from "../layouts/RootLayout.astro";
 
-const { user, session } = Astro.locals;
+return Astro.redirect('/')
 
-if (user) {
-	return Astro.redirect("/home");
-}
+// const { user, session } = Astro.locals;
 
+// if (user) {
+// 	return Astro.redirect("/home");
+// }
 ---
 
 <RootLayout title="Join">
